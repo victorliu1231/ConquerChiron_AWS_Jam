@@ -1,0 +1,14 @@
+- credit:
+-- FirstPersonController asset from Unity
+-- Sci-fi props free asset from Unity Asset Store
+-- Meta llama model
+-- XEntity Inventory system (looks REALLY useful)
+-- add in a hand for the character model later at some point to help with cursor control, otherwise for now using cursor is good
+- Asteroids 3D model pack for asteroids
+
+- art
+-- want a better inventory UI
+-- 2d sprites:
+--- towel, window cleaner, etc
+
+- can put grace also on model tuning + environment creation

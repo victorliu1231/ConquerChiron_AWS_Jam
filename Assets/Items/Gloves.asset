@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bb37a5e4810a7744a6b9d1f88712c1d, type: 3}
+  m_Name: Gloves
+  m_EditorClassIdentifier: 
+  type: 0
+  itemName: Gloves
+  itemPerSlot: 1
+  icon: {fileID: 0}
+  prefab: {fileID: 6736926376520660483, guid: 1cdad03081e12de48b09d35358da4f67, type: 3}
+  itemInformation: I told my friends I didn't need to pack these... ugh, I can just
+    imagine their smug look on their faces now.
