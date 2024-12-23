@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// A typical cell controls a single point on our game grid
@@ -16,10 +17,10 @@ public class Cell:MonoBehaviour
 
     internal bool isHead = false, isSelected=false;
 
-    [SerializeField] SpriteRenderer head;
-    [SerializeField] SpriteRenderer glow;
-    [SerializeField] SpriteRenderer prevBar;
-    [SerializeField] SpriteRenderer postBar;
+    [SerializeField] Image head;
+    [SerializeField] Image glow;
+    [SerializeField] Image prevBar;
+    [SerializeField] Image postBar;
 
     /// <summary>
     /// Sets the x and y
@@ -247,12 +248,11 @@ public class Cell:MonoBehaviour
         return base.GetHashCode();
     }
 
-    /// <summary>
-    /// ran when our mouse is over this object, and we are holding down the "Fire1" button (LMB)
-    /// </summary>
-    /// <param name="other"></param>
-    private void OnTriggerEnter(Collider other)
+    void OnMouseOver()
     {
-        GameController.instance.ChangeCurrentCell(this);
+        if (Input.GetMouseButton(0) && GameController.isGameActive)
+        {
+            GameController.instance.ChangeCurrentCell(this);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 
 /// <summary>
 /// A typical InputHandler captures the input from the player and allows them to control the game
@@ -11,7 +12,7 @@ public class InputHandler : MonoBehaviour
     [SerializeField] Transform mousePositionTrackingCube;
     [SerializeField] BoxCollider mouseCubeBoxCollider;
 
-    bool isClicking = false;
+    internal bool isClicking = false;
     bool hasReleased = true;
 
     [SerializeField] float heightOffset = -1.59f;
@@ -26,27 +27,8 @@ public class InputHandler : MonoBehaviour
     {
         if (GameController.isGameActive)
         {
-            #region move our mouse tracking cube
-            Vector3 v3 = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-
-            mousePositionTrackingCube.position = new Vector3((v3.x + widthOffset) * GridGenerator.horizMouseMoveMultiplier, (v3.y + heightOffset) * GridGenerator.vertMouseMoveMultiplier, 0);
-            #endregion
-
-            //get clicks
-            if(Input.GetAxisRaw("Fire1") > 0)
-            {
-                if (!isClicking && hasReleased)
-                {
-                    isClicking = true;
-                    mouseCubeBoxCollider.enabled = true;
-                    hasReleased = false;
-                }
-            }
-            else
-            {
-                CancelClick();
-                hasReleased = true;
-            }
+            if (Input.GetMouseButtonDown(0)) isClicking = true;
+            else CancelClick();
         }
     }
 
@@ -57,6 +39,5 @@ public class InputHandler : MonoBehaviour
     {
         GameController.instance.CheckGame();
         isClicking = false;
-        mouseCubeBoxCollider.enabled = false;
     }
 }

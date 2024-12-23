@@ -5,10 +5,12 @@
 -- XEntity Inventory system (looks REALLY useful)
 -- add in a hand for the character model later at some point to help with cursor control, otherwise for now using cursor is good
 - Asteroids 3D model pack for asteroids
+- ConnectTheDots scripts by Nichathan Gaming, https://www.youtube.com/watch?v=PZQK4ADyqdY
 
 - art
 -- want a better inventory UI
 -- 2d sprites:
 --- towel, window cleaner, etc
+- okay for whatever reason, the cursor disappears when clicking in the game, and this is causing onMouseOver to no longer run
 
 - can put grace also on model tuning + environment creation

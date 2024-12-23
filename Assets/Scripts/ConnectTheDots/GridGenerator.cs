@@ -9,6 +9,10 @@ public class GridGenerator : MonoBehaviour
     [SerializeField] GameObject cellPrefab;
     [SerializeField] Transform instantiationLocation;
     [SerializeField] Camera gameCamera;
+    public int width = 6;
+    public int height = 6;
+    public bool hasRandomSeed = false;
+    public int randomSeed = 42;
 
     System.Random random;
 
@@ -57,23 +61,24 @@ public class GridGenerator : MonoBehaviour
     {
         availableColors.AddRange(colors);
 
-        float cameraSize = (1.2f * ((StaticGameController.width > StaticGameController.height) ? StaticGameController.width : StaticGameController.height) + 0.08f) *1.01f;
-        gameCamera.orthographicSize = cameraSize;
+        // Find a better way to set the proper size for the cells
+        float cameraSize = (1.2f * ((width > height) ? width : height) + 0.08f) *1.01f;
+        //gameCamera.orthographicSize = cameraSize;
 
         vertMouseMoveMultiplier = ((0.0005f * (cameraSize * cameraSize)) + (0.405f * cameraSize) + 0.01f) * 1.2f;
         horizMouseMoveMultiplier = ((0.0005f * (cameraSize * cameraSize)) + (0.405f * cameraSize) + 0.01f) * 1.2f;
 
-        if (StaticGameController.hasRandomSeed)
+        if (hasRandomSeed)
         {
-            random = new System.Random(StaticGameController.randomSeed);
+            random = new System.Random(randomSeed);
         }
         else
         {
             random = new System.Random();
 
-            StaticGameController.randomSeed = random.Next();
+            randomSeed = random.Next();
 
-            random = new System.Random(StaticGameController.randomSeed);
+            random = new System.Random(randomSeed);
         }
 
         GenerateLocations();
@@ -87,7 +92,7 @@ public class GridGenerator : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-            print(StaticGameController.randomSeed);
+            print(randomSeed);
             PrintGrid();
             PrintWalks();
         }
@@ -99,12 +104,12 @@ public class GridGenerator : MonoBehaviour
     void GenerateLocations()
     {
         #region initialize the grid
-        grid = new byte[StaticGameController.width, StaticGameController.height];
+        grid = new byte[width, height];
 
         //set all values to 0
-        for(int i = 0; i < StaticGameController.width; i++)
+        for(int i = 0; i < width; i++)
         {
-            for(int j = 0; j < StaticGameController.height; j++)
+            for(int j = 0; j < height; j++)
             {
                 grid[i, j] = 0;
             }
@@ -112,13 +117,13 @@ public class GridGenerator : MonoBehaviour
         #endregion
 
         //how far does our crawler walk
-        int walkTimes = StaticGameController.width > StaticGameController.height ? StaticGameController.width : StaticGameController.height;
+        int walkTimes = width > height ? width : height;
 
         int walkIndex = 0;
         while (GetRandomStartPos().HasValue)
         {
             List<Vector2Int> walk = new List<Vector2Int>();
-            Vector2Int? startPos = walkIndex == 0 ? new Vector2Int(random.Next(0, StaticGameController.width), random.Next(0, StaticGameController.height)) : GetRandomStartPos();
+            Vector2Int? startPos = walkIndex == 0 ? new Vector2Int(random.Next(0, width), random.Next(0, height)) : GetRandomStartPos();
 
             //we found a cell by itself with no neighbors, time to panic
             if(CountEmptySquareNeighbors(startPos.Value.x, startPos.Value.y) < 1)
@@ -127,9 +132,9 @@ public class GridGenerator : MonoBehaviour
                 List<int> indexes = new List<int>();
 
                 if (startPos.Value.x > 0 && !indexes.Contains(grid[startPos.Value.x - 1, startPos.Value.y])) indexes.Add(grid[startPos.Value.x - 1, startPos.Value.y]);
-                if (startPos.Value.x < StaticGameController.width-1 && !indexes.Contains(grid[startPos.Value.x + 1, startPos.Value.y])) indexes.Add(grid[startPos.Value.x + 1, startPos.Value.y]);
+                if (startPos.Value.x < width-1 && !indexes.Contains(grid[startPos.Value.x + 1, startPos.Value.y])) indexes.Add(grid[startPos.Value.x + 1, startPos.Value.y]);
                 if (startPos.Value.y > 0 && !indexes.Contains(grid[startPos.Value.x, startPos.Value.y-1])) indexes.Add(grid[startPos.Value.x, startPos.Value.y-1]);
-                if (startPos.Value.y < StaticGameController.height-1 && !indexes.Contains(grid[startPos.Value.x, startPos.Value.y+1])) indexes.Add(grid[startPos.Value.x, startPos.Value.y+1]);
+                if (startPos.Value.y < height-1 && !indexes.Contains(grid[startPos.Value.x, startPos.Value.y+1])) indexes.Add(grid[startPos.Value.x, startPos.Value.y+1]);
 
                 foreach(int ind in indexes)
                 {
@@ -157,9 +162,9 @@ public class GridGenerator : MonoBehaviour
                 if (randStartPos.HasValue && CountEmptySquareNeighbors(randStartPos.Value.x, randStartPos.Value.y) < 1)
                 {
                     //reset
-                    if (StaticGameController.hasRandomSeed)
+                    if (hasRandomSeed)
                     {
-                        StaticGameController.randomSeed++;
+                        randomSeed++;
                     }
 
                     walks.Clear();
@@ -205,7 +210,7 @@ public class GridGenerator : MonoBehaviour
 
                 possiblePositions.Add(new Vector3Int(x - 1, y, 0));
             }
-            if(x < StaticGameController.width-1 && grid[x+1, y] == 0)
+            if(x < width-1 && grid[x+1, y] == 0)
             {
                 if (CountEmptySquareNeighbors(x + 1, y) == 0) return new Vector3Int(x + 1, y, -1);
 
@@ -217,7 +222,7 @@ public class GridGenerator : MonoBehaviour
 
                 possiblePositions.Add(new Vector3Int(x, y - 1, 0));
             }
-            if (y < StaticGameController.height - 1 && grid[x, y + 1] == 0)
+            if (y < height - 1 && grid[x, y + 1] == 0)
             {
                 if (CountEmptySquareNeighbors(x, y + 1) == 0) return new Vector3Int(x, y + 1, -1);
 
@@ -236,9 +241,9 @@ public class GridGenerator : MonoBehaviour
 
             List<Vector2Int> startPositions = new List<Vector2Int>();
 
-            for(int i = 0; i < StaticGameController.width; i++)
+            for(int i = 0; i < width; i++)
             {
-                for(int j = 0; j < StaticGameController.height; j++)
+                for(int j = 0; j < height; j++)
                 {
                     if (grid[i, j] > 0) continue;
 
@@ -266,9 +271,9 @@ public class GridGenerator : MonoBehaviour
             int count = 0;
 
             if (x > 0 && grid[x - 1, y] == 0) count++;
-            if (x < StaticGameController.width-1 && grid[x + 1, y] == 0) count++;
+            if (x < width-1 && grid[x + 1, y] == 0) count++;
             if (y > 0 && grid[x, y - 1] == 0) count++;
-            if (y < StaticGameController.height-1 && grid[x, y+1] == 0) count++;
+            if (y < height-1 && grid[x, y+1] == 0) count++;
 
             return count;
         }
@@ -279,33 +284,37 @@ public class GridGenerator : MonoBehaviour
     /// </summary>
     void PlaceImages()
     {
-        Cell[,] newCells = new Cell[StaticGameController.width, StaticGameController.height];
+        Cell[,] newCells = new Cell[width, height];
 
-        float cellSize = 2.4f;
+        // Make the float cellSize dynamic based on the camera size
+        float camHeight = 2f * Camera.main.orthographicSize;
+        float camWidth = camHeight * Camera.main.aspect;
+        //float cellSize = 2.4f; // Make this dynamic based on camera size
+        float cellSize = camHeight / height < camWidth / width ? (camHeight / height) * 0.9f : (camWidth / width) * 0.9f;
         float halfCellSize = cellSize / 2;
 
-        for(int j = 0; j< StaticGameController.height; j++)
+        for(int j = 0; j< height; j++)
         {
-            for(int i = 0; i < StaticGameController.width; i++)
+            for(int i = 0; i < width; i++)
             {
-                int index = i - (StaticGameController.width / 2);
+                int index = i - (width / 2);
 
                 //is it to the left of 0?
-                if(i < (StaticGameController.width / 2))
+                if(i < (width / 2))
                 {
-                    GetY((cellSize * ++index) - halfCellSize - (StaticGameController.width % 2 == 0 ? 0 : halfCellSize));
+                    GetY((cellSize * ++index) - halfCellSize - (width % 2 == 0 ? 0 : halfCellSize));
                 }
                 else
                 {
-                    GetY((cellSize * index) + halfCellSize - (StaticGameController.width % 2 == 0 ? 0 : halfCellSize));
+                    GetY((cellSize * index) + halfCellSize - (width % 2 == 0 ? 0 : halfCellSize));
                 }
 
                 void GetY(float x)
                 {
-                    Cell cell = Instantiate(cellPrefab, instantiationLocation).GetComponent<Cell>();
+                    Cell cell = Instantiate(cellPrefab, instantiationLocation, false).GetComponent<Cell>();
                     newCells[i, j] = cell;
 
-                    int index = -(j - (StaticGameController.height / 2));
+                    int index = -(j - (height / 2));
 
                     //cellObj 1_2
                     cell.gameObject.name = "cellObj " + i + "_" + j;
@@ -313,13 +322,13 @@ public class GridGenerator : MonoBehaviour
                     GameController.instance.cells.Add(cell);
                     cell.Initialize(i, j);
 
-                    if (j < (StaticGameController.height / 2))
+                    if (j < (height / 2))
                     {
-                        cell.transform.position = new Vector3(x, (cellSize * --index) + halfCellSize + (StaticGameController.height % 2 == 0 ? 0 : halfCellSize));
+                        cell.transform.localPosition = new Vector3(x, (cellSize * --index) + halfCellSize + (height % 2 == 0 ? 0 : halfCellSize));
                     }
                     else
                     {
-                        cell.transform.position = new Vector3(x, (cellSize * index) - halfCellSize + (StaticGameController.height % 2 == 0 ? 0 : halfCellSize));
+                        cell.transform.localPosition = new Vector3(x, (cellSize * index) - halfCellSize + (height % 2 == 0 ? 0 : halfCellSize));
                     }
                 }
             }
@@ -356,10 +365,10 @@ public class GridGenerator : MonoBehaviour
     {
         string s = "";
 
-        for(int i = 0; i < StaticGameController.height; i++)
+        for(int i = 0; i < height; i++)
         {
-            if (i > 0) s += new string('-', StaticGameController.height * 2) + "\n";
-            for(int j = 0; j < StaticGameController.width; j++)
+            if (i > 0) s += new string('-', height * 2) + "\n";
+            for(int j = 0; j < width; j++)
             {
                 if (j > 0) s += "|";
                 s += grid[j, i];

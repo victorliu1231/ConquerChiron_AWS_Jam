@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour {
     public float timer = 0f;
     public bool timerOn = false;
     public float timeToCompleteTasks = 60f; // in seconds
+    public GameObject diedScreen;
     [Header("Asteroid Level")]
     public Transform asteroidsParent;
     public float asteroidSpeed = 0.5f;
@@ -23,6 +24,7 @@ public class GameManager : MonoBehaviour {
     void Awake(){
         tasksCompleted = new List<string>();
         timerSlider.gameObject.SetActive(false);
+        diedScreen.SetActive(false);
     }
 
     void Update(){
@@ -61,6 +63,7 @@ public class GameManager : MonoBehaviour {
     // Restarts player at checkpoint
     public void GoToCheckpoint(){
         timerOn = false;
+        diedScreen.SetActive(false);
     }
 
     public void ShipTakeDamage(){

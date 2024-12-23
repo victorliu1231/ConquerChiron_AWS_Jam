@@ -17,20 +17,12 @@ public class GameController : MonoBehaviour
     int movesCount = 0;
 
     [SerializeField] GameObject gameOverScreen;
-    [SerializeField] TMP_Text movesText;
-    [SerializeField] TMP_Text filledText;
-    [SerializeField] TMP_Text levelTitleText;
 
     internal static bool isGameActive = true;
 
     private void Awake()
     {
         instance = this;
-    }
-
-    private void Start()
-    {
-        levelTitleText.text = StaticGameController.width + "x" + StaticGameController.height;
     }
 
     /// <summary>
@@ -52,7 +44,6 @@ public class GameController : MonoBehaviour
                 if(lastCell == null || !(lastCell.isHead && lastCell.typeIndex == cell.typeIndex))
                 {
                     movesCount++;
-                    DisplayMoves();
                 }
                 lastCell = cell;
             }
@@ -66,7 +57,6 @@ public class GameController : MonoBehaviour
                 if(lastCell == null || !lastCell.IsConnected(cell))
                 {
                     movesCount++;
-                    DisplayMoves();
                 }
 
                 lastCell = cell;
@@ -95,8 +85,6 @@ public class GameController : MonoBehaviour
                 InputHandler.instance.CancelClick();
             }
         }
-
-        DisplayFilledCount();
     }
 
     /// <summary>
@@ -116,14 +104,6 @@ public class GameController : MonoBehaviour
     }
 
     /// <summary>
-    /// reloads the active scene
-    /// </summary>
-    public void NewGame()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    /// <summary>
     /// Count the number of cells that are selected
     /// </summary>
     /// <returns></returns>
@@ -132,21 +112,5 @@ public class GameController : MonoBehaviour
         int count = 0;
         foreach (Cell cell in cells) if (cell.isSelected) count++;
         return count;
-    }
-
-    /// <summary>
-    /// displays the number of connected cells vs overall cells on the screen
-    /// </summary>
-    void DisplayFilledCount()
-    {
-        filledText.text = "Connected: " + CountFilledCells() + "/" + cells.Count;
-    }
-
-    /// <summary>
-    /// Displays the number of moves made on the screen
-    /// </summary>
-    void DisplayMoves()
-    {
-        movesText.text = "Moves: " + movesCount;
     }
 }
