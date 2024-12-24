@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ShipFront : MonoBehaviour {
-    void OnTriggerEnter2D(Collider2D collider){
+    void OnTriggerEnter(Collider collider){
         if (collider.gameObject.tag == "Asteroid"){
             collider.GetComponent<Fracture>().FractureObject();
             GameManager.Instance.ShipTakeDamage();

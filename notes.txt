@@ -14,3 +14,6 @@
 - okay for whatever reason, the cursor disappears when clicking in the game, and this is causing onMouseOver to no longer run
 
 - can put grace also on model tuning + environment creation
+
+- todo list
+--- make spaceship environment art based off of current assets in spaceship asset pack (I think this is bugging me a lot bc rest of game depends on this)
