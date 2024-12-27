@@ -11,12 +11,19 @@ public class AsteroidGenerator : MonoBehaviour
     public int numAsteroidsToGenerate = 100;
 
     [ContextMenu("Generate Asteroids")]
-    void GenerateAsteroids(){
+    public void GenerateAsteroids(){
         for (int i = 0; i < numAsteroidsToGenerate; i++){
             Vector3 position = new Vector3(Random.Range(BottomLeftFrontVertex.position.x, TopRightBackVertex.position.x),
                                            Random.Range(BottomLeftFrontVertex.position.y, TopRightBackVertex.position.y),
                                            Random.Range(BottomLeftFrontVertex.position.z, TopRightBackVertex.position.z));
             Instantiate(asteroidPrefabs[Random.Range(0, asteroidPrefabs.Count)], position, Quaternion.identity, asteroidsParent);
+        }
+    }
+
+    [ContextMenu("Clear Asteroids")]
+    public void ClearAsteroids(){
+        foreach (Transform child in asteroidsParent){
+            DestroyImmediate(child.gameObject);
         }
     }
 }

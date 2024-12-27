@@ -6,6 +6,8 @@
 -- add in a hand for the character model later at some point to help with cursor control, otherwise for now using cursor is good
 - Asteroids 3D model pack for asteroids
 - ConnectTheDots scripts by Nichathan Gaming, https://www.youtube.com/watch?v=PZQK4ADyqdY
+- super computer by Jeremy Eyring [CC-BY] via Poly Pizza
+- Wrench by CreativeTrio
 
 - art
 -- want a better inventory UI
@@ -17,3 +19,4 @@
 
 - todo list
 --- make spaceship environment art based off of current assets in spaceship asset pack (I think this is bugging me a lot bc rest of game depends on this)
+--- make other minigames
