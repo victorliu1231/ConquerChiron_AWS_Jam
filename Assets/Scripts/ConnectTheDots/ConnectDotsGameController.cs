@@ -83,7 +83,7 @@ public class ConnectDotsGameController : MonoBehaviour
             }
             else
             {
-                //InputHandler.instance.CancelClick();
+                //InputHandler.instance.CancelClick(); // This line of code breaks the game but was in original GitHub code
             }
         }
     }

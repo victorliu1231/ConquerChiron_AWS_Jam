@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour {
     public float timeStartPulsing = 15f; // in seconds
     public GameObject diedScreen;
     private bool _timerOn = false;
-    [Header("Asteroid Level")]
+    [Header("Asteroid Task")]
     public Transform asteroidsParent;
     public Slider shipHealthSlider;
     public float asteroidSpeed = 0.5f;
@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviour {
     public AsteroidGenerator asteroidGenerator;
     private bool _isSecondAsteroidStageOn = false;
     private float _asteroidGenerateTimer = 0f; 
+    [Header("Connect the Wires Task")]
+    public GameObject connectTheWiresTask;
 
     void Awake(){
         Instance = this;
@@ -92,7 +94,10 @@ public class GameManager : MonoBehaviour {
         }
 
         if (Input.GetKeyDown(KeyCode.Tab)){
-            TurnOnAsteroidTask();
+            if (isAsteroidTaskOn) TurnOffAsteroidTask(); else TurnOnAsteroidTask();
+        }
+        if (Input.GetKeyDown(KeyCode.Q)){
+            if (connectTheWiresTask.activeSelf) connectTheWiresTask.SetActive(false); else connectTheWiresTask.SetActive(true);
         }
     }
 

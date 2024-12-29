@@ -22,6 +22,8 @@
 --- make a "gamer mode" where the asteroid task starts out with 50 asteroids, and a "non-gamer mode" for judges,
 ---- where the task starts out with 30 asteroids
 --- put in Grace's main menu screen + font type into game
+--- make sure if win the connect dots game, actually exit the task
+-- make the connect the wire game harder, either through random generation or player-made levels
 
 - tutorial
 -- wasd + arrow keys to move
