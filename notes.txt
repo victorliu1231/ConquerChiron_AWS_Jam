@@ -20,3 +20,7 @@
 - todo list
 --- make spaceship environment art based off of current assets in spaceship asset pack (I think this is bugging me a lot bc rest of game depends on this)
 --- make other minigames
+--- timer DG Scale is not looping
+--- spaceship asteroid task is too hard
+--- get human model in game
+--- do prelim research if it's easy to train meta llama model for customized output (lowkey could task Grace with this??? But I might be better since I actually took an ML class)

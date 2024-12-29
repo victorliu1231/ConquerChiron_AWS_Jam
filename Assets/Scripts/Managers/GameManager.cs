@@ -9,10 +9,13 @@ public class GameManager : MonoBehaviour {
     public static GameManager Instance;
     public Checkpoint currentCheckpoint;
     public List<string> tasksCompleted;
-    public Slider timerSlider;
+    [Header("Timer")]
+    public Image timerForegroundImage;
+    public GameObject timerGO;
     public float timer = 0f;
     public bool timerOn = false;
     public float timeToCompleteTasks = 60f; // in seconds
+    public float timeStartPulsing = 15f; // in seconds
     public GameObject diedScreen;
     [Header("Asteroid Level")]
     public Transform asteroidsParent;
@@ -30,7 +33,7 @@ public class GameManager : MonoBehaviour {
     void Awake(){
         Instance = this;
         tasksCompleted = new List<string>();
-        timerSlider.gameObject.SetActive(false);
+        timerGO.SetActive(false);
         shipHealthSlider.gameObject.SetActive(false);
         diedScreen.SetActive(false);
     }
@@ -38,9 +41,15 @@ public class GameManager : MonoBehaviour {
     void Update(){
         if (timerOn) {
             timer += Time.deltaTime;
-            timerSlider.value = (timeToCompleteTasks - timer) / timeToCompleteTasks;
+            timerForegroundImage.fillAmount = timeToCompleteTasks - timer > 0 ? (timeToCompleteTasks - timer) / timeToCompleteTasks : 0f;
             if (timer >= timeToCompleteTasks){
                 GoToCheckpoint();
+            } else if (timer >= timeToCompleteTasks - timeStartPulsing){
+                timerForegroundImage.color = Color.red;
+                // wtf this shit is not looping
+                timerGO.transform.DOScale(1.1f, 0.5f).SetLoops(-1, LoopType.Yoyo);
+            } else {
+                timerForegroundImage.color = Color.blue;
             }
         } else {
             timer = 0f;
@@ -48,27 +57,33 @@ public class GameManager : MonoBehaviour {
 
         if (isAsteroidTaskOn){
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)){
-                asteroidsParent.position += Vector3.right * Time.deltaTime * shipSpeed;
-            }
-            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)){
                 asteroidsParent.position += Vector3.left * Time.deltaTime * shipSpeed;
             }
+            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)){
+                asteroidsParent.position += Vector3.right * Time.deltaTime * shipSpeed;
+            }
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)){
-                asteroidsParent.position += Vector3.down * Time.deltaTime * shipSpeed;
+                asteroidsParent.position += Vector3.up * Time.deltaTime * shipSpeed;
             }
             if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)){
-                asteroidsParent.position += Vector3.up * Time.deltaTime * shipSpeed;
+                asteroidsParent.position += Vector3.down * Time.deltaTime * shipSpeed;
             }
             asteroidsParent.position += Vector3.forward * Time.deltaTime * asteroidSpeed;
         }
+
+        if (Input.GetKeyDown(KeyCode.Tab)){
+            TurnOnAsteroidTask();
+        }
     }
 
+    [ContextMenu("Start Timer")]
     public void StartTimer(){
         timerOn = true;
-        timerSlider.gameObject.SetActive(true);
+        timerGO.SetActive(true);
     }
 
     // Restarts player at checkpoint
+    [ContextMenu("Go to Checkpoint")]
     public void GoToCheckpoint(){
         timerOn = false;
         diedScreen.SetActive(false);
@@ -85,6 +100,7 @@ public class GameManager : MonoBehaviour {
 
     [ContextMenu("Turn on Asteroid Task")]
     public void TurnOnAsteroidTask(){
+        StartTimer();
         asteroidGenerator.GenerateAsteroids();
         isAsteroidTaskOn = true;
         shipHealthSlider.gameObject.SetActive(true);
