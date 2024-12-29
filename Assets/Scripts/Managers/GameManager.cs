@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 using Cinemachine;
+using TMPro;
 
 public class GameManager : MonoBehaviour {
     public static GameManager Instance;
@@ -13,10 +14,10 @@ public class GameManager : MonoBehaviour {
     public Image timerForegroundImage;
     public GameObject timerGO;
     public float timer = 0f;
-    public bool timerOn = false;
     public float timeToCompleteTasks = 60f; // in seconds
     public float timeStartPulsing = 15f; // in seconds
     public GameObject diedScreen;
+    private bool _timerOn = false;
     [Header("Asteroid Level")]
     public Transform asteroidsParent;
     public Slider shipHealthSlider;
@@ -27,8 +28,14 @@ public class GameManager : MonoBehaviour {
     public float damagePerAsteroidHit = 20f;
     public GameObject player;
     public Transform cockpitViewTransform;
+    public Transform shipFront;
     public float asteroidCameraTransitionTime = 1f;
+    public float asteroidGenerateEverySeconds = 1f;
+    public float secondStageAsteroidsTime = 30f;
+    public TextMeshProUGUI secondAsteroidStageText; 
     public AsteroidGenerator asteroidGenerator;
+    private bool _isSecondAsteroidStageOn = false;
+    private float _asteroidGenerateTimer = 0f; 
 
     void Awake(){
         Instance = this;
@@ -39,18 +46,31 @@ public class GameManager : MonoBehaviour {
     }
 
     void Update(){
-        if (timerOn) {
+        if (_timerOn) {
             timer += Time.deltaTime;
             timerForegroundImage.fillAmount = timeToCompleteTasks - timer > 0 ? (timeToCompleteTasks - timer) / timeToCompleteTasks : 0f;
             if (timer >= timeToCompleteTasks){
                 GoToCheckpoint();
-            } else if (timer >= timeToCompleteTasks - timeStartPulsing){
-                timerForegroundImage.color = Color.red;
-                // wtf this shit is not looping
-                timerGO.transform.DOScale(1.1f, 0.5f).SetLoops(-1, LoopType.Yoyo);
+            } 
+            if (isAsteroidTaskOn){
+                _asteroidGenerateTimer += Time.deltaTime;
+                if (_asteroidGenerateTimer >= asteroidGenerateEverySeconds){
+                    asteroidGenerator.GenerateAsteroids();
+                    _asteroidGenerateTimer = 0f;
+                }
+                if (timer >= secondStageAsteroidsTime && !_isSecondAsteroidStageOn){
+                    TurnOnSecondStageAsteroids();
+                    timerForegroundImage.color = Color.red;
+                    // wtf this shit is not looping
+                    timerGO.transform.DOScale(1.1f, 0.5f).SetLoops(-1, LoopType.Yoyo);
+                }
             } else {
-                timerForegroundImage.color = Color.blue;
-            }
+                if (timer >= timeToCompleteTasks - timeStartPulsing && timerForegroundImage.color != Color.red){
+                    timerForegroundImage.color = Color.red;
+                    // wtf this shit is not looping
+                    timerGO.transform.DOScale(1.1f, 0.5f).SetLoops(-1, LoopType.Yoyo);
+                }
+            } 
         } else {
             timer = 0f;
         }
@@ -63,10 +83,10 @@ public class GameManager : MonoBehaviour {
                 asteroidsParent.position += Vector3.right * Time.deltaTime * shipSpeed;
             }
             if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)){
-                asteroidsParent.position += Vector3.up * Time.deltaTime * shipSpeed;
+                asteroidsParent.position += Vector3.down * Time.deltaTime * shipSpeed;
             }
             if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)){
-                asteroidsParent.position += Vector3.down * Time.deltaTime * shipSpeed;
+                asteroidsParent.position += Vector3.up * Time.deltaTime * shipSpeed;
             }
             asteroidsParent.position += Vector3.forward * Time.deltaTime * asteroidSpeed;
         }
@@ -76,16 +96,25 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public void TurnOnSecondStageAsteroids(){
+        asteroidGenerator.numAsteroidsToGenerate = (int)(asteroidGenerator.numAsteroidsToGenerate*2f);
+        _isSecondAsteroidStageOn = true;
+        secondAsteroidStageText.gameObject.SetActive(true);
+        secondAsteroidStageText.DOFade(0f, 1f).SetLoops(3, LoopType.Yoyo).OnComplete(() => {
+            secondAsteroidStageText.gameObject.SetActive(false);
+        });
+    }
+
     [ContextMenu("Start Timer")]
     public void StartTimer(){
-        timerOn = true;
+        _timerOn = true;
         timerGO.SetActive(true);
     }
 
     // Restarts player at checkpoint
     [ContextMenu("Go to Checkpoint")]
     public void GoToCheckpoint(){
-        timerOn = false;
+        _timerOn = false;
         diedScreen.SetActive(false);
     }
 

@@ -15,7 +15,8 @@
 --- towel, window cleaner, etc
 - okay for whatever reason, the cursor disappears when clicking in the game, and this is causing onMouseOver to no longer run
 
-- can put grace also on model tuning + environment creation
+
+- can put grace also on model tuning
 
 - todo list
 --- make spaceship environment art based off of current assets in spaceship asset pack (I think this is bugging me a lot bc rest of game depends on this)
@@ -24,3 +25,5 @@
 --- spaceship asteroid task is too hard
 --- get human model in game
 --- do prelim research if it's easy to train meta llama model for customized output (lowkey could task Grace with this??? But I might be better since I actually took an ML class)
+--- make a "gamer mode" where the asteroid task starts out with 50 asteroids, and a "non-gamer mode" for judges,
+---- where the task starts out with 30 asteroids
