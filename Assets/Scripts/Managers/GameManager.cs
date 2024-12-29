@@ -100,7 +100,7 @@ public class GameManager : MonoBehaviour {
         asteroidGenerator.numAsteroidsToGenerate = (int)(asteroidGenerator.numAsteroidsToGenerate*2f);
         _isSecondAsteroidStageOn = true;
         secondAsteroidStageText.gameObject.SetActive(true);
-        secondAsteroidStageText.DOFade(0f, 1f).SetLoops(3, LoopType.Yoyo).OnComplete(() => {
+        secondAsteroidStageText.DOFade(0f, 1f).SetLoops(7, LoopType.Yoyo).OnComplete(() => {
             secondAsteroidStageText.gameObject.SetActive(false);
         });
     }

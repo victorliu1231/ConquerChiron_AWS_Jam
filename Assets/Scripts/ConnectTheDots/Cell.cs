@@ -250,9 +250,9 @@ public class Cell:MonoBehaviour
 
     void OnMouseOver()
     {
-        if (Input.GetMouseButton(0) && GameController.isGameActive)
+        if (Input.GetMouseButton(0) && ConnectDotsGameController.isGameActive)
         {
-            GameController.instance.ChangeCurrentCell(this);
+            ConnectDotsGameController.instance.ChangeCurrentCell(this);
         }
     }
 }

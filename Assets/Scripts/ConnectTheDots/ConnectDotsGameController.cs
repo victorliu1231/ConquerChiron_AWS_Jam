@@ -3,9 +3,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameController : MonoBehaviour
+public class ConnectDotsGameController : MonoBehaviour
 {
-    internal static GameController instance;
+    internal static ConnectDotsGameController instance;
 
     internal List<Line> lines = new List<Line>();
     internal List<Cell> cells = new List<Cell>();
@@ -69,6 +69,7 @@ public class GameController : MonoBehaviour
         //yes, we are dragging our mouse
         else
         {
+            Debug.Log($"Current Cell: {currentCell.x}, {currentCell.y} - Cell: {cell.x}, {cell.y}");
             //ensure that the cell is a direct neighbor
             if((currentCell.x==cell.x && (currentCell.y+1==cell.y || currentCell.y - 1 == cell.y)) || 
                 (currentCell.y == cell.y && (currentCell.x + 1 == cell.x || currentCell.x - 1 == cell.x)))
@@ -82,7 +83,7 @@ public class GameController : MonoBehaviour
             }
             else
             {
-                InputHandler.instance.CancelClick();
+                //InputHandler.instance.CancelClick();
             }
         }
     }

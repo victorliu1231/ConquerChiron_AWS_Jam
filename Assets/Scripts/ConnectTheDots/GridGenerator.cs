@@ -319,7 +319,7 @@ public class GridGenerator : MonoBehaviour
                     //cellObj 1_2
                     cell.gameObject.name = "cellObj " + i + "_" + j;
 
-                    GameController.instance.cells.Add(cell);
+                    ConnectDotsGameController.instance.cells.Add(cell);
                     cell.Initialize(i, j);
 
                     if (j < (height / 2))
@@ -352,10 +352,10 @@ public class GridGenerator : MonoBehaviour
                 color, 
                 (byte)walkIndex++);
 
-            GameController.instance.lines.Add(line);
+            ConnectDotsGameController.instance.lines.Add(line);
         }
 
-        GameController.isGameActive = true;
+        ConnectDotsGameController.isGameActive = true;
     }
     
     /// <summary>

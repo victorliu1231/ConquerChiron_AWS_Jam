@@ -7,16 +7,7 @@ using UnityEngine;
 public class InputHandler : MonoBehaviour
 {
     internal static InputHandler instance;
-
-    [SerializeField] Camera mainCamera;
-    [SerializeField] Transform mousePositionTrackingCube;
-    [SerializeField] BoxCollider mouseCubeBoxCollider;
-
     internal bool isClicking = false;
-    bool hasReleased = true;
-
-    [SerializeField] float heightOffset = -1.59f;
-    [SerializeField] float widthOffset = 0;
 
     private void Awake()
     {
@@ -25,10 +16,9 @@ public class InputHandler : MonoBehaviour
 
     private void Update()
     {
-        if (GameController.isGameActive)
+        if (ConnectDotsGameController.isGameActive)
         {
-            if (Input.GetMouseButtonDown(0)) isClicking = true;
-            else CancelClick();
+            if (!Input.GetMouseButton(0)) CancelClick();
         }
     }
 
@@ -37,7 +27,6 @@ public class InputHandler : MonoBehaviour
     /// </summary>
     internal void CancelClick()
     {
-        GameController.instance.CheckGame();
-        isClicking = false;
+        ConnectDotsGameController.instance.CheckGame();
     }
 }

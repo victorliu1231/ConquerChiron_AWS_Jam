@@ -13,17 +13,18 @@
 -- want a better inventory UI
 -- 2d sprites:
 --- towel, window cleaner, etc
-- okay for whatever reason, the cursor disappears when clicking in the game, and this is causing onMouseOver to no longer run
-
-
-- can put grace also on model tuning
 
 - todo list
 --- make spaceship environment art based off of current assets in spaceship asset pack (I think this is bugging me a lot bc rest of game depends on this)
 --- make other minigames
---- timer DG Scale is not looping
---- spaceship asteroid task is too hard
 --- get human model in game
 --- do prelim research if it's easy to train meta llama model for customized output (lowkey could task Grace with this??? But I might be better since I actually took an ML class)
 --- make a "gamer mode" where the asteroid task starts out with 50 asteroids, and a "non-gamer mode" for judges,
 ---- where the task starts out with 30 asteroids
+--- put in Grace's main menu screen + font type into game
+
+- tutorial
+-- wasd + arrow keys to move
+-- space to jump
+-- I for inventory
+-- Shift for spring
