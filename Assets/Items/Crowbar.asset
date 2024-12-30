@@ -15,6 +15,6 @@ MonoBehaviour:
   type: 0
   itemName: Crowbar
   itemPerSlot: 1
-  icon: {fileID: 0}
+  icon: {fileID: 1849853108, guid: 351d908665e10a64bb26099743cbaaa7, type: 3}
   prefab: {fileID: 1500141378126340103, guid: dadf948c6fa7c704c8fb194cb142800f, type: 3}
   itemInformation: Excellent weapon of choice!

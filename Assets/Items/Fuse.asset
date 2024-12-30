@@ -15,6 +15,6 @@ MonoBehaviour:
   type: 0
   itemName: Fuse
   itemPerSlot: 1
-  icon: {fileID: 0}
+  icon: {fileID: 1455181733, guid: f7eb3e8f907d96045b572b7f87846753, type: 3}
   prefab: {fileID: 5521337362485530454, guid: a965c675e12869543ac1a4d8cb7420ea, type: 3}
   itemInformation: I'm not going to lie, I had to look up how these worked.

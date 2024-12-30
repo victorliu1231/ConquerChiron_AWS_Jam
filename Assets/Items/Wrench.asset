@@ -15,6 +15,6 @@ MonoBehaviour:
   type: 0
   itemName: Wrench
   itemPerSlot: 1
-  icon: {fileID: 0}
+  icon: {fileID: 1307787857, guid: 66bf46c3b46d4e74d9f248d9df548a9a, type: 3}
   prefab: {fileID: 7902505457307588646, guid: 6df66fb9b3ac4fb4f8cb1d2163268ba5, type: 3}
   itemInformation: A very handy tool for fixing things and whacking people.
