@@ -16,7 +16,7 @@ public class ConnectDotsGameController : MonoBehaviour
 
     int movesCount = 0;
 
-    [SerializeField] GameObject gameOverScreen;
+    [SerializeField] GameObject winScreen;
 
     internal static bool isGameActive = true;
 
@@ -69,7 +69,6 @@ public class ConnectDotsGameController : MonoBehaviour
         //yes, we are dragging our mouse
         else
         {
-            Debug.Log($"Current Cell: {currentCell.x}, {currentCell.y} - Cell: {cell.x}, {cell.y}");
             //ensure that the cell is a direct neighbor
             if((currentCell.x==cell.x && (currentCell.y+1==cell.y || currentCell.y - 1 == cell.y)) || 
                 (currentCell.y == cell.y && (currentCell.x + 1 == cell.x || currentCell.x - 1 == cell.x)))
@@ -101,7 +100,7 @@ public class ConnectDotsGameController : MonoBehaviour
         if (CountFilledCells() < cells.Count) return;
 
         isGameActive = false;
-        gameOverScreen.SetActive(true);
+        winScreen.SetActive(true);
     }
 
     /// <summary>

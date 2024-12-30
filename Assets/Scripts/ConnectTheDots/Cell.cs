@@ -161,9 +161,9 @@ public class Cell:MonoBehaviour
         if(previous != null)
         {
             prevBar.transform.rotation = Quaternion.identity;
-
+            
             int direction = GetDirection(x, y, previous.x, previous.y);
-
+            
             //we have an issue
             if (direction < 0)
             {
@@ -173,7 +173,7 @@ public class Cell:MonoBehaviour
             }
             else
             {
-                prevBar.transform.Rotate(new Vector3(0, 0, direction * 90));
+                prevBar.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, direction * 90));
             }
         }
         if (post != null)
@@ -191,7 +191,7 @@ public class Cell:MonoBehaviour
             }
             else
             {
-                postBar.transform.Rotate(new Vector3(0, 0, direction * 90));
+                postBar.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, direction * 90));
             }
         }
         #endregion
@@ -223,7 +223,7 @@ public class Cell:MonoBehaviour
         head.color = type;
         prevBar.color = type;
         postBar.color = type;
-        glow.color = type;
+        glow.color = new Color(type.r, type.g, type.b, glow.color.a);
     }
 
     /// <summary>

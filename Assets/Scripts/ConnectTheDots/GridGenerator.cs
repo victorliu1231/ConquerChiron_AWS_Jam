@@ -312,6 +312,8 @@ public class GridGenerator : MonoBehaviour
                 void GetY(float x)
                 {
                     Cell cell = Instantiate(cellPrefab, instantiationLocation, false).GetComponent<Cell>();
+                    Debug.Log(cellSize);
+                    cell.transform.localScale = new Vector3(cellSize / (1.8f / 0.7f), cellSize / (1.8f / 0.7f), 1);
                     newCells[i, j] = cell;
 
                     int index = -(j - (height / 2));

@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour {
     private bool _isSecondAsteroidStageOn = false;
     private float _asteroidGenerateTimer = 0f; 
     [Header("Connect the Wires Task")]
-    public GameObject connectTheWiresTask;
+    public GameObject connectTheWiresGO;
 
     void Awake(){
         Instance = this;
@@ -97,7 +97,12 @@ public class GameManager : MonoBehaviour {
             if (isAsteroidTaskOn) TurnOffAsteroidTask(); else TurnOnAsteroidTask();
         }
         if (Input.GetKeyDown(KeyCode.Q)){
-            if (connectTheWiresTask.activeSelf) connectTheWiresTask.SetActive(false); else connectTheWiresTask.SetActive(true);
+            if (connectTheWiresGO.activeSelf) {
+                connectTheWiresGO.SetActive(false); 
+            } else {
+                StartTimer();
+                connectTheWiresGO.SetActive(true);
+            }
         }
     }
 
@@ -119,6 +124,7 @@ public class GameManager : MonoBehaviour {
     // Restarts player at checkpoint
     [ContextMenu("Go to Checkpoint")]
     public void GoToCheckpoint(){
+        Debug.Log("Going to checkpoint");   
         _timerOn = false;
         diedScreen.SetActive(false);
     }

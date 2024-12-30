@@ -2,6 +2,7 @@
   "dependencies": {
     "com.meta.xr.sdk.all": "71.0.0",
     "com.meta.xr.sdk.voice": "71.0.0",
+    "com.unity.2d.aseprite": "1.0.1",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.burst": "1.8.9",
     "com.unity.cinemachine": "2.9.5",

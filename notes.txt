@@ -8,6 +8,7 @@
 - ConnectTheDots scripts by Nichathan Gaming, https://www.youtube.com/watch?v=PZQK4ADyqdY
 - super computer by Jeremy Eyring [CC-BY] via Poly Pizza
 - Wrench by CreativeTrio
+- the wire for ConnectTheDots  "Sparky wire" by MrA https://asamusev.itch.io/sparkywire
 
 - art
 -- want a better inventory UI
