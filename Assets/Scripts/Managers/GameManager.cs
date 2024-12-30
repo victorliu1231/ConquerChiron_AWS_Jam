@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour {
     public GameObject settingsGO;
     public Checkpoint currentCheckpoint;
     public List<string> tasksCompleted;
+    [Header("Interact")]
+    public GameObject interactGO;
+    public float interactDistance = 5f;
     [Header("Timer")]
     public Image timerForegroundImage;
     public GameObject timerGO;
@@ -107,6 +110,18 @@ public class GameManager : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.Escape)){
             settingsGO.SetActive(true);
+        }
+
+        // Raycast from player position in direction of mouse to screen and see if it hits any objects with the layer "Interactable"
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, interactDistance, LayerMask.GetMask("Interactable"))){
+            interactGO.SetActive(true);
+            if (Input.GetKeyDown(KeyCode.E)){
+                //hit.collider.gameObject.GetComponent<Interactable>().Interact();
+            }
+        } else {
+            interactGO.SetActive(false);
         }
     }
 

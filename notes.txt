@@ -27,16 +27,23 @@
 --- the wire for ConnectTheDots  "Sparky wire" by MrA https://asamusev.itch.io/sparkywire
 
 - todo list
--- make spaceship environment art based off of current assets in spaceship asset pack (I think this is bugging me a lot bc rest of game depends on this)
 -- make other minigames - pressure gauge
 -- get human model in game
 -- do prelim research if it's easy to train meta llama model for customized output (lowkey could task Grace with this??? But I might be better since I actually took an ML class)
 -- make a "gamer mode" where the asteroid task starts out with 50 asteroids, and a "non-gamer mode" for judges,
 --- where the task starts out with 30 asteroids
--- last priority: volume doesn't set correctly
+-- task to train the model falls on me :/
+-- E to examine night lamp and shift camera
+--- should be something where your mouse highlights over it and if in a certain radius can interact (can do mouse raycast?)
+-- or maybe not shift camera, maybe first person POV try to pick up lamp with grab motion
+--- use Unity Muse for grab motion
 
 - tutorial
 -- wasd + arrow keys to move
 -- space to jump
 -- I for inventory
 -- Shift for spring
+
+- bottom priority:
+-- settings volume doesn't set correctly
+-- cannot interact with buttons in settings in GameScene

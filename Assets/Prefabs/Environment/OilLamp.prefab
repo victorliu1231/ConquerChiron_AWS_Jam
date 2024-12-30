@@ -64,9 +64,33 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -8538534739852694429, guid: 0191cd38941077246972da75e89086d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -6053179641133269936, guid: 0191cd38941077246972da75e89086d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -1904860567731410878, guid: 0191cd38941077246972da75e89086d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: -1475630223680835782, guid: 0191cd38941077246972da75e89086d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0191cd38941077246972da75e89086d4, type: 3}
       propertyPath: m_Name
       value: OilLamp
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0191cd38941077246972da75e89086d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 990298394417341102, guid: 0191cd38941077246972da75e89086d4, type: 3}
+      propertyPath: m_Layer
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
