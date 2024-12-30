@@ -3,7 +3,32 @@ guid: d99784601bdacbd459a08d2214611f90
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: fuse_cover1Mat
+    second: {fileID: 2100000, guid: 73b114db1630e59419658b5a280ab349, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: fuse_light1Mat
+    second: {fileID: 2100000, guid: 7d402911694c5144f876c08c09cf2f89, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: fuse_poles1Mat
+    second: {fileID: 2100000, guid: 070253b589fb60d46833f1cefaa8de14, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: gasket1Mat
+    second: {fileID: 2100000, guid: 3ead1f324c7a5b543be11a86dc9cbfea, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: glass1Mat
+    second: {fileID: 2100000, guid: d391ee79812ae9d4e8c75f36460d1850, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

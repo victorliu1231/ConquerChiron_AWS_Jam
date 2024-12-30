@@ -1,30 +1,38 @@
 - credit:
--- FirstPersonController asset from Unity
--- Sci-fi props free asset from Unity Asset Store
--- Meta llama model
--- XEntity Inventory system (looks REALLY useful)
--- add in a hand for the character model later at some point to help with cursor control, otherwise for now using cursor is good
-- Asteroids 3D model pack for asteroids
-- ConnectTheDots scripts by Nichathan Gaming, https://www.youtube.com/watch?v=PZQK4ADyqdY
-- super computer by Jeremy Eyring [CC-BY] via Poly Pizza
-- Wrench by CreativeTrio
-- the wire for ConnectTheDots  "Sparky wire" by MrA https://asamusev.itch.io/sparkywire
-
-- art
--- want a better inventory UI
--- 2d sprites:
---- towel, window cleaner, etc
+-- assets from asset store:
+--- FirstPersonController
+--- Sci-fi props
+--- XEntity Inventory system
+--- Asteroids 3D model pack
+-- AI:
+--- Meta llama model
+--- WitAI
+-- Scripts:
+--- ConnectTheDots scripts by Nichathan Gaming, https://www.youtube.com/watch?v=PZQK4ADyqdY
+-- 3D models:
+--- super computer by Jeremy Eyring (https://poly.pizza/m/0ExJJkkS7jc) // doesn't work idk why
+--- bed by Villiam Stien (https://www.turbosquid.com/3d-models/simple-bed-model-1840087)
+--- fridge by Ankitination (https://www.turbosquid.com/3d-models/fridge-model-2320897)
+--- lamp by Talamus (https://www.turbosquid.com/3d-models/3d-oil-lamp-model-1878169)
+--- towel by atomov (https://www.turbosquid.com/3d-models/kitchen-towel-1266558)
+--- spray bottle by parfay (https://www.turbosquid.com/3d-models/spray-bottle-3d-1508629)
+--- gas mask by lincolnli (https://www.turbosquid.com/3d-models/gas-mask-1533443)
+--- battery by HiddenTerritory (https://www.turbosquid.com/3d-models/3d-aa-battery-2250204)
+--- fuse box by Mogeeb Ezz (https://www.turbosquid.com/3d-models/3d-fuse-box-model-2198384)
+--- Wrench by CreativeTrio (https://poly.pizza/m/POJHQLnLvB)
+--- fuse by daniel4d (https://www.turbosquid.com/3d-models/free-obj-model-fuse-light-sci-fi/603538)
+--- metal lamp by metal_head2 (https://www.turbosquid.com/3d-models/free-3ds-mode-lamp-metal/424517)
+--- lockers by studio_23 (https://www.turbosquid.com/3d-models/low-poly-lockers-filing-cabinet-with-three-drawers-3d-model-2118653)
+-- 2D sprites:
+--- the wire for ConnectTheDots  "Sparky wire" by MrA https://asamusev.itch.io/sparkywire
 
 - todo list
 --- make spaceship environment art based off of current assets in spaceship asset pack (I think this is bugging me a lot bc rest of game depends on this)
---- make other minigames
+--- make other minigames - pressure gauge
 --- get human model in game
 --- do prelim research if it's easy to train meta llama model for customized output (lowkey could task Grace with this??? But I might be better since I actually took an ML class)
 --- make a "gamer mode" where the asteroid task starts out with 50 asteroids, and a "non-gamer mode" for judges,
 ---- where the task starts out with 30 asteroids
---- put in Grace's main menu screen + font type into game
---- make sure if win the connect dots game, actually exit the task
--- make the connect the wire game harder, either through random generation or player-made levels
 
 - tutorial
 -- wasd + arrow keys to move

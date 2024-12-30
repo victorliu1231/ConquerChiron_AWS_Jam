@@ -3,7 +3,12 @@ guid: 4e3dbd92cca7ca44b904afd86c1c2af4
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: crowbar
+    second: {fileID: 2100000, guid: 8b2cf5d4a3414454d8178229ec7a3eba, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

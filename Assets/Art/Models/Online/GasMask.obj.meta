@@ -3,7 +3,92 @@ guid: b87fed4a23ec5d14ca69ce6a5f5a1487
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Prop_GasMask_Base001Mat
+    second: {fileID: 2100000, guid: caf936c7c9695dd4abfa1a5683d26a54, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Prop_GasMask_EyeShield001Mat
+    second: {fileID: 2100000, guid: 513ef94f003a85c47852e50a24e5b051, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Prop_GasMask_EyeShield002Mat
+    second: {fileID: 2100000, guid: 5a2e429c1c23cb144b750a2e384ab907, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Prop_GasMask_FilterBase001Mat
+    second: {fileID: 2100000, guid: fd59bc7f4f3851b448dc6c6a45eeb618, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Prop_GasMask_FilterBase002Mat
+    second: {fileID: 2100000, guid: e88d426901d7e8f4494916aa10b57817, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Prop_GasMask_Filter_FrontMat
+    second: {fileID: 2100000, guid: 5adfa795084ee99459cfa1d3598806ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Prop_GasMask_Frame001Mat
+    second: {fileID: 2100000, guid: aa21a57dc8e67534fb07daeefd2fbf31, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Prop_GasMask_Frame002Mat
+    second: {fileID: 2100000, guid: 5e0e654db87c45d4db9bfa6e92ae4401, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Prop_GasMask_Frame003Mat
+    second: {fileID: 2100000, guid: e0927935cb020b84c813a7ab69c4d723, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Prop_GasMask_Knot001Mat
+    second: {fileID: 2100000, guid: 0443429ef01cd0f428b0e372427f2a57, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Prop_GasMask_Knot002Mat
+    second: {fileID: 2100000, guid: d21de9fd883216f4db7ce2a857080dad, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Prop_GasMask_Knot003Mat
+    second: {fileID: 2100000, guid: 764370b0d1cb494469459048499992c7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Prop_GasMask_Knot004Mat
+    second: {fileID: 2100000, guid: e9d6cb095fbc3e44bbce008018273608, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Prop_GasMask_Knot005Mat
+    second: {fileID: 2100000, guid: 832fecaa26821e949842dd5a4e8c2275, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Prop_GasMask_Knot006Mat
+    second: {fileID: 2100000, guid: 6106a0ab05ad60c4ab037efbe5d14600, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Prop_GasMask_Strings001Mat
+    second: {fileID: 2100000, guid: 6f14de50153f02443911dd8518eb20b4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Prop_GasMask_Strings002Mat
+    second: {fileID: 2100000, guid: 483f755cb4265ed4ba3033766510d257, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
