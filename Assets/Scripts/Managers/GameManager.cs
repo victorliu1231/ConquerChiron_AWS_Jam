@@ -8,6 +8,7 @@ using TMPro;
 
 public class GameManager : MonoBehaviour {
     public static GameManager Instance;
+    public GameObject settingsGO;
     public Checkpoint currentCheckpoint;
     public List<string> tasksCompleted;
     [Header("Timer")]
@@ -104,6 +105,9 @@ public class GameManager : MonoBehaviour {
                 connectTheWiresGO.SetActive(true);
             }
         }
+        if (Input.GetKeyDown(KeyCode.Escape)){
+            settingsGO.SetActive(true);
+        }
     }
 
     public void TurnOnSecondStageAsteroids(){
@@ -160,5 +164,9 @@ public class GameManager : MonoBehaviour {
         Camera.main.transform.DOMove(player.transform.position, asteroidCameraTransitionTime).OnComplete(() => {
             Camera.main.GetComponent<CinemachineBrain>().enabled = true;
         });
+    }
+
+    public void CameraShake(){
+        Camera.main.DOShakePosition(0.5f, 0.5f);
     }
 }
