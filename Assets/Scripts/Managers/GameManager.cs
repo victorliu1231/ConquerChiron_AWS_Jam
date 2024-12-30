@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour {
     [Header("Interact")]
     public GameObject interactGO;
     public float interactDistance = 5f;
+    public Transform holdObjectTransform;
+    public bool isHoldingObject = false;
     [Header("Timer")]
     public Image timerForegroundImage;
     public GameObject timerGO;
@@ -58,29 +60,16 @@ public class GameManager : MonoBehaviour {
             if (timer >= timeToCompleteTasks){
                 GoToCheckpoint();
             } 
-            if (isAsteroidTaskOn){
-                _asteroidGenerateTimer += Time.deltaTime;
-                if (_asteroidGenerateTimer >= asteroidGenerateEverySeconds){
-                    asteroidGenerator.GenerateAsteroids();
-                    _asteroidGenerateTimer = 0f;
-                }
-                if (timer >= secondStageAsteroidsTime && !_isSecondAsteroidStageOn){
-                    TurnOnSecondStageAsteroids();
-                    timerForegroundImage.color = Color.red;
-                    // wtf this shit is not looping
-                    timerGO.transform.DOScale(1.1f, 0.5f).SetLoops(-1, LoopType.Yoyo);
-                }
-            } else {
-                if (timer >= timeToCompleteTasks - timeStartPulsing && timerForegroundImage.color != Color.red){
-                    timerForegroundImage.color = Color.red;
-                    // wtf this shit is not looping
-                    timerGO.transform.DOScale(1.1f, 0.5f).SetLoops(-1, LoopType.Yoyo);
-                }
-            } 
+            HandleAsteroidsTask();
         } else {
             timer = 0f;
         }
+        HandleInput();
+        HandleInteract();
+        HandlePlacing();
+    }
 
+    public void HandleAsteroidsTask(){
         if (isAsteroidTaskOn){
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)){
                 asteroidsParent.position += Vector3.left * Time.deltaTime * shipSpeed;
@@ -95,8 +84,28 @@ public class GameManager : MonoBehaviour {
                 asteroidsParent.position += Vector3.up * Time.deltaTime * shipSpeed;
             }
             asteroidsParent.position += Vector3.forward * Time.deltaTime * asteroidSpeed;
-        }
 
+            _asteroidGenerateTimer += Time.deltaTime;
+            if (_asteroidGenerateTimer >= asteroidGenerateEverySeconds){
+                asteroidGenerator.GenerateAsteroids();
+                _asteroidGenerateTimer = 0f;
+            }
+            if (timer >= secondStageAsteroidsTime && !_isSecondAsteroidStageOn){
+                TurnOnSecondStageAsteroids();
+                timerForegroundImage.color = Color.red;
+                // wtf this shit is not looping
+                timerGO.transform.DOScale(1.1f, 0.5f).SetLoops(-1, LoopType.Yoyo);
+            }
+        } else {
+            if (timer >= timeToCompleteTasks - timeStartPulsing && timerForegroundImage.color != Color.red){
+                timerForegroundImage.color = Color.red;
+                // wtf this shit is not looping
+                timerGO.transform.DOScale(1.1f, 0.5f).SetLoops(-1, LoopType.Yoyo);
+            }
+        } 
+    }
+
+    public void HandleInput(){
         if (Input.GetKeyDown(KeyCode.Tab)){
             if (isAsteroidTaskOn) TurnOffAsteroidTask(); else TurnOnAsteroidTask();
         }
@@ -111,6 +120,10 @@ public class GameManager : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Escape)){
             settingsGO.SetActive(true);
         }
+    }
+
+    public void HandleInteract(){
+        if (isHoldingObject) return;
 
         // Raycast from player position in direction of mouse to screen and see if it hits any objects with the layer "Interactable"
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -118,10 +131,29 @@ public class GameManager : MonoBehaviour {
         if (Physics.Raycast(ray, out hit, interactDistance, LayerMask.GetMask("Interactable"))){
             interactGO.SetActive(true);
             if (Input.GetKeyDown(KeyCode.E)){
-                //hit.collider.gameObject.GetComponent<Interactable>().Interact();
+                hit.collider.gameObject.GetComponent<Interactable>().Interact();
+                interactGO.SetActive(false);
             }
         } else {
             interactGO.SetActive(false);
+        }
+    }
+
+    public void HandlePlacing(){
+        if (!isHoldingObject) return;
+
+        if (Input.GetMouseButtonDown(0)){
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, interactDistance, LayerMask.GetMask("PlaceableZone"))){
+                PlaceableZone placeableZone = hit.collider.gameObject.GetComponent<PlaceableZone>();
+                Transform objectInHand = holdObjectTransform.GetChild(0);
+                objectInHand.position = placeableZone.position;
+                objectInHand.rotation = Quaternion.Euler(placeableZone.rotation);
+                objectInHand.SetParent(placeableZone.transform);
+                placeableZone.GetComponent<Renderer>().enabled = false;
+                isHoldingObject = false;
+            }
         }
     }
 

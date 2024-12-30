@@ -33,16 +33,18 @@
 -- make a "gamer mode" where the asteroid task starts out with 50 asteroids, and a "non-gamer mode" for judges,
 --- where the task starts out with 30 asteroids
 -- task to train the model falls on me :/
--- E to examine night lamp and shift camera
---- should be something where your mouse highlights over it and if in a certain radius can interact (can do mouse raycast?)
--- or maybe not shift camera, maybe first person POV try to pick up lamp with grab motion
+-- R to place down item (can only place down in specific locations)
+-- first person POV try to pick up lamp with grab motion
+--- need to shrink model by 2 to get right fit
 --- use Unity Muse for grab motion
+--- use Unity Muse for two hand hold object motion
 
 - tutorial
 -- wasd + arrow keys to move
 -- space to jump
 -- I for inventory
 -- Shift for spring
+-- E to interact with items
 
 - bottom priority:
 -- settings volume doesn't set correctly
