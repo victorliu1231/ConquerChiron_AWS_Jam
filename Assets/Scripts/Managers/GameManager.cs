@@ -5,17 +5,22 @@ using DG.Tweening;
 using UnityEngine.UI;
 using Cinemachine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
+    #region Variables
     public static GameManager Instance;
+    public GameObject pauseGO;
     public GameObject settingsGO;
     public Checkpoint currentCheckpoint;
     public List<string> tasksCompleted;
+    public bool isGamePaused;
     [Header("Interact")]
     public GameObject interactGO;
     public float interactDistance = 5f;
     public Transform holdObjectTransform;
     public bool isHoldingObject = false;
+    public TextMeshProUGUI interactText;
     [Header("Timer")]
     public Image timerForegroundImage;
     public GameObject timerGO;
@@ -44,7 +49,9 @@ public class GameManager : MonoBehaviour {
     private float _asteroidGenerateTimer = 0f; 
     [Header("Connect the Wires Task")]
     public GameObject connectTheWiresGO;
+    #endregion
 
+    #region Awake
     void Awake(){
         Instance = this;
         tasksCompleted = new List<string>();
@@ -52,7 +59,9 @@ public class GameManager : MonoBehaviour {
         shipHealthSlider.gameObject.SetActive(false);
         diedScreen.SetActive(false);
     }
+    #endregion
 
+    #region Update
     void Update(){
         if (_timerOn) {
             timer += Time.deltaTime;
@@ -68,7 +77,9 @@ public class GameManager : MonoBehaviour {
         HandleInteract();
         HandlePlacing();
     }
+    #endregion
 
+    #region Handle Functions
     public void HandleAsteroidsTask(){
         if (isAsteroidTaskOn){
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)){
@@ -118,20 +129,40 @@ public class GameManager : MonoBehaviour {
             }
         }
         if (Input.GetKeyDown(KeyCode.Escape)){
-            settingsGO.SetActive(true);
+            if (settingsGO.activeSelf){
+                settingsGO.SetActive(false);
+            } else {
+                if (pauseGO.activeSelf){
+                    pauseGO.SetActive(false);
+                    ResumeGame();
+                } else {
+                    pauseGO.SetActive(true);
+                    PauseGame();
+                }
+            }
         }
     }
 
     public void HandleInteract(){
-        if (isHoldingObject) return;
-
         // Raycast from player position in direction of mouse to screen and see if it hits any objects with the layer "Interactable"
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, interactDistance, LayerMask.GetMask("Interactable"))){
-            interactGO.SetActive(true);
-            if (Input.GetKeyDown(KeyCode.E)){
-                hit.collider.gameObject.GetComponent<Interactable>().Interact();
+            // Ugh raycast hits the lamp first...
+            Interactable interactable = hit.collider.gameObject.GetComponent<Interactable>();
+            Holdable holdable = hit.collider.gameObject.GetComponent<Holdable>();
+            if (holdable != null && isHoldingObject) {
+                interactGO.SetActive(false);
+                return; // Cannot pick up another object while holding one
+            }
+            if (interactable != null){
+                interactGO.SetActive(true);
+                interactable.SetText();
+                if (Input.GetKeyDown(KeyCode.E)){
+                    interactable.Interact();
+                    interactGO.SetActive(false);
+                }
+            } else {
                 interactGO.SetActive(false);
             }
         } else {
@@ -140,8 +171,6 @@ public class GameManager : MonoBehaviour {
     }
 
     public void HandlePlacing(){
-        if (!isHoldingObject) return;
-
         if (Input.GetMouseButtonDown(0)){
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -150,22 +179,20 @@ public class GameManager : MonoBehaviour {
                 Transform objectInHand = holdObjectTransform.GetChild(0);
                 objectInHand.position = placeableZone.position;
                 objectInHand.rotation = Quaternion.Euler(placeableZone.rotation);
+                objectInHand.localScale *= 2;
                 objectInHand.SetParent(placeableZone.transform);
+                objectInHand.GetComponent<Interactable>().enabled = true;
                 placeableZone.GetComponent<Renderer>().enabled = false;
                 isHoldingObject = false;
+
+                Lamp lamp = objectInHand.GetComponent<Lamp>();
+                if (lamp != null) lamp.lampPanel.enabled = false;
             }
         }
     }
+    #endregion
 
-    public void TurnOnSecondStageAsteroids(){
-        asteroidGenerator.numAsteroidsToGenerate = (int)(asteroidGenerator.numAsteroidsToGenerate*2f);
-        _isSecondAsteroidStageOn = true;
-        secondAsteroidStageText.gameObject.SetActive(true);
-        secondAsteroidStageText.DOFade(0f, 1f).SetLoops(7, LoopType.Yoyo).OnComplete(() => {
-            secondAsteroidStageText.gameObject.SetActive(false);
-        });
-    }
-
+    #region Misc Functions
     [ContextMenu("Start Timer")]
     public void StartTimer(){
         _timerOn = true;
@@ -179,7 +206,9 @@ public class GameManager : MonoBehaviour {
         _timerOn = false;
         diedScreen.SetActive(false);
     }
+    #endregion
 
+    #region Asteroid Functions
     public void ShipTakeDamage(){
         shipHealth -= damagePerAsteroidHit;
         Debug.Log("Ship Health: " + shipHealth);
@@ -212,8 +241,42 @@ public class GameManager : MonoBehaviour {
             Camera.main.GetComponent<CinemachineBrain>().enabled = true;
         });
     }
+    public void TurnOnSecondStageAsteroids(){
+        asteroidGenerator.numAsteroidsToGenerate = (int)(asteroidGenerator.numAsteroidsToGenerate*2f);
+        _isSecondAsteroidStageOn = true;
+        secondAsteroidStageText.gameObject.SetActive(true);
+        secondAsteroidStageText.DOFade(0f, 1f).SetLoops(7, LoopType.Yoyo).OnComplete(() => {
+            secondAsteroidStageText.gameObject.SetActive(false);
+        });
+    }
 
     public void CameraShake(){
         Camera.main.DOShakePosition(0.5f, 0.5f);
     }
+    #endregion
+
+    #region Pause Menu
+    public void PauseGame(){
+        Time.timeScale = 0f;
+        isGamePaused = true;
+        // Add stuff later
+    }
+
+    public void ResumeGame(){
+        Time.timeScale = 1f;
+        isGamePaused = false;
+        // Add stuff later
+    }
+
+    public void SaveToMenu(){
+        PlayerPrefs.SetFloat("PlayerX", player.transform.position.x);
+        PlayerPrefs.SetFloat("PlayerY", player.transform.position.y);
+        PlayerPrefs.SetFloat("PlayerZ", player.transform.position.z);
+        PlayerPrefs.SetFloat("PlayerRotX", player.transform.rotation.x);
+        PlayerPrefs.SetFloat("PlayerRotY", player.transform.rotation.y);
+        PlayerPrefs.SetFloat("PlayerRotZ", player.transform.rotation.z);
+        PlayerPrefs.SetFloat("PlayerRotW", player.transform.rotation.w);
+        SceneManager.LoadScene("MainMenu");
+    }
+    #endregion
 }

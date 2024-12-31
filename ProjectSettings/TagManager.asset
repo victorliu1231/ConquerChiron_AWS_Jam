@@ -7,6 +7,7 @@ TagManager:
   - CinemachineTarget
   - SamplesInfoPanel
   - Asteroid
+  - LampPanel
   layers:
   - Default
   - TransparentFX

@@ -28,6 +28,8 @@
 
 - todo list
 -- make other minigames - pressure gauge
+-- make the lamp replacement task
+-- have the interact text be custom to each object, e.g. interact, pick up, open, etc
 -- get human model in game
 -- do prelim research if it's easy to train meta llama model for customized output (lowkey could task Grace with this??? But I might be better since I actually took an ML class)
 -- make a "gamer mode" where the asteroid task starts out with 50 asteroids, and a "non-gamer mode" for judges,
@@ -45,7 +47,9 @@
 -- I for inventory
 -- Shift for spring
 -- E to interact with items
+-- L Mouse Click to place down (but maybe it should be more)
 
 - bottom priority:
+-- have player not able to move or interact when settings is open
 -- settings volume doesn't set correctly
--- cannot interact with buttons in settings in GameScene
+-- cannot interact with buttons in settings or pause menu in GameScene
