@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour {
     public List<string> tasksCompleted;
     public bool isGamePaused;
     public TextMeshProUGUI inventoryFullText;
+    public Animator playerAnimator;
     [Header("Interact")]
     public GameObject interactGO;
     public float interactDistance = 5f;
@@ -143,6 +144,15 @@ public class GameManager : MonoBehaviour {
                     PauseGame();
                 }
             }
+        }
+        if (Input.GetKeyDown(KeyCode.Z)){
+            playerAnimator.SetTrigger("Walking");
+        }
+        if (Input.GetKeyDown(KeyCode.X)){
+            playerAnimator.SetTrigger("Running");
+        }
+        if (Input.GetKeyDown(KeyCode.C)){
+            playerAnimator.SetTrigger("PullLever");
         }
     }
 
