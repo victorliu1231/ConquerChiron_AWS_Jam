@@ -24,7 +24,7 @@ namespace XEntity.InventoryItemSystem
 
 
         //The array of slots this container holds. The slots are assigned through code based on the number of children the slot holder Transform contains.
-        protected ItemSlot[] slots;
+        public ItemSlot[] slots;
 
         //The UI of the container, a containerUI template prefab is provided with this asset. All container UI mus tbe set up exactly in that same way.
         //To modify the number of slots, modifiy the number of children the slot holder inside the containerUI has.
@@ -75,12 +75,12 @@ namespace XEntity.InventoryItemSystem
         //All the container variables are assigned here based.
         protected virtual void InitializeContainer()
         {
-            IntialzieMainUI(transform);
+            InitializeMainUI(transform);
             CreateSlotOptionsMenu(InteractionSettings.Current.internalSlotOptions, containerInteractor);
             isUIInitialized = true;
         }
 
-        protected void IntialzieMainUI(Transform containerPanel)
+        protected void InitializeMainUI(Transform containerPanel)
         {
             this.containerPanel = containerPanel;
             mainContainerUI = this.containerPanel.Find("Main UI");

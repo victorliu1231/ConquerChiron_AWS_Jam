@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 namespace XEntity.InventoryItemSystem
 {
@@ -18,15 +19,16 @@ namespace XEntity.InventoryItemSystem
         private UnityEngine.UI.Image iconImage;
 
         //The text for displaying the itemCount.
-        private UnityEngine.UI.Text countText;
+        private TextMeshProUGUI countText;
 
         public void Initialize() 
         {
             //The UI variables are assigned here.
             iconImage = transform.Find("Icon Image").GetComponent<UnityEngine.UI.Image>();
-            countText = transform.Find("Count Text").GetComponent<UnityEngine.UI.Text>();
+            countText = transform.Find("Count Text").GetComponent<TextMeshProUGUI>();
 
             iconImage.gameObject.SetActive(false);
+            Debug.Log(countText);
             countText.text = string.Empty;
         }
 

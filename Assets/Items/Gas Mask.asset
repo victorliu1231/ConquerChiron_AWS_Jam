@@ -16,5 +16,5 @@ MonoBehaviour:
   itemName: Gas Mask
   itemPerSlot: 1
   icon: {fileID: -837877803, guid: 576d42d6565e4f3449643dff1c8b4359, type: 3}
-  prefab: {fileID: 200921696785138803, guid: 912ad37fb4a7160419b94c66253c79bc, type: 3}
+  prefab: {fileID: 8552913945077817815, guid: 2fa934f3dc92b234a97ac4cae793fcb1, type: 3}
   itemInformation: Hope you never have to use this...

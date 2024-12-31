@@ -16,7 +16,7 @@ namespace XEntity.InventoryItemSystem
             if (containerPanelInstance.TryGetComponent(out ItemContainer existingContainerComponent))
                 Destroy(existingContainerComponent);
 
-            IntialzieMainUI(containerPanelInstance);
+            InitializeMainUI(containerPanelInstance);
             CreateSlotOptionsMenu(InteractionSettings.Current.externalSlotOptions, containerInteractor);
             isUIInitialized = true;
         }

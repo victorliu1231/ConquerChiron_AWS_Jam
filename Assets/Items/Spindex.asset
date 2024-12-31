@@ -16,5 +16,5 @@ MonoBehaviour:
   itemName: Spindex
   itemPerSlot: 1
   icon: {fileID: -1250334635, guid: ed02913313a8a6942ad6f8b1bab54ab6, type: 3}
-  prefab: {fileID: 0}
+  prefab: {fileID: 6609905481211777575, guid: 70a7e1af5028efa44b327b548cb80ecd, type: 3}
   itemInformation: Very popular glass cleaning fluid brand but for spaceships!

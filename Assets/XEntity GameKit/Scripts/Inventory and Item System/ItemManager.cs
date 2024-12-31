@@ -18,6 +18,9 @@ namespace XEntity.InventoryItemSystem
         //Either assign the items manually when created or select the item scriptable object > right click > select Add To Item List 
         public List<Item> itemList = new List<Item>();
 
+        [Header("My Code")]
+        public ItemContainer inventory;
+
         private void Awake()
         {
             //Singleton logic
@@ -98,6 +101,13 @@ namespace XEntity.InventoryItemSystem
         {
             for (int i = 0; i < itemList.Count; i++) if (itemList[i] == item) return i;
             return -1;
+        }
+
+        // Return the ItemSlot of the item in the inventory.
+        public ItemSlot GetItemSlot(Item item) 
+        {
+            foreach (ItemSlot slot in inventory.slots) if (slot.slotItem == item) return slot;
+            return null;
         }
     } 
 }

@@ -599,6 +599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 127a0109c589c574da421ea42aebcb6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canInteract: 1
   lampPanelOpen: {fileID: 0}
   lampPanelClosed: {fileID: 0}
   batteryInPanel: {fileID: 3315882614999108635}
@@ -923,3 +924,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa24cd25707d4f459e282c74cec4c51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canInteract: 1
+  usedBattery: {fileID: 11400000, guid: c119237d79bbd5048b634caa488fc5c9, type: 2}

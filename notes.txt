@@ -28,7 +28,9 @@
 
 - todo list
 -- make other minigames - pressure gauge
--- make the lamp replacement task
+-- fix picking up items not properly setting a fixed rotation bug
+-- have BatteryInPanel.cs detect if there's a battery in the inventory
+-- in dialogue for AI, make sure it mentions to actually open the panel
 -- have the interact text be custom to each object, e.g. interact, pick up, open, etc
 -- get human model in game
 -- do prelim research if it's easy to train meta llama model for customized output (lowkey could task Grace with this??? But I might be better since I actually took an ML class)
@@ -40,6 +42,9 @@
 --- need to shrink model by 2 to get right fit
 --- use Unity Muse for grab motion
 --- use Unity Muse for two hand hold object motion
+- make used battery be more rusty than new battery
+- make hand motion for replacing battery
+- replace all GOs in Assets --> Items folder
 
 - tutorial
 -- wasd + arrow keys to move

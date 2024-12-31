@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour {
     public Checkpoint currentCheckpoint;
     public List<string> tasksCompleted;
     public bool isGamePaused;
+    public TextMeshProUGUI inventoryFullText;
     [Header("Interact")]
     public GameObject interactGO;
     public float interactDistance = 5f;
@@ -218,6 +219,12 @@ public class GameManager : MonoBehaviour {
         Debug.Log("Going to checkpoint");   
         _timerOn = false;
         diedScreen.SetActive(false);
+    }
+
+    public void InventoryFull(){
+        inventoryFullText.DOFade(1, 0);
+        inventoryFullText.enabled = true;
+        inventoryFullText.DOFade(0, 2).OnComplete(() => inventoryFullText.enabled = false);
     }
     #endregion
 

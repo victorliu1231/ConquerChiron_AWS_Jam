@@ -16,6 +16,6 @@ MonoBehaviour:
   itemName: Battery
   itemPerSlot: 1
   icon: {fileID: -1201495974, guid: 4874fcaa3ae05524286bcece094b7497, type: 3}
-  prefab: {fileID: 4541208489722955691, guid: d8e80b57ea2da1947a0102e6395be3e9, type: 3}
+  prefab: {fileID: 7317678784268303349, guid: 4e431bed47f43eb47ba8b7c87bce8dc6, type: 3}
   itemInformation: They tell you not to eat this, but I melted it and ate it one
     time and turned out fine.

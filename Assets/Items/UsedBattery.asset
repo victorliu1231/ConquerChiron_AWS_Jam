@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7bb37a5e4810a7744a6b9d1f88712c1d, type: 3}
-  m_Name: Crowbar
+  m_Name: UsedBattery
   m_EditorClassIdentifier: 
   type: 0
-  itemName: Crowbar
+  itemName: Used Battery
   itemPerSlot: 1
-  icon: {fileID: 1849853108, guid: 351d908665e10a64bb26099743cbaaa7, type: 3}
-  prefab: {fileID: 7182901718498026351, guid: 06325e3cf2a0b014ca06c816cce76cdd, type: 3}
-  itemInformation: Excellent weapon of choice!
+  icon: {fileID: -1201495974, guid: 4874fcaa3ae05524286bcece094b7497, type: 3}
+  prefab: {fileID: 0}
+  itemInformation: Too bad I can't drop this off at a recycling center in outer space.
