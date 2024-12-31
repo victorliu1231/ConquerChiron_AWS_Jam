@@ -12,7 +12,7 @@ public class Holdable : Interactable {
         transform.SetParent(GameManager.Instance.holdObjectTransform);
         transform.localScale /= 2;
         GameManager.Instance.isHoldingObject = true;
-        this.enabled = false;
+        canInteract = false;
     }
 
     public override void SetText()

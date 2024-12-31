@@ -8,7 +8,7 @@ public class LampPanel : Interactable {
     public Interactable batteryInPanel;
 
     void Start(){
-        batteryInPanel.enabled = false;
+        batteryInPanel.canInteract = false;
     }
 
     public override void Interact() {
@@ -16,11 +16,11 @@ public class LampPanel : Interactable {
         if (lampPanelOpen.activeSelf){
             lampPanelOpen.SetActive(false);
             lampPanelClosed.SetActive(true);
-            batteryInPanel.enabled = false;
+            batteryInPanel.canInteract = false;
         } else {
             lampPanelOpen.SetActive(true);
             lampPanelClosed.SetActive(false);
-            batteryInPanel.enabled = true;
+            batteryInPanel.canInteract = true;
         }
     }
 

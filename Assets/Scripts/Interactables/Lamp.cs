@@ -6,11 +6,11 @@ public class Lamp : Holdable {
     public Interactable lampPanel;
 
     void Start() {
-        lampPanel.enabled = false;
+        lampPanel.canInteract = false;
     }
 
     public override void Interact() {
         base.Interact();
-        lampPanel.enabled = true;
+        lampPanel.canInteract = true;
     }
 }

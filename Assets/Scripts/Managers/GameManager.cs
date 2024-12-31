@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour {
     public Transform holdObjectTransform;
     public bool isHoldingObject = false;
     public TextMeshProUGUI interactText;
+    public GameObject replaceableGO;
+    public TextMeshProUGUI replaceableText;
     [Header("Timer")]
     public Image timerForegroundImage;
     public GameObject timerGO;
@@ -148,14 +150,13 @@ public class GameManager : MonoBehaviour {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, interactDistance, LayerMask.GetMask("Interactable"))){
-            // Ugh raycast hits the lamp first...
             Interactable interactable = hit.collider.gameObject.GetComponent<Interactable>();
             Holdable holdable = hit.collider.gameObject.GetComponent<Holdable>();
             if (holdable != null && isHoldingObject) {
                 interactGO.SetActive(false);
                 return; // Cannot pick up another object while holding one
             }
-            if (interactable != null){
+            if (interactable != null && interactable.canInteract){
                 interactGO.SetActive(true);
                 interactable.SetText();
                 if (Input.GetKeyDown(KeyCode.E)){
@@ -167,6 +168,21 @@ public class GameManager : MonoBehaviour {
             }
         } else {
             interactGO.SetActive(false);
+        }
+        if (Physics.Raycast(ray, out hit, interactDistance, LayerMask.GetMask("Replaceable"))){
+            Interactable interactable = hit.collider.gameObject.GetComponent<Interactable>();
+            if (interactable != null && interactable.canInteract){
+                replaceableGO.SetActive(true);
+                interactable.SetText();
+                if (Input.GetKeyDown(KeyCode.R)){
+                    interactable.Interact();
+                    replaceableGO.SetActive(false);
+                }
+            } else {
+                replaceableGO.SetActive(false);
+            }
+        } else {
+            replaceableGO.SetActive(false);
         }
     }
 
@@ -181,12 +197,9 @@ public class GameManager : MonoBehaviour {
                 objectInHand.rotation = Quaternion.Euler(placeableZone.rotation);
                 objectInHand.localScale *= 2;
                 objectInHand.SetParent(placeableZone.transform);
-                objectInHand.GetComponent<Interactable>().enabled = true;
+                objectInHand.GetComponent<Holdable>().canInteract = true;
                 placeableZone.GetComponent<Renderer>().enabled = false;
                 isHoldingObject = false;
-
-                Lamp lamp = objectInHand.GetComponent<Lamp>();
-                if (lamp != null) lamp.lampPanel.enabled = false;
             }
         }
     }
