@@ -29,7 +29,7 @@
 --- the wire for ConnectTheDots  "Sparky wire" by MrA https://asamusev.itch.io/sparkywire
 
 - todo list
--- make other minigames - pressure gauge
+-- make other minigames - pressure gauge and window cleaning
 -- fix picking up items not properly setting a fixed rotation bug
 -- in dialogue for AI, make sure it mentions to actually open the panel
 -- get human model in game
@@ -45,9 +45,8 @@
 - make hand motion for replacing battery
 - make battery sprite when in inventory be sized correctly
 - use Mixamo
-- make task for poisonous H2S
-- have equipabbles (and modify tasks code so that it asks for having the equippable in hand)
 -- inventory not working again :/
+-- add unusable as item type to items and test it
 
 - tutorial
 -- wasd + arrow keys to move

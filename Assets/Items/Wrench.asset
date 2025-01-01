@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bb37a5e4810a7744a6b9d1f88712c1d, type: 3}
   m_Name: Wrench
   m_EditorClassIdentifier: 
-  type: 0
+  type: 1
   itemName: Wrench
   itemPerSlot: 1
   icon: {fileID: 1307787857, guid: 66bf46c3b46d4e74d9f248d9df548a9a, type: 3}

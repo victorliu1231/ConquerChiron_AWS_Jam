@@ -10,12 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7bb37a5e4810a7744a6b9d1f88712c1d, type: 3}
-  m_Name: Gloves
+  m_Name: SpentFuse
   m_EditorClassIdentifier: 
-  type: 0
-  itemName: Gloves
+  type: 4
+  itemName: Spent Fuse
   itemPerSlot: 1
-  icon: {fileID: 0}
-  prefab: {fileID: 6736926376520660483, guid: 1cdad03081e12de48b09d35358da4f67, type: 3}
-  itemInformation: I told my friends I didn't need to pack these... ugh, I can just
-    imagine their smug look on their faces now.
+  icon: {fileID: 184325205, guid: 578210782c8c4534c8279be1a08f2fc1, type: 3}
+  prefab: {fileID: 0}
+  itemInformation: Maybe in a million years this will be put up in a history museum.

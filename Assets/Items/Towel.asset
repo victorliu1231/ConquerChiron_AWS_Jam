@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bb37a5e4810a7744a6b9d1f88712c1d, type: 3}
   m_Name: Towel
   m_EditorClassIdentifier: 
-  type: 0
+  type: 1
   itemName: Towel
   itemPerSlot: 1
   icon: {fileID: 2055750280, guid: 2811efddd6aa97e4ab2f1d02aaced25e, type: 3}

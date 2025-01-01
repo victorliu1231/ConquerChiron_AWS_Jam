@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bb37a5e4810a7744a6b9d1f88712c1d, type: 3}
   m_Name: Gas Mask
   m_EditorClassIdentifier: 
-  type: 0
+  type: 1
   itemName: Gas Mask
   itemPerSlot: 1
   icon: {fileID: -837877803, guid: 576d42d6565e4f3449643dff1c8b4359, type: 3}

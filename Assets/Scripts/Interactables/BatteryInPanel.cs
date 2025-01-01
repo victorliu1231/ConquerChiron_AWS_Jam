@@ -27,7 +27,7 @@ public class BatteryInPanel : Interactable {
         if (ItemManager.Instance.inventory.ContainsItem(ItemManager.Instance.GetItemByName("Battery"))){
             GameManager.Instance.replaceableText.text = "Replace Battery";
         } else {
-            GameManager.Instance.replaceableText.text = "Missing Battery";
+            GameManager.Instance.replaceableText.text = "Missing New Battery";
         }
     }
 }

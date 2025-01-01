@@ -55,7 +55,7 @@ namespace XEntity.InventoryItemSystem
                 case ItemType.ToolOrWeapon: EquipItem(slot); break;
                 case ItemType.Placeable: PlaceItem(slot); break;
                 case ItemType.Consumeable: ConsumeItem(slot); break;
-
+                case ItemType:Unusable: break;
             }
         }
 

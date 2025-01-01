@@ -9,6 +9,7 @@ namespace XEntity.InventoryItemSystem
         Default,
         ToolOrWeapon,
         Placeable,
-        Consumeable
+        Consumeable,
+        Unusable
     }
 }
