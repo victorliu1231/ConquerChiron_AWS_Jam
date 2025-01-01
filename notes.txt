@@ -46,6 +46,8 @@
 - make battery sprite when in inventory be sized correctly
 - use Mixamo
 - make task for poisonous H2S
+- have equipabbles (and modify tasks code so that it asks for having the equippable in hand)
+-- inventory not working again :/
 
 - tutorial
 -- wasd + arrow keys to move

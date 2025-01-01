@@ -1,0 +1,94 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &273804113683465977
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7182901718498026351, guid: 06325e3cf2a0b014ca06c816cce76cdd, type: 3}
+      propertyPath: m_Name
+      value: CrowbarEquippable Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558477936256252373, guid: 06325e3cf2a0b014ca06c816cce76cdd, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558477936256252373, guid: 06325e3cf2a0b014ca06c816cce76cdd, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558477936256252373, guid: 06325e3cf2a0b014ca06c816cce76cdd, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558477936256252373, guid: 06325e3cf2a0b014ca06c816cce76cdd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558477936256252373, guid: 06325e3cf2a0b014ca06c816cce76cdd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558477936256252373, guid: 06325e3cf2a0b014ca06c816cce76cdd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558477936256252373, guid: 06325e3cf2a0b014ca06c816cce76cdd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558477936256252373, guid: 06325e3cf2a0b014ca06c816cce76cdd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558477936256252373, guid: 06325e3cf2a0b014ca06c816cce76cdd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558477936256252373, guid: 06325e3cf2a0b014ca06c816cce76cdd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558477936256252373, guid: 06325e3cf2a0b014ca06c816cce76cdd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558477936256252373, guid: 06325e3cf2a0b014ca06c816cce76cdd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558477936256252373, guid: 06325e3cf2a0b014ca06c816cce76cdd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 5671663770945071520, guid: 06325e3cf2a0b014ca06c816cce76cdd, type: 3}
+    - {fileID: 8282038002129417521, guid: 06325e3cf2a0b014ca06c816cce76cdd, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7182901718498026351, guid: 06325e3cf2a0b014ca06c816cce76cdd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8725406394689393169}
+  m_SourcePrefab: {fileID: 100100000, guid: 06325e3cf2a0b014ca06c816cce76cdd, type: 3}
+--- !u!1 &6945241575815046550 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7182901718498026351, guid: 06325e3cf2a0b014ca06c816cce76cdd, type: 3}
+  m_PrefabInstance: {fileID: 273804113683465977}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8725406394689393169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6945241575815046550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbe2718a9efa9c34fb574523b79f0ba3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  equippedPosition: {x: 0.3, y: 0.05, z: 0}

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Cinemachine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using XEntity.InventoryItemSystem;
 
 public class GameManager : MonoBehaviour {
     #region Variables
@@ -18,6 +19,7 @@ public class GameManager : MonoBehaviour {
     public TextMeshProUGUI inventoryFullText;
     public Animator playerAnimator;
     [Header("Interact")]
+    public List<Item> equippedItems;
     public GameObject interactGO;
     public float interactDistance = 5f;
     public Transform holdObjectTransform;
@@ -62,6 +64,7 @@ public class GameManager : MonoBehaviour {
         timerGO.SetActive(false);
         shipHealthSlider.gameObject.SetActive(false);
         diedScreen.SetActive(false);
+        equippedItems = new List<Item>();
     }
     #endregion
 
@@ -235,6 +238,26 @@ public class GameManager : MonoBehaviour {
         inventoryFullText.DOFade(1, 0);
         inventoryFullText.enabled = true;
         inventoryFullText.DOFade(0, 2).OnComplete(() => inventoryFullText.enabled = false);
+    }
+
+    public void EquipItem(Item item){
+        equippedItems.Add(item);
+        GameObject equippedItem = Instantiate(item.prefab, holdObjectTransform, false);
+        if (equippedItem.GetComponent<Equippable>() != null){
+            equippedItem.transform.localPosition = equippedItem.GetComponent<Equippable>().equippedPosition;
+        }
+    }
+
+    public void UnequipItem(Item item){
+        equippedItems.Remove(item);
+        // Find a way to find which child is the item and destroy it
+        Destroy(holdObjectTransform.GetChild(0).gameObject);
+    }
+
+    [ContextMenu("Equip Crowbar")]
+    public void EquipCrowbar(){
+        ItemManager.Instance.inventory.AddItem(ItemManager.Instance.GetItemByName("Crowbar"));
+        EquipItem(ItemManager.Instance.GetItemByName("Crowbar"));
     }
     #endregion
 

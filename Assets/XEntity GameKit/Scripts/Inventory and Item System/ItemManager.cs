@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using UnityEditor.Build.Content;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace XEntity.InventoryItemSystem
 {
@@ -20,6 +22,7 @@ namespace XEntity.InventoryItemSystem
 
         [Header("My Code")]
         public ItemContainer inventory;
+        public UnityEvent<Item> OnEquip;
 
         private void Awake()
         {
@@ -69,6 +72,9 @@ namespace XEntity.InventoryItemSystem
         private void EquipItem(ItemSlot slot) 
         {
             Debug.Log("Equipping " + slot.slotItem.itemName);
+            // Workaround method to reference GameManager from internally in the XEntity namespace. Will assign
+            // GameManager.EquipItem(Item) to the OnEquip UnityEvent.
+            if (OnEquip != null) OnEquip.Invoke(slot.slotItem);
         }
 
         private void PlaceItem(ItemSlot slot) 

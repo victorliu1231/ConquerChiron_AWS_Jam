@@ -7,7 +7,7 @@ public class LampPanel : Interactable {
     public GameObject lampPanelClosed;
     public Interactable batteryInPanel;
 
-    void Start(){
+    public override void Start(){
         batteryInPanel.canInteract = false;
     }
 
