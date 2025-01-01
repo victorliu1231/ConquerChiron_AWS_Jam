@@ -5,7 +5,7 @@ using UnityEngine;
 public class Lamp : Holdable {
     public Interactable lampPanel;
 
-    void Start() {
+    public override void Start() {
         lampPanel.canInteract = false;
     }
 

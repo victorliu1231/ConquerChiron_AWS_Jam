@@ -28,7 +28,6 @@ namespace XEntity.InventoryItemSystem
             countText = transform.Find("Count Text").GetComponent<TextMeshProUGUI>();
 
             iconImage.gameObject.SetActive(false);
-            Debug.Log(countText);
             countText.text = string.Empty;
         }
 

@@ -25,6 +25,7 @@
 --- fuse by daniel4d (https://www.turbosquid.com/3d-models/free-obj-model-fuse-light-sci-fi/603538)
 --- metal lamp by metal_head2 (https://www.turbosquid.com/3d-models/free-3ds-mode-lamp-metal/424517)
 --- lockers by studio_23 (https://www.turbosquid.com/3d-models/low-poly-lockers-filing-cabinet-with-three-drawers-3d-model-2118653)
+--- pressure gauge meter, Speedometer by Poly by Google [CC-BY] via Poly Pizza https://poly.pizza/m/17WlSF6dD-r
 -- 2D sprites:
 --- the wire for ConnectTheDots  "Sparky wire" by MrA https://asamusev.itch.io/sparkywire
 
