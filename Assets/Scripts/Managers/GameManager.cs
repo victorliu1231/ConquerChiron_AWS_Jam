@@ -40,7 +40,6 @@ public class GameManager : MonoBehaviour {
     public Slider shipHealthSlider;
     public float asteroidSpeed = 0.5f;
     public float shipSpeed = 1f;
-    public bool isAsteroidTaskOn;
     public float shipHealth = 100f;
     public float damagePerAsteroidHit = 20f;
     public GameObject player;
@@ -53,8 +52,20 @@ public class GameManager : MonoBehaviour {
     public AsteroidGenerator asteroidGenerator;
     private bool _isSecondAsteroidStageOn = false;
     private float _asteroidGenerateTimer = 0f; 
+    private bool _isAsteroidTaskOn = false;
     [Header("Connect the Wires Task")]
     public GameObject connectTheWiresGO;
+    [Header("Window Cleaning Task")]
+    public GameObject cleaningDotPrefab;
+    public List<Transform> windowCleaningCameraTransforms;
+    public Transform dotsParent;
+    public GameObject cleaningGOs;
+    public Transform topLeftCleaningCanvas;
+    public Transform bottomRightCleaningCanvas;
+    public bool isWindowCleaningTaskOn = false;
+    public int numDotsInWindowComplete = 0;
+    public int numDotsPerWindowToComplete = 3;
+    public int windowIndex = 0;
     #endregion
 
     #region Awake
@@ -77,6 +88,7 @@ public class GameManager : MonoBehaviour {
                 GoToCheckpoint();
             } 
             HandleAsteroidsTask();
+            HandleWindowCleaningTask();
         } else {
             timer = 0f;
         }
@@ -88,7 +100,7 @@ public class GameManager : MonoBehaviour {
 
     #region Handle Functions
     public void HandleAsteroidsTask(){
-        if (isAsteroidTaskOn){
+        if (_isAsteroidTaskOn){
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)){
                 asteroidsParent.position += Vector3.left * Time.deltaTime * shipSpeed;
             }
@@ -123,9 +135,27 @@ public class GameManager : MonoBehaviour {
         } 
     }
 
+    public void HandleWindowCleaningTask(){
+        if (isWindowCleaningTaskOn){
+            if (windowIndex < windowCleaningCameraTransforms.Count){
+                if (numDotsInWindowComplete == numDotsPerWindowToComplete){
+                    numDotsInWindowComplete = 0;
+                    windowIndex++;
+                    MoveCamera(windowCleaningCameraTransforms[windowIndex], asteroidCameraTransitionTime, true);
+                    Invoke("GenerateCleaningDots", asteroidCameraTransitionTime);
+                }
+            } else {
+                TurnOffWindowCleaningTask();
+            }
+        }
+    }
+
     public void HandleInput(){
         if (Input.GetKeyDown(KeyCode.Tab)){
-            if (isAsteroidTaskOn) TurnOffAsteroidTask(); else TurnOnAsteroidTask();
+            if (_isAsteroidTaskOn) TurnOffAsteroidTask(); else TurnOnAsteroidTask();
+        }
+        if (Input.GetKeyDown(KeyCode.P)){
+            if (isWindowCleaningTaskOn) TurnOffWindowCleaningTask(); else TurnOnWindowCleaningTask();
         }
         if (Input.GetKeyDown(KeyCode.Q)){
             if (connectTheWiresGO.activeSelf) {
@@ -219,10 +249,11 @@ public class GameManager : MonoBehaviour {
     }
     #endregion
 
-    #region Misc Functions
+    #region Timer Functions
     [ContextMenu("Start Timer")]
     public void StartTimer(){
         _timerOn = true;
+        timer = 0f;
         timerGO.SetActive(true);
     }
 
@@ -230,10 +261,22 @@ public class GameManager : MonoBehaviour {
     [ContextMenu("Go to Checkpoint")]
     public void GoToCheckpoint(){
         Debug.Log("Going to checkpoint");   
-        _timerOn = false;
-        diedScreen.SetActive(false);
+        StopTimer();
     }
 
+    public void TaskComplete(){
+        Debug.Log("Task complete");
+        // Play some sound effect
+        StopTimer();
+    }
+
+    public void StopTimer(){
+        _timerOn = false;
+        timerGO.SetActive(false);
+    }
+    #endregion
+
+    #region Inventory Functions
     public void InventoryFull(){
         inventoryFullText.DOFade(1, 0);
         inventoryFullText.enabled = true;
@@ -271,28 +314,20 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    [ContextMenu("Turn on Asteroid Task")]
     public void TurnOnAsteroidTask(){
-        StartTimer();
         asteroidGenerator.GenerateAsteroids();
-        isAsteroidTaskOn = true;
+        _isAsteroidTaskOn = true;
         shipHealthSlider.gameObject.SetActive(true);
-        player.SetActive(false);
-        Camera.main.GetComponent<CinemachineBrain>().enabled = false;
-        Camera.main.transform.DORotateQuaternion(cockpitViewTransform.rotation, asteroidCameraTransitionTime);
-        Camera.main.transform.DOMove(cockpitViewTransform.position, asteroidCameraTransitionTime);
+        CameraStaticMode();
+        MoveCamera(cockpitViewTransform, asteroidCameraTransitionTime, true);
     }
 
-    [ContextMenu("Turn off Asteroid Task")]
     public void TurnOffAsteroidTask(){
         asteroidGenerator.ClearAsteroids();
-        isAsteroidTaskOn = true;
-        shipHealthSlider.gameObject.SetActive(true);
-        player.SetActive(true);
-        Camera.main.transform.DORotateQuaternion(player.transform.rotation, asteroidCameraTransitionTime);
-        Camera.main.transform.DOMove(player.transform.position, asteroidCameraTransitionTime).OnComplete(() => {
-            Camera.main.GetComponent<CinemachineBrain>().enabled = true;
-        });
+        _isAsteroidTaskOn = false;
+        shipHealthSlider.gameObject.SetActive(false);
+        TaskComplete();
+        MoveCamera(player.transform, asteroidCameraTransitionTime, false);
     }
     public void TurnOnSecondStageAsteroids(){
         asteroidGenerator.numAsteroidsToGenerate = (int)(asteroidGenerator.numAsteroidsToGenerate*2f);
@@ -300,6 +335,57 @@ public class GameManager : MonoBehaviour {
         secondAsteroidStageText.gameObject.SetActive(true);
         secondAsteroidStageText.DOFade(0f, 1f).SetLoops(7, LoopType.Yoyo).OnComplete(() => {
             secondAsteroidStageText.gameObject.SetActive(false);
+        });
+    }
+    #endregion
+
+    #region Window Cleaning Functions
+    public void TurnOnWindowCleaningTask(){
+        isWindowCleaningTaskOn = true;
+        cleaningGOs.SetActive(true);
+        CameraStaticMode();
+        MoveCamera(windowCleaningCameraTransforms[0], asteroidCameraTransitionTime, true);
+        Invoke("GenerateCleaningDots", asteroidCameraTransitionTime);
+    }
+
+    public void TurnOffWindowCleaningTask(){
+        isWindowCleaningTaskOn = false;
+        cleaningGOs.SetActive(false);
+        TaskComplete();
+        MoveCamera(player.transform, asteroidCameraTransitionTime, false);
+    }
+
+    public void GenerateCleaningDots(){
+        Vector3 lastPosition = Vector3.zero;
+        for (int i = 0; i < numDotsPerWindowToComplete; i++){
+            Vector3 position = new Vector3(Random.Range(topLeftCleaningCanvas.position.x, bottomRightCleaningCanvas.position.x),
+                                            Random.Range(topLeftCleaningCanvas.position.y, bottomRightCleaningCanvas.position.y),
+                                            Random.Range(topLeftCleaningCanvas.position.z, bottomRightCleaningCanvas.position.z));
+            if (i == 0) lastPosition = position;
+            else if (Vector3.Distance(lastPosition, position) < 0.05f){
+                i--;
+                continue;
+            } else {
+                lastPosition = position;
+            }
+            Instantiate(cleaningDotPrefab, position, Quaternion.identity, dotsParent);
+        }
+    }
+    #endregion
+
+    #region Camera Functions
+    public void CameraStaticMode(){
+        StartTimer();
+        player.SetActive(false);
+        Camera.main.GetComponent<CinemachineBrain>().enabled = false;
+    }
+
+    public void MoveCamera(Transform moveToTransform, float transitionTime, bool cameraStaticMode){
+        Camera.main.transform.DORotateQuaternion(moveToTransform.rotation, transitionTime);
+        if (cameraStaticMode) Camera.main.transform.DOMove(moveToTransform.position, transitionTime);
+        else Camera.main.transform.DOMove(moveToTransform.position, transitionTime).OnComplete(() => {
+            Camera.main.GetComponent<CinemachineBrain>().enabled = true;
+            player.SetActive(true);
         });
     }
 

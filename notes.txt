@@ -30,7 +30,7 @@
 --- the wire for ConnectTheDots  "Sparky wire" by MrA https://asamusev.itch.io/sparkywire
 
 - todo list
--- make other minigames - pressure gauge and window cleaning
+-- make other minigames - window cleaning
 -- fix picking up items not properly setting a fixed rotation bug
 -- in dialogue for AI, make sure it mentions to actually open the panel
 -- get human model in game
@@ -48,6 +48,11 @@
 - use Mixamo
 -- inventory not working again :/
 -- add unusable as item type to items and test it
+- need hand crank and hand motion models for pressure gauge task
+- need window spray animation for window cleaning task
+- need window wipe animation for window cleaning task
+-- dirty window changing into clean window animation
+- add horror vibes, e.g. flickering lights, eerie sounds, heavy breathing, alarm blaring sounds, red alarm lights, etc
 
 - tutorial
 -- wasd + arrow keys to move
