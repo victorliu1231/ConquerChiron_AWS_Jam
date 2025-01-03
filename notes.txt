@@ -53,6 +53,7 @@
 - need window wipe animation for window cleaning task
 -- dirty window changing into clean window animation
 - add horror vibes, e.g. flickering lights, eerie sounds, heavy breathing, alarm blaring sounds, red alarm lights, etc
+- decorate cockpit
 
 - tutorial
 -- wasd + arrow keys to move

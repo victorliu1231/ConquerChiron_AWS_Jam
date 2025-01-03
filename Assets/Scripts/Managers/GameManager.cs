@@ -362,7 +362,7 @@ public class GameManager : MonoBehaviour {
                                             Random.Range(topLeftCleaningCanvas.position.y, bottomRightCleaningCanvas.position.y),
                                             Random.Range(topLeftCleaningCanvas.position.z, bottomRightCleaningCanvas.position.z));
             if (i == 0) lastPosition = position;
-            else if (Vector3.Distance(lastPosition, position) < 0.05f){
+            else if (Vector3.Distance(lastPosition, position) < 0.075f){
                 i--;
                 continue;
             } else {
