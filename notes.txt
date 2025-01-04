@@ -54,6 +54,9 @@
 -- dirty window changing into clean window animation
 - add horror vibes, e.g. flickering lights, eerie sounds, heavy breathing, alarm blaring sounds, red alarm lights, etc
 - decorate cockpit
+-- have entrances to each section of spaceship, where if step on certain collider area the door auto-opens
+- make the player taller
+- fix entrance door texture so that it's not one-side transparent other side not transparent
 
 - tutorial
 -- wasd + arrow keys to move
