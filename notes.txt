@@ -30,10 +30,13 @@
 --- the wire for ConnectTheDots  "Sparky wire" by MrA https://asamusev.itch.io/sparkywire
 
 - todo list
--- make other minigames - window cleaning
+-- okay fix audio settings bc it's starting to get annoying even for me
+--- preferably autosave settings in playerprefs
+-- add in cargo hold tasks
 -- fix picking up items not properly setting a fixed rotation bug
 -- in dialogue for AI, make sure it mentions to actually open the panel
 -- get human model in game
+- weird bug where player moves when picking up object
 -- do prelim research if it's easy to train meta llama model for customized output (lowkey could task Grace with this??? But I might be better since I actually took an ML class)
 -- make a "gamer mode" where the asteroid task starts out with 50 asteroids, and a "non-gamer mode" for judges,
 --- where the task starts out with 30 asteroids

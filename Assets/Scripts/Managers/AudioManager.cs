@@ -8,27 +8,31 @@ public class AudioManager : MonoBehaviour {
     public AudioMixer soundtrackMixer;
     public AudioMixer sfxMixer;
 
+    void Awake(){
+        Instance = this;
+    }
+
     public void SetSoundtrackLevel (float level) {
         // Convert level from 0 to 1 to decibels
         level = Mathf.Log10(level) * 20;
-        soundtrackMixer.SetFloat("Master", level);
+        soundtrackMixer.SetFloat("Volume", level);
     }
 
     public void SetSFXLevel (float level) {
         // Convert level from 0 to 1 to decibels
         level = Mathf.Log10(level) * 20;
-        sfxMixer.SetFloat("Master", level);
+        sfxMixer.SetFloat("Volume", level);
     }
 
     public float GetSoundtrackLevel (out float level) {
-        soundtrackMixer.GetFloat("Master", out level);
+        soundtrackMixer.GetFloat("Volume", out level);
         // Convert decibels to level from 0 to 1
         level = Mathf.Pow(10, level / 20);
         return level;
     }
 
     public float GetSFXLevel (out float level) {
-        sfxMixer.GetFloat("Master", out level);
+        sfxMixer.GetFloat("Volume", out level);
         // Convert decibels to level from 0 to 1
         level = Mathf.Pow(10, level / 20);
         return level;
