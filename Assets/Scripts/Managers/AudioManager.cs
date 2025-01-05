@@ -14,6 +14,7 @@ public class AudioManager : MonoBehaviour {
 
     public void SetSoundtrackLevel (float level) {
         // Convert level from 0 to 1 to decibels
+        Debug.Log(level);
         if (level == 0) soundtrackMixer.SetFloat("Volume", -80);
         else {
             level = Mathf.Log10(level) * 20;
@@ -32,6 +33,7 @@ public class AudioManager : MonoBehaviour {
 
     public float GetSoundtrackLevel (out float level) {
         soundtrackMixer.GetFloat("Volume", out level);
+        if (level == 0) return 0;
         // Convert decibels to level from 0 to 1
         level = Mathf.Pow(10, level / 20);
         return level;
@@ -39,6 +41,7 @@ public class AudioManager : MonoBehaviour {
 
     public float GetSFXLevel (out float level) {
         sfxMixer.GetFloat("Volume", out level);
+        if (level == 0) return 0;
         // Convert decibels to level from 0 to 1
         level = Mathf.Pow(10, level / 20);
         return level;

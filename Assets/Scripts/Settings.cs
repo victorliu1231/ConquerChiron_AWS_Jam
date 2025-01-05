@@ -14,10 +14,19 @@ public class Settings : MonoBehaviour
     public Toggle fullScreenToggle;
     public float maxMouseSensitivity = 11f;
     public float minMouseSensitivity = 1f;
+    public DefaultSettings defaultSettings;
     
     void Awake(){
-        Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
-        fullScreen = false;
+        Invoke("LoadDefaultSettings", 0f);
+    }
+
+    void LoadDefaultSettings(){
+        LoadScreen(defaultSettings.fullScreen);
+        LoadSliders(defaultSettings.soundtrackVolume, defaultSettings.sfxVolume, defaultSettings.mouseSensitivity);
+        SetMouseSensitivity(defaultSettings.mouseSensitivity);
+        AudioManager.Instance.SetSoundtrackLevel(defaultSettings.soundtrackVolume);
+        AudioManager.Instance.SetSFXLevel(defaultSettings.sfxVolume);
+        gameObject.SetActive(false);
     }
 
     void OnEnable(){
@@ -37,9 +46,10 @@ public class Settings : MonoBehaviour
         }
     }
 
-    public void LoadVolumeSliders(float volumeBGM, float volumeSFX){
+    public void LoadSliders(float volumeBGM, float volumeSFX, float mouseSensitivity){
         soundtrackSlider.value = volumeBGM;
         sfxSlider.value = volumeSFX;
+        mouseSensitivitySlider.value = mouseSensitivity;
     }
 
     public void SetFullScreen(){
