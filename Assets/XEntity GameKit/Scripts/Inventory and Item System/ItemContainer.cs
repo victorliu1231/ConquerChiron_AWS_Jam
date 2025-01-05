@@ -86,7 +86,7 @@ namespace XEntity.InventoryItemSystem
             this.containerPanel = containerPanel;
             mainContainerUI = this.containerPanel.Find("Main UI");
             mainContainerUI.Find("Title").GetComponentInChildren<Text>().text = containerTitle;
-            slotOptionsMenu = this.containerPanel.Find("Slot Options").gameObject;
+            slotOptionsMenu = GameObject.Find("Slot Options").gameObject; //this.containerPanel.Find("Slot Options").gameObject;
 
             Button containerCloseButton = mainContainerUI.transform.Find("Close Button").GetComponent<Button>();
             containerCloseButton.onClick.AddListener(() => ToggleUI());
@@ -193,7 +193,7 @@ namespace XEntity.InventoryItemSystem
             {
                 Debug.Log(hit.point);
                 Debug.Log(Input.mousePosition);
-                slotOptionsMenu.transform.localPosition = hit.point * 300;
+                slotOptionsMenu.transform.position = hit.point;
                 //slotOptionsMenu.transform.localPosition = Input.mousePosition;
             }
             slotOptionsMenu.SetActive(false);
