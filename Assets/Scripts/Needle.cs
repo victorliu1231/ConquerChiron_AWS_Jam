@@ -57,11 +57,11 @@ public class Needle : MonoBehaviour {
                 
                 if (_numBenchmarksCompleted >= minBenchmarksCompleted){
                     _isTaskCompleted = true;
-                    Debug.Log("Task completed!");
+                    //Debug.Log("Task completed!");
                     // End task early
                 }
             } else {
-                Debug.Log("Task failed.");
+                //Debug.Log("Task failed.");
             }
         }
     }

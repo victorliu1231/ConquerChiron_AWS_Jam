@@ -29,8 +29,13 @@
 -- 2D sprites:
 --- the wire for ConnectTheDots  "Sparky wire" by MrA https://asamusev.itch.io/sparkywire
 
+- PlayerInventory has to be active in order for it to work bc of Awake functions
+
 - todo list
--- okay fix audio settings bc it's starting to get annoying even for me
+- prevent dragging entire inventory screen
+- debug slot options transform being set to wrong place in inventory
+- dragging item in inventory is buggy
+-- next major thing is fixing inventory
 --- preferably autosave settings in playerprefs
 -- add in cargo hold tasks
 -- fix picking up items not properly setting a fixed rotation bug

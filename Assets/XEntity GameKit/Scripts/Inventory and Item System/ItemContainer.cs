@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -187,8 +188,16 @@ namespace XEntity.InventoryItemSystem
 
         private void OpenSlotOptionsMenu()
         {
+            RaycastHit hit;
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity, LayerMask.NameToLayer("UI")))
+            {
+                Debug.Log(hit.point);
+                Debug.Log(Input.mousePosition);
+                slotOptionsMenu.transform.localPosition = hit.point * 300;
+                //slotOptionsMenu.transform.localPosition = Input.mousePosition;
+            }
             slotOptionsMenu.SetActive(false);
-            slotOptionsMenu.transform.position = Input.mousePosition;
+            
             StartCoroutine(Utils.TweenScaleIn(slotOptionsMenu, 50, Vector3.one));
         }
 

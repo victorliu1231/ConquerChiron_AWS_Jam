@@ -81,6 +81,7 @@ public class GameManager : MonoBehaviour {
 
     #region Update
     void Update(){
+        //Debug.Log(Input.mousePosition);
         if (_timerOn) {
             timer += Time.deltaTime;
             timerForegroundImage.fillAmount = timeToCompleteTasks - timer > 0 ? (timeToCompleteTasks - timer) / timeToCompleteTasks : 0f;
