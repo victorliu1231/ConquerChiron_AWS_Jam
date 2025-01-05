@@ -15,7 +15,7 @@ public class FuseConnection : Interactable {
 
     public override void Interact() {
         base.Interact();
-        if (GameManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Wrench"))){
+        if (ItemManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Wrench"))){
             canInteract = false;
             meltedFuseInteractable.canInteract = true;
             meltedFuseInteractable.GetComponent<Collider>().enabled = true;
@@ -30,7 +30,7 @@ public class FuseConnection : Interactable {
 
     public override void SetText()
     {
-        if (GameManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Wrench"))){
+        if (ItemManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Wrench"))){
             GameManager.Instance.interactText.text = "Unscrew Fuse";
         } else {
             GameManager.Instance.interactText.text = "Must Equip Wrench";

@@ -19,7 +19,6 @@ public class GameManager : MonoBehaviour {
     public TextMeshProUGUI inventoryFullText;
     public Animator playerAnimator;
     [Header("Interact")]
-    public List<Item> equippedItems;
     public GameObject interactGO;
     public float interactDistance = 5f;
     public Transform holdObjectTransform;
@@ -75,7 +74,6 @@ public class GameManager : MonoBehaviour {
         timerGO.SetActive(false);
         shipHealthSlider.gameObject.SetActive(false);
         diedScreen.SetActive(false);
-        equippedItems = new List<Item>();
     }
     #endregion
 
@@ -285,7 +283,6 @@ public class GameManager : MonoBehaviour {
     }
 
     public void EquipItem(Item item){
-        equippedItems.Add(item);
         GameObject equippedItem = Instantiate(item.prefab, holdObjectTransform, false);
         if (equippedItem.GetComponent<Equippable>() != null){
             equippedItem.transform.localPosition = equippedItem.GetComponent<Equippable>().equippedPosition;
@@ -293,7 +290,6 @@ public class GameManager : MonoBehaviour {
     }
 
     public void UnequipItem(Item item){
-        equippedItems.Remove(item);
         // Find a way to find which child is the item and destroy it
         Destroy(holdObjectTransform.GetChild(0).gameObject);
     }

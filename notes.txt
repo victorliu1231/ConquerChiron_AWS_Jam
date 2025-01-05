@@ -33,35 +33,33 @@
 
 - todo list
 - prevent dragging entire inventory screen?
---- preferably autosave settings in playerprefs
--- add in cargo hold tasks
--- fix picking up items not properly setting a fixed rotation bug
--- in dialogue for AI, make sure it mentions to actually open the panel
--- get human model in game
+- preferably autosave settings in playerprefs
+- add in cargo hold tasks
+- fix picking up items not properly setting a fixed rotation bug
+- in dialogue for AI, make sure it mentions to actually open the panel
+- task to train the model falls on me :/
 - weird bug where player moves when picking up object
--- do prelim research if it's easy to train meta llama model for customized output (lowkey could task Grace with this??? But I might be better since I actually took an ML class)
--- make a "gamer mode" where the asteroid task starts out with 50 asteroids, and a "non-gamer mode" for judges,
---- where the task starts out with 30 asteroids
--- task to train the model falls on me :/
--- R to place down item (can only place down in specific locations)
--- first person POV try to pick up lamp with grab motion
---- use Unity Muse for grab motion
---- use Unity Muse for two hand hold object motion
+- do prelim research if it's easy to train meta llama model for customized output (lowkey could task Grace with this??? But I might be better since I actually took an ML class)
+- make a "gamer mode" where the asteroid task starts out with 50 asteroids, and a "non-gamer mode" for judges,
+-- where the task starts out with 30 asteroids
 - make used battery be more rusty than new battery
-- make hand motion for replacing battery
 - make battery sprite when in inventory be sized correctly
-- use Mixamo
--- inventory not working again :/
--- add unusable as item type to items and test it
-- need hand crank and hand motion models for pressure gauge task
-- need window spray animation for window cleaning task
-- need window wipe animation for window cleaning task
--- dirty window changing into clean window animation
+- dirty window changing into clean window animation
 - add horror vibes, e.g. flickering lights, eerie sounds, heavy breathing, alarm blaring sounds, red alarm lights, etc
 - decorate cockpit
--- have entrances to each section of spaceship, where if step on certain collider area the door auto-opens
-- make the player taller
 - fix entrance door texture so that it's not one-side transparent other side not transparent
+
+-- 3D player model
+--- first person POV try to pick up lamp with grab motion
+--- make the player taller
+--- use Mixamo
+---- use Unity Muse for grab motion
+---- make hand motion for replacing battery
+---- use Unity Muse for two hand hold object motion
+---- need hand crank and hand motion models for pressure gauge task
+---- need window spray animation for window cleaning task
+---- need window wipe animation for window cleaning task
+--- need some way to equip items in code so it looks good
 
 - tutorial
 -- wasd + arrow keys to move
@@ -69,9 +67,7 @@
 -- I for inventory
 -- Shift for spring
 -- E to interact with items
--- L Mouse Click to place down (but maybe it should be more)
+-- L Mouse Click to place down item
 
 - bottom priority:
--- have player not able to move or interact when settings is open
--- settings volume doesn't set correctly
--- cannot interact with buttons in settings or pause menu in GameScene
+-- have player not able to look or interact when settings is open

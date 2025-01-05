@@ -17,6 +17,7 @@ namespace XEntity.InventoryItemSystem
         public int itemPerSlot;
         public Sprite icon;
         public GameObject prefab;
+        public bool isEquipped = false;
 
         [TextArea]
         public string itemInformation;

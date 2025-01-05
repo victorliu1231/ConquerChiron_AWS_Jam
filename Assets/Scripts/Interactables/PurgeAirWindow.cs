@@ -26,7 +26,7 @@ public class PurgeAirWindow : Interactable {
 
     public override void Interact() {
         base.Interact();
-        if (GameManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Crowbar"))){
+        if (ItemManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Crowbar"))){
             canInteract = false;
             brokenWindow.SetActive(true);
             purgeAirButton.canInteract = true;
@@ -43,7 +43,7 @@ public class PurgeAirWindow : Interactable {
 
     public override void SetText()
     {
-        if (GameManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Crowbar"))){
+        if (ItemManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Crowbar"))){
             GameManager.Instance.interactText.text = "Smash Window";
         } else {
             GameManager.Instance.interactText.text = "Must Equip Crowbar";

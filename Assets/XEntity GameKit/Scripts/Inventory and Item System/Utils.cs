@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -88,6 +89,29 @@ namespace XEntity.InventoryItemSystem
             Transform tf = obj.transform;
             tf.localScale = Vector3.zero;
             tf.gameObject.SetActive(true);
+
+            float frame = 0;
+            while (frame < durationInFrames) 
+            {
+                tf.localScale = Vector3.Lerp(Vector3.zero, maxScale, frame / durationInFrames);
+                frame++;
+                yield return null;
+            }
+        }
+
+        public static IEnumerator TweenScaleIn(GameObject obj, float durationInFrames, Vector3 maxScale, List<SlotOptions> slotOptions) 
+        {
+            Transform tf = obj.transform;
+            tf.localScale = Vector3.zero;
+            tf.gameObject.SetActive(true);
+
+            // my code
+            foreach (Transform child in tf)
+            {
+                if (child.name == "Info Panel") continue;
+                if (slotOptions.Contains(child.GetComponent<MySlotOptionsUtil>().slotOption)) child.gameObject.SetActive(true);
+                else child.gameObject.SetActive(false);
+            }
 
             float frame = 0;
             while (frame < durationInFrames) 

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bb37a5e4810a7744a6b9d1f88712c1d, type: 3}
   m_Name: Battery
   m_EditorClassIdentifier: 
-  type: 3
+  type: 4
   itemName: Battery
   itemPerSlot: 1
   icon: {fileID: -1201495974, guid: 4874fcaa3ae05524286bcece094b7497, type: 3}

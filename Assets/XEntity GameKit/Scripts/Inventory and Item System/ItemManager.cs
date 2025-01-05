@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor.Build.Content;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -22,7 +21,9 @@ namespace XEntity.InventoryItemSystem
 
         [Header("My Code")]
         public ItemContainer inventory;
+        public List<Item> equippedItems;
         public UnityEvent<Item> OnEquip;
+        public UnityEvent<Item> OnUnequip;
 
         private void Awake()
         {
@@ -31,6 +32,7 @@ namespace XEntity.InventoryItemSystem
             if (Instance == null)
             {
                 Instance = this;
+                equippedItems = new List<Item>();
                 //DontDestroyOnLoad(gameObject);
             }
             else
@@ -69,12 +71,23 @@ namespace XEntity.InventoryItemSystem
             slot.Remove(1);
         }
 
-        private void EquipItem(ItemSlot slot) 
+        public void EquipItem(ItemSlot slot) 
         {
-            Debug.Log("Equipping " + slot.slotItem.itemName);
+            slot.slotItem.isEquipped = true;
+            equippedItems.Add(slot.slotItem);
+            Debug.Log($"Equipping {slot.slotItem.itemName}");
             // Workaround method to reference GameManager from internally in the XEntity namespace. Will assign
             // GameManager.EquipItem(Item) to the OnEquip UnityEvent.
             if (OnEquip != null) OnEquip.Invoke(slot.slotItem);
+        }
+
+        public void UnequipItem(ItemSlot slot){
+            slot.slotItem.isEquipped = false;
+            equippedItems.Remove(slot.slotItem);
+            Debug.Log($"Unequipping item {slot.slotItem.itemName}.");
+            // Workaround method to reference GameManager from internally in the XEntity namespace. Will assign
+            // GameManager.EquipItem(Item) to the OnEquip UnityEvent.
+            if (OnUnequip != null) OnUnequip.Invoke(slot.slotItem);
         }
 
         private void PlaceItem(ItemSlot slot) 

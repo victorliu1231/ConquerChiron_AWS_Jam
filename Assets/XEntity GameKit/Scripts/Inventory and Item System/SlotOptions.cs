@@ -8,6 +8,8 @@ namespace XEntity.InventoryItemSystem
         Remove,
         BulkRemove,
         ItemInfo,
-        TransferToInventory
+        TransferToInventory,
+        Equip,
+        Unequip,
     }
 }

@@ -154,5 +154,5 @@ namespace MEET_AND_TALK
             graphView.UpdateTheme(_theme.ToString());
         }
     }
-#endif
 }
+#endif

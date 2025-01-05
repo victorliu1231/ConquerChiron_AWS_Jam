@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -125,6 +126,7 @@ namespace XEntity.InventoryItemSystem
             foreach (SlotOptions option in config)
             {
                 Button button = Instantiate(buttonPrefab, slotOptionsMenu.transform).GetComponent<Button>();
+                button.GetComponent<MySlotOptionsUtil>().slotOption = option;
                 string buttonTitle = option.ToString();
                 System.Action<ItemSlot, Interactor> onButtonClicked = null;
 
@@ -136,7 +138,7 @@ namespace XEntity.InventoryItemSystem
                         onButtonClicked = OnUseItemClicked;
                         break;
                     case SlotOptions.ItemInfo:
-                        buttonTitle = "Info.";
+                        buttonTitle = "Info";
                         onButtonClicked = OnItemInfoClicked;
                         break;
                     case SlotOptions.Remove:
@@ -151,13 +153,31 @@ namespace XEntity.InventoryItemSystem
                         buttonTitle = "Transfer";
                         onButtonClicked = OnTransferToInventoryClicked;
                         break;
+                    case SlotOptions.Equip:
+                        buttonTitle = "Equip";
+                        onButtonClicked = OnEquipItemClicked;
+                        break;
+                    case SlotOptions.Unequip:
+                        buttonTitle = "Unequip";
+                        onButtonClicked = OnUnequipItemClicked;
+                        break;
                 }
 
-                button.GetComponentInChildren<Text>().text = buttonTitle;
+                button.GetComponentInChildren<TextMeshProUGUI>().text = buttonTitle;
                 SlotOptionButtonInfo buttonInfo = new SlotOptionButtonInfo(button, onButtonClicked, OnSlotButtonEventFinished);
                 slotOptionButtonInfoList.Add(buttonInfo);
             }
             CloseSlotOptionsMenu();
+        }
+
+        private void OnEquipItemClicked(ItemSlot slot, Interactor interactor)
+        {
+            ItemManager.Instance.EquipItem(slot);
+        }
+
+        private void OnUnequipItemClicked(ItemSlot slot, Interactor interactor)
+        {
+            ItemManager.Instance.UnequipItem(slot);
         }
 
         private void OnTransferToInventoryClicked(ItemSlot slot, Interactor interactor)
@@ -178,7 +198,7 @@ namespace XEntity.InventoryItemSystem
                     buttonInfo.UpdateInfo(slot, interactor);
                 }
 
-                OpenSlotOptionsMenu(slot.transform.localPosition);
+                OpenSlotOptionsMenu(slot, slot.transform.localPosition);
             }
             else 
             {
@@ -186,12 +206,24 @@ namespace XEntity.InventoryItemSystem
             }
         }
 
-        private void OpenSlotOptionsMenu(Vector3 localPosition)
+        private void OpenSlotOptionsMenu(ItemSlot slot, Vector3 localPosition)
         {
+            List<SlotOptions> slotOptions = new List<SlotOptions>();
+            slotOptions.Add(SlotOptions.ItemInfo);
             slotOptionsMenu.transform.localPosition = localPosition;
+            switch (slot.slotItem.type) 
+            {
+                case ItemType.ToolOrWeapon: 
+                    if (slot.slotItem.isEquipped) slotOptions.Add(SlotOptions.Unequip);
+                    else slotOptions.Add(SlotOptions.Equip); break;
+                case ItemType.Placeable: slotOptions.Add(SlotOptions.Use); break;
+                case ItemType.Consumeable: slotOptions.Add(SlotOptions.Use); break;
+                case ItemType:Unusable: break;
+            }
+            
             slotOptionsMenu.SetActive(false);
             
-            StartCoroutine(Utils.TweenScaleIn(slotOptionsMenu, 50, Vector3.one));
+            StartCoroutine(Utils.TweenScaleIn(slotOptionsMenu, 15, Vector3.one, slotOptions));
         }
 
         private void CloseSlotOptionsMenu()
@@ -219,7 +251,7 @@ namespace XEntity.InventoryItemSystem
 
         private void OnItemInfoClicked(ItemSlot slot, Interactor interactor)
         {
-            itemInfoPanel.GetComponentInChildren<Text>().text = slot.slotItem.itemInformation;
+            itemInfoPanel.GetComponentInChildren<TextMeshProUGUI>().text = slot.slotItem.itemInformation;
             itemInfoPanel.SetActive(!itemInfoPanel.activeSelf);
         }
 
