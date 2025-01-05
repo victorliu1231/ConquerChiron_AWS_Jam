@@ -27,7 +27,7 @@ namespace XEntity.InventoryItemSystem
 
             origin = transform.localPosition;
             regularColor = slotUI.color;
-            dragColor = new Color(regularColor.r, regularColor.g, regularColor.b, 0.3f);
+            dragColor = new Color(regularColor.r, regularColor.g, regularColor.b, 0.7f);
         }
 
         private void Update()
@@ -64,14 +64,14 @@ namespace XEntity.InventoryItemSystem
             slotUI.color = dragColor;
             slotUI.raycastTarget = false;
             hoveredSlot = null;
-            dragOffset = Input.mousePosition - transform.position;
+            dragOffset = Input.mousePosition - transform.localPosition;
             isBeingDragged = true;
         }
 
         //This method is continously called when the mouse cursor is dragging this slot UI.
         public void OnDrag(PointerEventData eventData)
         {
-            transform.position = Input.mousePosition - dragOffset;
+            transform.localPosition = Input.mousePosition - dragOffset;
             OnSlotDrag?.Invoke();
         }
 

@@ -32,10 +32,7 @@
 - PlayerInventory has to be active in order for it to work bc of Awake functions
 
 - todo list
-- prevent dragging entire inventory screen
-- debug slot options transform being set to wrong place in inventory
-- dragging item in inventory is buggy
--- next major thing is fixing inventory
+- prevent dragging entire inventory screen?
 --- preferably autosave settings in playerprefs
 -- add in cargo hold tasks
 -- fix picking up items not properly setting a fixed rotation bug

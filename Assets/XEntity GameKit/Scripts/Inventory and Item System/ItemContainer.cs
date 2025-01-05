@@ -178,7 +178,7 @@ namespace XEntity.InventoryItemSystem
                     buttonInfo.UpdateInfo(slot, interactor);
                 }
 
-                OpenSlotOptionsMenu();
+                OpenSlotOptionsMenu(slot.transform.localPosition);
             }
             else 
             {
@@ -186,16 +186,9 @@ namespace XEntity.InventoryItemSystem
             }
         }
 
-        private void OpenSlotOptionsMenu()
+        private void OpenSlotOptionsMenu(Vector3 localPosition)
         {
-            RaycastHit hit;
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity, LayerMask.NameToLayer("UI")))
-            {
-                Debug.Log(hit.point);
-                Debug.Log(Input.mousePosition);
-                slotOptionsMenu.transform.position = hit.point;
-                //slotOptionsMenu.transform.localPosition = Input.mousePosition;
-            }
+            slotOptionsMenu.transform.localPosition = localPosition;
             slotOptionsMenu.SetActive(false);
             
             StartCoroutine(Utils.TweenScaleIn(slotOptionsMenu, 50, Vector3.one));
