@@ -24,6 +24,7 @@ namespace XEntity.InventoryItemSystem
             {
                 if (harvestor.AddToInventory(harvestItem, gameObject))
                 {
+                    GameObject.Find("ItemPickup").GetComponent<AudioSource>().Play();
                     isHarvested = true;
                 }
             }

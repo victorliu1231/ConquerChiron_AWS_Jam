@@ -73,6 +73,7 @@ namespace XEntity.InventoryItemSystem
 
         public void EquipItem(ItemSlot slot) 
         {
+            inventory.CloseSlotOptionsMenu();
             slot.slotItem.isEquipped = true;
             equippedItems.Add(slot.slotItem);
             Debug.Log($"Equipping {slot.slotItem.itemName}");
@@ -82,6 +83,7 @@ namespace XEntity.InventoryItemSystem
         }
 
         public void UnequipItem(ItemSlot slot){
+            inventory.CloseSlotOptionsMenu();
             slot.slotItem.isEquipped = false;
             equippedItems.Remove(slot.slotItem);
             Debug.Log($"Unequipping item {slot.slotItem.itemName}.");

@@ -226,7 +226,7 @@ namespace XEntity.InventoryItemSystem
             StartCoroutine(Utils.TweenScaleIn(slotOptionsMenu, 15, Vector3.one, slotOptions));
         }
 
-        private void CloseSlotOptionsMenu()
+        public void CloseSlotOptionsMenu()
         {
             slotOptionsMenu.SetActive(false);
             itemInfoPanel.SetActive(false);

@@ -14,7 +14,6 @@ public class AudioManager : MonoBehaviour {
 
     public void SetSoundtrackLevel (float level) {
         // Convert level from 0 to 1 to decibels
-        Debug.Log(level);
         if (level == 0) soundtrackMixer.SetFloat("Volume", -80);
         else {
             level = Mathf.Log10(level) * 20;

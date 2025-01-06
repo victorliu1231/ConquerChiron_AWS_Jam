@@ -7,6 +7,7 @@ using Cinemachine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using XEntity.InventoryItemSystem;
+using StarterAssets;
 
 public class GameManager : MonoBehaviour {
     #region Variables
@@ -18,6 +19,12 @@ public class GameManager : MonoBehaviour {
     public bool isGamePaused;
     public TextMeshProUGUI inventoryFullText;
     public Animator playerAnimator;
+    public Transform sfxParent;
+    public bool horrorMode = false;
+    public float timeBetweenEerieNoises = 15f;
+    private float _eerieNoiseTimer = 0f;
+    public FirstPersonController playerController;
+    private List<AudioSource> _footstepsSFX;
     [Header("Interact")]
     public GameObject interactGO;
     public float interactDistance = 5f;
@@ -74,6 +81,12 @@ public class GameManager : MonoBehaviour {
         timerGO.SetActive(false);
         shipHealthSlider.gameObject.SetActive(false);
         diedScreen.SetActive(false);
+        _footstepsSFX = new List<AudioSource>();
+        foreach (Transform child in sfxParent){
+            if (child.name.Contains("Step")){
+                _footstepsSFX.Add(child.GetComponent<AudioSource>());
+            }
+        }
     }
     #endregion
 
@@ -94,6 +107,57 @@ public class GameManager : MonoBehaviour {
         HandleInput();
         HandleInteract();
         HandlePlacing();
+
+        if (horrorMode){
+            _eerieNoiseTimer += Time.deltaTime;
+            if (_eerieNoiseTimer >= timeBetweenEerieNoises){
+                int random = Random.Range(0, 4);
+                switch (random){
+                    case 0:
+                        sfxParent.Find("SpaceEcho1").GetComponent<AudioSource>().Play();
+                        break;
+                    case 1:
+                        sfxParent.Find("SpaceEcho2").GetComponent<AudioSource>().Play();
+                        break;
+                    case 2:
+                        sfxParent.Find("SpaceEcho3").GetComponent<AudioSource>().Play();
+                        break;
+                    case 3:
+                        sfxParent.Find("SpaceEcho4").GetComponent<AudioSource>().Play();
+                        break;
+                }
+                sfxParent.Find("HeavyBreathing").GetComponent<AudioSource>().PlayDelayed(5f);
+                _eerieNoiseTimer = 0f;
+            }
+        }
+
+        if (!playerController.Grounded){
+            foreach (AudioSource audioSource in _footstepsSFX){
+                audioSource.Stop();
+            }
+        }
+
+        if (playerController.GetComponent<CharacterController>().velocity != Vector3.zero){
+            if (horrorMode){
+                sfxParent.Find("HeavyBreathing").GetComponent<AudioSource>().Play();
+            }
+            
+            bool isFootstepsSFXPlaying = false;
+            foreach (AudioSource audioSource in _footstepsSFX){
+                if (audioSource.isPlaying) {
+                    if (playerController._input.sprint){
+                        audioSource.pitch = 1.5f;
+                    } else {
+                        audioSource.pitch = 1f;
+                    }
+                    isFootstepsSFXPlaying = true;
+                }
+            }
+
+            if (!isFootstepsSFXPlaying){
+                _footstepsSFX[Random.Range(0, 3)].Play();
+            }
+        }
     }
     #endregion
 
@@ -315,6 +379,7 @@ public class GameManager : MonoBehaviour {
         asteroidGenerator.GenerateAsteroids();
         _isAsteroidTaskOn = true;
         shipHealthSlider.gameObject.SetActive(true);
+        StartTimer();
         CameraStaticMode();
         MoveCamera(cockpitViewTransform, asteroidCameraTransitionTime, true);
     }
@@ -340,6 +405,7 @@ public class GameManager : MonoBehaviour {
     public void TurnOnWindowCleaningTask(){
         isWindowCleaningTaskOn = true;
         cleaningGOs.SetActive(true);
+        StartTimer();
         CameraStaticMode();
         MoveCamera(windowCleaningCameraTransforms[0], asteroidCameraTransitionTime, true);
         Invoke("GenerateCleaningDots", asteroidCameraTransitionTime);
@@ -370,9 +436,21 @@ public class GameManager : MonoBehaviour {
     }
     #endregion
 
+    #region Air Purge Functions
+    public void TurnOnAirPurgeTask(){
+        StartTimer();
+        sfxParent.Find("Shake").GetComponent<AudioSource>().Play();
+        sfxParent.Find("Alarm").GetComponent<AudioSource>().PlayDelayed(5f);
+    }
+
+    public void TurnOffAirPurgeTask(){
+        sfxParent.Find("Alarm").GetComponent<AudioSource>().Stop();
+        TaskComplete();
+    }
+    #endregion
+
     #region Camera Functions
     public void CameraStaticMode(){
-        StartTimer();
         player.SetActive(false);
         Camera.main.GetComponent<CinemachineBrain>().enabled = false;
     }

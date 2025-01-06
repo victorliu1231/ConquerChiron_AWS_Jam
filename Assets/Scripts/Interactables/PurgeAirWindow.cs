@@ -33,7 +33,7 @@ public class PurgeAirWindow : Interactable {
             purgeAirButton.GetComponent<Collider>().enabled = true;
             this.gameObject.SetActive(false);
             // If have crowbar in inventory, make hand motion to smash window            
-
+            GameManager.Instance.sfxParent.Find("GlassSmash").GetComponent<AudioSource>().Play();
 
         } else {
             // Shake replaceableGO in GameManager

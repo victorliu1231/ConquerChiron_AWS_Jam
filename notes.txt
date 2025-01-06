@@ -45,7 +45,7 @@
 - make used battery be more rusty than new battery
 - make battery sprite when in inventory be sized correctly
 - dirty window changing into clean window animation
-- add horror vibes, e.g. flickering lights, eerie sounds, heavy breathing, alarm blaring sounds, red alarm lights, etc
+- add horror vibes, e.g. alarm blaring sounds, red alarm lights, etc
 - decorate cockpit
 - fix entrance door texture so that it's not one-side transparent other side not transparent
 

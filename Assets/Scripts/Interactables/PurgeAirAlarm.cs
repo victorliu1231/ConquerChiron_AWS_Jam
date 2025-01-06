@@ -7,9 +7,11 @@ public class PurgeAirAlarm : Interactable {
     public override void Interact() {
         base.Interact();
         canInteract = false;
+        GameManager.Instance.sfxParent.Find("AirPurge").GetComponent<AudioSource>().Play();
         // Hand motion to press button
-        // Play alarm sound
         // Clean out air in spaceship
+        // AI should mock player for pressing button
+        // would be cool to have text dialogue show up at this point saying "Phew... that was close"
         Debug.Log("Purging air in spaceship");
     }
 
