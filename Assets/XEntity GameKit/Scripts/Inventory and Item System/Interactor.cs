@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace XEntity.InventoryItemSystem
@@ -19,10 +20,15 @@ namespace XEntity.InventoryItemSystem
         //This is the position at which dropped items will be instantiated (in front of this interactor).
         public Vector3 ItemDropPosition { get { return transform.position + transform.forward; } }
 
+        // My code
+        private List<Color> originalColors = new List<Color>();
+
+        public bool canInteract = true;
+
         //Called every frame after the game is started.
         private void Update()
         {
-            HandleInteractions();
+            if (canInteract) HandleInteractions();
         }
 
         //This method draws gizmos in the editor.
@@ -40,7 +46,7 @@ namespace XEntity.InventoryItemSystem
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (interactionTarget?.gameObject != null) Utils.UnhighlightObject(interactionTarget.gameObject);
+            if (interactionTarget?.gameObject != null) Utils.UnhighlightObject(interactionTarget.gameObject, originalColors);
 
             if (Physics.Raycast(ray, out hit) && InRange(hit.transform.position))
             {
@@ -48,7 +54,7 @@ namespace XEntity.InventoryItemSystem
                 if (target != null)
                 {
                     interactionTarget = new InteractionTarget(target, hit.transform.gameObject);
-                    Utils.HighlightObject(interactionTarget.gameObject);
+                    originalColors = Utils.HighlightObject(interactionTarget.gameObject);
                 }
                 else interactionTarget = null;
             }

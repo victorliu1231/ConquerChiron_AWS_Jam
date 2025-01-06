@@ -221,9 +221,21 @@ namespace XEntity.InventoryItemSystem
          * Highlights the passed in obj with the passed in highlightColor.
          * NOTE: The object must have a mesh renderer with a valid material in order to be highlighted.
          */
-        public static void HighlightObject(GameObject obj) 
+        public static List<Color> HighlightObject(GameObject obj) 
         {
-            obj.GetComponent<MeshRenderer>().material.color = InteractionSettings.Current.highlightColor;
+            List<Color> originalColors = new List<Color>();
+            if (obj.GetComponent<MeshRenderer>() != null) {
+                originalColors.Add(obj.GetComponent<MeshRenderer>().material.color);
+                obj.GetComponent<MeshRenderer>().material.color = InteractionSettings.Current.highlightColor;
+            }
+            else if (obj.GetComponentsInChildren<MeshRenderer>() != null) {
+                foreach (MeshRenderer mr in obj.GetComponentsInChildren<MeshRenderer>()) 
+                {
+                    originalColors.Add(mr.material.color);
+                    mr.material.color = InteractionSettings.Current.highlightColor;
+                }
+            }
+            return originalColors;
         }
 
 
@@ -231,18 +243,27 @@ namespace XEntity.InventoryItemSystem
          * Unhighlights the passed in obj by setting the color to the original color.
          * NOTE: The object must have a mesh renderer with a valid material in order to be unhighlited.
          */
-        public static void UnhighlightObject(GameObject obj, Color original) 
+        public static void UnhighlightObject(GameObject obj, List<Color> originalColors) 
         {
-            obj.GetComponent<MeshRenderer>().material.color = original;
+            if (obj.GetComponent<MeshRenderer>() != null) obj.GetComponent<MeshRenderer>().material.color = originalColors[0];
+            else if (obj.GetComponentsInChildren<MeshRenderer>() != null) 
+            {
+                int i = 0;
+                foreach (MeshRenderer mr in obj.GetComponentsInChildren<MeshRenderer>()) 
+                {
+                    mr.material.color = originalColors[i];
+                    i++;
+                }
+            }
         }
 
         /*
          * Unhighlights the passed in obj by setting the color to Color.white.
          * NOTE: The object must have a mesh renderer with a valid material in order to be unhighlited.
          */
-        public static void UnhighlightObject(GameObject obj)
+        public static void UnhighlightObjectWhite(GameObject obj)
         {
-            UnhighlightObject(obj, Color.white);
+            UnhighlightObject(obj, new List<Color>{Color.white});
         }
 
         //Finds the interaction settings asset in the editor. Returns null if none is found.

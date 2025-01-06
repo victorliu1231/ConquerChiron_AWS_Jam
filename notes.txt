@@ -33,6 +33,7 @@
 - PlayerInventory has to be active in order for it to work bc of Awake functions
 
 - todo list
+- texturize fusebox and cabinet
 - GameManager EquipItem(Item item) function throwing error when called as a UnityEvent
 - prevent dragging entire inventory screen?
 - preferably autosave settings in playerprefs

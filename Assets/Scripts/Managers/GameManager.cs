@@ -222,7 +222,10 @@ public class GameManager : MonoBehaviour {
             if (isWindowCleaningTaskOn) TurnOffWindowCleaningTask(); else TurnOnWindowCleaningTask();
         }
         if (Input.GetKeyDown(KeyCode.L)){
-            GameObject.Find("fusebox_open").GetComponent<Animator>().enabled = true;
+            GameObject.Find("Fusebox").GetComponent<Animator>().Play("Open");
+        }
+        if (Input.GetKeyDown(KeyCode.K)){
+            GameObject.Find("Fusebox").GetComponent<Animator>().Play("Close");
         }
         if (Input.GetKeyDown(KeyCode.O)){
             if (horrorMode) TurnOffHorrorMode(); else TurnOnHorrorMode();
@@ -478,7 +481,7 @@ public class GameManager : MonoBehaviour {
 
     #region Camera Functions
     public void CameraStaticMode(){
-        player.SetActive(false);
+        player.GetComponent<FirstPersonController>().isCameraFree = false;
         Camera.main.GetComponent<CinemachineBrain>().enabled = false;
     }
 
@@ -487,7 +490,7 @@ public class GameManager : MonoBehaviour {
         if (cameraStaticMode) Camera.main.transform.DOMove(moveToTransform.position, transitionTime).SetDelay(delay);
         else Camera.main.transform.DOMove(moveToTransform.position, transitionTime).SetDelay(delay).OnComplete(() => {
             Camera.main.GetComponent<CinemachineBrain>().enabled = true;
-            player.SetActive(true);
+            player.GetComponent<FirstPersonController>().isCameraFree = true;
         });
     }
 
@@ -500,12 +503,16 @@ public class GameManager : MonoBehaviour {
     public void PauseGame(){
         Time.timeScale = 0f;
         isGamePaused = true;
+        player.GetComponent<FirstPersonController>().isCameraFree = false;
+        ItemManager.Instance.inventory.containerInteractor.canInteract = false;
         // Add stuff later
     }
 
     public void ResumeGame(){
         Time.timeScale = 1f;
         isGamePaused = false;
+        player.GetComponent<FirstPersonController>().isCameraFree = true;
+        ItemManager.Instance.inventory.containerInteractor.canInteract = true;
         // Add stuff later
     }
 
