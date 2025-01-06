@@ -20,18 +20,20 @@
 --- spray bottle by parfay (https://www.turbosquid.com/3d-models/spray-bottle-3d-1508629)
 --- gas mask by lincolnli (https://www.turbosquid.com/3d-models/gas-mask-1533443)
 --- battery by HiddenTerritory (https://www.turbosquid.com/3d-models/3d-aa-battery-2250204)
---- fuse box by Mogeeb Ezz (https://www.turbosquid.com/3d-models/3d-fuse-box-model-2198384)
+--- fuse box by Mogeeb Ezz (https://www.turbosquid.com/3d-models/3d-fuse-box-model-2198384), animated by Will
 --- Wrench by CreativeTrio (https://poly.pizza/m/POJHQLnLvB)
 --- fuse by daniel4d (https://www.turbosquid.com/3d-models/free-obj-model-fuse-light-sci-fi/603538)
 --- metal lamp by metal_head2 (https://www.turbosquid.com/3d-models/free-3ds-mode-lamp-metal/424517)
---- lockers by studio_23 (https://www.turbosquid.com/3d-models/low-poly-lockers-filing-cabinet-with-three-drawers-3d-model-2118653)
+--- lockers by studio_23 (https://www.turbosquid.com/3d-models/low-poly-lockers-filing-cabinet-with-three-drawers-3d-model-2118653), animated by Will
 --- pressure gauge meter, Speedometer by Poly by Google [CC-BY] via Poly Pizza https://poly.pizza/m/17WlSF6dD-r
+--- crowbar by milanbon, https://www.turbosquid.com/3d-models/free-crowbar-3d-model/641578
 -- 2D sprites:
 --- the wire for ConnectTheDots  "Sparky wire" by MrA https://asamusev.itch.io/sparkywire
 
 - PlayerInventory has to be active in order for it to work bc of Awake functions
 
 - todo list
+- GameManager EquipItem(Item item) function throwing error when called as a UnityEvent
 - prevent dragging entire inventory screen?
 - preferably autosave settings in playerprefs
 - add in cargo hold tasks
@@ -47,6 +49,8 @@
 - dirty window changing into clean window animation
 - add horror vibes, e.g. alarm blaring sounds, red alarm lights, etc
 - decorate cockpit
+- still weird bug with cannot interact with purge air alarm
+- implement camera view for pressure gauge task
 - fix entrance door texture so that it's not one-side transparent other side not transparent
 
 -- 3D player model

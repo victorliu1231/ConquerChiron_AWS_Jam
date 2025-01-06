@@ -26,6 +26,7 @@ public class WindowCleaningDot : MonoBehaviour {
                 if (numClicked < numClicksToComplete){
                     numClicked++;
                     numClickedText.text = numClicked.ToString();
+                    GameManager.Instance.sfxParent.Find("SprayBottle").GetComponent<AudioSource>().Play();
                 }
                 if (numClicked == numClicksToComplete){
                     _isComplete = true;

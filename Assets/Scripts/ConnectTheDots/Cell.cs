@@ -41,7 +41,9 @@ public class Cell:MonoBehaviour
     /// <returns>true if connected</returns>
     internal bool IsConnected(Cell cell)
     {
-        if (cell.Equals(this)) return true;
+        if (cell.Equals(this)) {
+            return true;
+        }
 
         if (previous != null) return previous.IsConnected(cell);
 

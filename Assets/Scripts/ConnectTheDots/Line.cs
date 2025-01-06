@@ -6,6 +6,7 @@ public class Line
 
     internal byte typeIndex;
     internal Color type;
+    internal bool canPlayZapSound = true;
 
     /// <summary>
     /// Initializes the values in this line
@@ -82,7 +83,16 @@ public class Line
     /// <returns>true if connected</returns>
     internal bool IsConnected()
     {
-        return headA.IsConnected(headB) || headB.IsConnected(headA);
+        if (headA.IsConnected(headB) || headB.IsConnected(headA)) {
+            if (canPlayZapSound){
+                GameManager.Instance.sfxParent.Find("WireConnectZap").GetComponent<AudioSource>().Play();
+                canPlayZapSound = false;
+            }
+            return true;
+        } else {
+            canPlayZapSound = true;
+            return false;
+        }
     }
 
     /// <summary>

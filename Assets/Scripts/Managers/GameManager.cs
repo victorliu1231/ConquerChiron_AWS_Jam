@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour {
     public TextMeshProUGUI inventoryFullText;
     public Animator playerAnimator;
     public Transform sfxParent;
+    public Transform soundtrackParents;
     public bool horrorMode = false;
     public float timeBetweenEerieNoises = 15f;
     private float _eerieNoiseTimer = 0f;
@@ -204,8 +205,8 @@ public class GameManager : MonoBehaviour {
                 if (numDotsInWindowComplete == numDotsPerWindowToComplete){
                     numDotsInWindowComplete = 0;
                     windowIndex++;
-                    MoveCamera(windowCleaningCameraTransforms[windowIndex], asteroidCameraTransitionTime, true);
-                    Invoke("GenerateCleaningDots", asteroidCameraTransitionTime);
+                    MoveCamera(windowCleaningCameraTransforms[windowIndex], asteroidCameraTransitionTime, true, asteroidCameraTransitionTime);
+                    Invoke("GenerateCleaningDots", asteroidCameraTransitionTime*2);
                 }
             } else {
                 TurnOffWindowCleaningTask();
@@ -219,6 +220,12 @@ public class GameManager : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.P)){
             if (isWindowCleaningTaskOn) TurnOffWindowCleaningTask(); else TurnOnWindowCleaningTask();
+        }
+        if (Input.GetKeyDown(KeyCode.L)){
+            GameObject.Find("fusebox_open").GetComponent<Animator>().enabled = true;
+        }
+        if (Input.GetKeyDown(KeyCode.O)){
+            if (horrorMode) TurnOffHorrorMode(); else TurnOnHorrorMode();
         }
         if (Input.GetKeyDown(KeyCode.Q)){
             if (connectTheWiresGO.activeSelf) {
@@ -298,6 +305,7 @@ public class GameManager : MonoBehaviour {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, interactDistance, LayerMask.GetMask("PlaceableZone"))){
+                sfxParent.Find("ItemPickup").GetComponent<AudioSource>().Play();
                 PlaceableZone placeableZone = hit.collider.gameObject.GetComponent<PlaceableZone>();
                 Transform objectInHand = holdObjectTransform.GetChild(0);
                 objectInHand.position = placeableZone.position;
@@ -309,6 +317,28 @@ public class GameManager : MonoBehaviour {
                 isHoldingObject = false;
             }
         }
+    }
+    #endregion
+
+    #region Horror Mode
+    public void TurnOnHorrorMode(){
+        horrorMode = true;
+        soundtrackParents.Find("Peaceful_Soundtrack").GetComponent<AudioSource>().DOFade(0f, 2f).OnComplete(() => {
+            soundtrackParents.Find("Peaceful_Soundtrack").GetComponent<AudioSource>().Stop();
+        });
+        soundtrackParents.Find("Horror_Soundtrack").GetComponent<AudioSource>().Play();
+        soundtrackParents.Find("Horror_Soundtrack").GetComponent<AudioSource>().volume = 0f;
+        soundtrackParents.Find("Horror_Soundtrack").GetComponent<AudioSource>().DOFade(1f, 2f).SetDelay(2f);
+    }
+
+    public void TurnOffHorrorMode(){
+        horrorMode = false;
+        soundtrackParents.Find("Horror_Soundtrack").GetComponent<AudioSource>().DOFade(0f, 2f).OnComplete(() => {
+            soundtrackParents.Find("Horror_Soundtrack").GetComponent<AudioSource>().Stop();
+        });
+        soundtrackParents.Find("Peaceful_Soundtrack").GetComponent<AudioSource>().Play();
+        soundtrackParents.Find("Peaceful_Soundtrack").GetComponent<AudioSource>().volume = 0f;
+        soundtrackParents.Find("Peaceful_Soundtrack").GetComponent<AudioSource>().DOFade(1f, 2f).SetDelay(2f);
     }
     #endregion
 
@@ -347,6 +377,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public void EquipItem(Item item){
+        sfxParent.Find("ItemPickup").GetComponent<AudioSource>().Play();
         GameObject equippedItem = Instantiate(item.prefab, holdObjectTransform, false);
         if (equippedItem.GetComponent<Equippable>() != null){
             equippedItem.transform.localPosition = equippedItem.GetComponent<Equippable>().equippedPosition;
@@ -354,14 +385,9 @@ public class GameManager : MonoBehaviour {
     }
 
     public void UnequipItem(Item item){
+        sfxParent.Find("ItemPickup").GetComponent<AudioSource>().Play();
         // Find a way to find which child is the item and destroy it
         Destroy(holdObjectTransform.GetChild(0).gameObject);
-    }
-
-    [ContextMenu("Equip Crowbar")]
-    public void EquipCrowbar(){
-        ItemManager.Instance.inventory.AddItem(ItemManager.Instance.GetItemByName("Crowbar"));
-        EquipItem(ItemManager.Instance.GetItemByName("Crowbar"));
     }
     #endregion
 
@@ -392,6 +418,7 @@ public class GameManager : MonoBehaviour {
         MoveCamera(player.transform, asteroidCameraTransitionTime, false);
     }
     public void TurnOnSecondStageAsteroids(){
+        sfxParent.Find("AlarmNonLoop").GetComponent<AudioSource>().Play();
         asteroidGenerator.numAsteroidsToGenerate = (int)(asteroidGenerator.numAsteroidsToGenerate*2f);
         _isSecondAsteroidStageOn = true;
         secondAsteroidStageText.gameObject.SetActive(true);
@@ -455,10 +482,10 @@ public class GameManager : MonoBehaviour {
         Camera.main.GetComponent<CinemachineBrain>().enabled = false;
     }
 
-    public void MoveCamera(Transform moveToTransform, float transitionTime, bool cameraStaticMode){
-        Camera.main.transform.DORotateQuaternion(moveToTransform.rotation, transitionTime);
-        if (cameraStaticMode) Camera.main.transform.DOMove(moveToTransform.position, transitionTime);
-        else Camera.main.transform.DOMove(moveToTransform.position, transitionTime).OnComplete(() => {
+    public void MoveCamera(Transform moveToTransform, float transitionTime, bool cameraStaticMode, float delay = 0f){
+        Camera.main.transform.DORotateQuaternion(moveToTransform.rotation, transitionTime).SetDelay(delay);
+        if (cameraStaticMode) Camera.main.transform.DOMove(moveToTransform.position, transitionTime).SetDelay(delay);
+        else Camera.main.transform.DOMove(moveToTransform.position, transitionTime).SetDelay(delay).OnComplete(() => {
             Camera.main.GetComponent<CinemachineBrain>().enabled = true;
             player.SetActive(true);
         });
