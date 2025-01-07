@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace XEntity.InventoryItemSystem
@@ -40,6 +41,9 @@ namespace XEntity.InventoryItemSystem
         protected Transform containerPanel;
 
         private List<SlotOptionButtonInfo> slotOptionButtonInfoList;
+        [Header("My Code")]
+        public UnityEvent OnCloseUI;
+        public UnityEvent OnOpenUI;
 
         protected virtual void OnEnable() 
         {
@@ -305,11 +309,15 @@ namespace XEntity.InventoryItemSystem
             if (mainContainerUI.gameObject.activeSelf && isContainerUIOpen)
             {
                 isContainerUIOpen = false;
+                OnCloseUI.Invoke();
+                containerInteractor.canInteract = true;
                 StartCoroutine(Utils.TweenScaleOut(mainContainerUI.gameObject, toggleDurationInFrames, false));
             }
             else if(!mainContainerUI.gameObject.activeSelf && !isContainerUIOpen)
             {
                 isContainerUIOpen = true;
+                OnOpenUI.Invoke();
+                containerInteractor.canInteract = false;
                 StartCoroutine(Utils.TweenScaleIn(mainContainerUI.gameObject, toggleDurationInFrames, Vector3.one));
             }
         }

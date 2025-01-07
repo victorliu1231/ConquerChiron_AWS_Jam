@@ -62,6 +62,10 @@ public class GameManager : MonoBehaviour {
     private bool _isAsteroidTaskOn = false;
     [Header("Connect the Wires Task")]
     public GameObject connectTheWiresGO;
+    [Header("Pressure Gauge Task")]
+    public Transform pressureGaugeViewTransform;
+    public bool isPressureGaugeTaskOn;
+    public Needle needle;
     [Header("Window Cleaning Task")]
     public GameObject cleaningDotPrefab;
     public List<Transform> windowCleaningCameraTransforms;
@@ -222,10 +226,7 @@ public class GameManager : MonoBehaviour {
             if (isWindowCleaningTaskOn) TurnOffWindowCleaningTask(); else TurnOnWindowCleaningTask();
         }
         if (Input.GetKeyDown(KeyCode.L)){
-            GameObject.Find("Fusebox").GetComponent<Animator>().Play("Open");
-        }
-        if (Input.GetKeyDown(KeyCode.K)){
-            GameObject.Find("Fusebox").GetComponent<Animator>().Play("Close");
+            if (isPressureGaugeTaskOn) TurnOffPressureGaugeTask(); else TurnOnPressureGaugeTask();
         }
         if (Input.GetKeyDown(KeyCode.O)){
             if (horrorMode) TurnOffHorrorMode(); else TurnOnHorrorMode();
@@ -251,15 +252,6 @@ public class GameManager : MonoBehaviour {
                 }
             }
         }
-        if (Input.GetKeyDown(KeyCode.Z)){
-            playerAnimator.SetTrigger("Walking");
-        }
-        if (Input.GetKeyDown(KeyCode.X)){
-            playerAnimator.SetTrigger("Running");
-        }
-        if (Input.GetKeyDown(KeyCode.C)){
-            playerAnimator.SetTrigger("PullLever");
-        }
     }
 
     public void HandleInteract(){
@@ -277,6 +269,7 @@ public class GameManager : MonoBehaviour {
                 interactGO.SetActive(true);
                 interactable.SetText();
                 if (Input.GetKeyDown(KeyCode.E)){
+                    Debug.Log("test");
                     interactable.Interact();
                     interactGO.SetActive(false);
                 }
@@ -418,7 +411,7 @@ public class GameManager : MonoBehaviour {
         _isAsteroidTaskOn = false;
         shipHealthSlider.gameObject.SetActive(false);
         TaskComplete();
-        MoveCamera(player.transform, asteroidCameraTransitionTime, false);
+        MoveCamera(player.transform.Find("PlayerCameraRoot"), asteroidCameraTransitionTime, false);
     }
     public void TurnOnSecondStageAsteroids(){
         sfxParent.Find("AlarmNonLoop").GetComponent<AudioSource>().Play();
@@ -445,7 +438,7 @@ public class GameManager : MonoBehaviour {
         isWindowCleaningTaskOn = false;
         cleaningGOs.SetActive(false);
         TaskComplete();
-        MoveCamera(player.transform, asteroidCameraTransitionTime, false);
+        MoveCamera(player.transform.Find("PlayerCameraRoot"), asteroidCameraTransitionTime, false);
     }
 
     public void GenerateCleaningDots(){
@@ -476,6 +469,22 @@ public class GameManager : MonoBehaviour {
     public void TurnOffAirPurgeTask(){
         sfxParent.Find("Alarm").GetComponent<AudioSource>().Stop();
         TaskComplete();
+    }
+    #endregion
+
+    #region Pressure Gauge Functions
+    public void TurnOnPressureGaugeTask(){
+        isPressureGaugeTaskOn = true;
+        needle.Restart();
+        StartTimer();
+        CameraStaticMode();
+        MoveCamera(pressureGaugeViewTransform, asteroidCameraTransitionTime, true);
+    }
+
+    public void TurnOffPressureGaugeTask(){
+        isPressureGaugeTaskOn = false;
+        TaskComplete();
+        MoveCamera(player.transform.Find("PlayerCameraRoot"), asteroidCameraTransitionTime, false);
     }
     #endregion
 

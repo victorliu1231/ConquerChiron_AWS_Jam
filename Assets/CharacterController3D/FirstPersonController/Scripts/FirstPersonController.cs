@@ -76,6 +76,11 @@ namespace StarterAssets
 
 		private const float _threshold = 0.01f;
 
+		public void SetCameraFree(bool free)
+		{
+			isCameraFree = free;
+		}
+
 		private bool IsCurrentDeviceMouse
 		{
 			get
@@ -115,14 +120,16 @@ namespace StarterAssets
 
 		private void Update()
 		{
-			JumpAndGravity();
-			GroundedCheck();
-			Move();
+			if (isCameraFree){
+				JumpAndGravity();
+				GroundedCheck();
+				Move();
+			}
 		}
 
 		private void LateUpdate()
 		{
-			CameraRotation();
+			if (isCameraFree) CameraRotation();
 		}
 
 		private void GroundedCheck()
@@ -135,7 +142,7 @@ namespace StarterAssets
 		private void CameraRotation()
 		{
 			// if there is an input
-			if (_input.look.sqrMagnitude >= _threshold && isCameraFree)
+			if (_input.look.sqrMagnitude >= _threshold)
 			{
 				//Don't multiply mouse input by Time.deltaTime
 				float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
@@ -156,8 +163,6 @@ namespace StarterAssets
 
 		private void Move()
 		{
-			if (!isCameraFree) return;
-
 			// set target speed based on move speed, sprint speed and if sprint is pressed
 			float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
 

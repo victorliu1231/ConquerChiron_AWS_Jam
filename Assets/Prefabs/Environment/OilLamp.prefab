@@ -427,7 +427,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -445,6 +445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fd3abf082c23e14a8fb5d2d9198c0fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canInteract: 1
   rotationInHand: {x: 0, y: 180, z: 0}
   lampPanel: {fileID: 5132138304754582365}
 --- !u!4 &3456312131871350172 stripped

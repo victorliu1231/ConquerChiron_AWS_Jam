@@ -33,10 +33,12 @@
 - PlayerInventory has to be active in order for it to work bc of Awake functions
 
 - todo list
+- move player to proper transform location so that it's hands look correct
+- add whoosh sfx and cabinet open/close sfx
+- maybe in horror mode you have to physically open the doors, it's no longer automatic
 - ugh random bug with model not animating correctly for drawer :/
 - need generic item click sfx and use for replacing fuse
 - need unwrench sfx and use for unwrenching fuse
-- texturize fusebox and cabinet
 - GameManager EquipItem(Item item) function throwing error when called as a UnityEvent
 - prevent dragging entire inventory screen?
 - preferably autosave settings in playerprefs
@@ -44,6 +46,7 @@
 - fix picking up items not properly setting a fixed rotation bug
 - in dialogue for AI, make sure it mentions to actually open the panel
 - task to train the model falls on me :/
+- coroutine bug with inventory being set inactive early???
 - weird bug where player moves when picking up object
 - do prelim research if it's easy to train meta llama model for customized output (lowkey could task Grace with this??? But I might be better since I actually took an ML class)
 - make a "gamer mode" where the asteroid task starts out with 50 asteroids, and a "non-gamer mode" for judges,

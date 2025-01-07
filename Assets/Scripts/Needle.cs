@@ -20,6 +20,14 @@ public class Needle : MonoBehaviour {
     private bool _isTaskCompleted = false;
 
     void Start(){
+        Restart();
+    }
+
+    public void Restart(){
+        _timer = 0f;
+        _numBenchmarksCompleted = 0;
+        _numAttempts = 0;
+        _isTaskCompleted = false;
         rotationBenchmarks = new List<float>();
         for (int i = 0; i < maxBenchmarkAttempts; i++){
             rotationBenchmarks.Add(Random.Range(0, maxAngleFromVertical));
@@ -29,7 +37,7 @@ public class Needle : MonoBehaviour {
     }
 
     void Update(){
-        if (!_isTaskCompleted){
+        if (!_isTaskCompleted && GameManager.Instance.isPressureGaugeTaskOn){
             if (_numAttempts < rotationBenchmarks.Count){
                 _timer += Time.deltaTime;
                 if (_timer < timeBetweenBenchmarks){
@@ -57,10 +65,11 @@ public class Needle : MonoBehaviour {
                 
                 if (_numBenchmarksCompleted >= minBenchmarksCompleted){
                     _isTaskCompleted = true;
-                    //Debug.Log("Task completed!");
+                    GameManager.Instance.TurnOffPressureGaugeTask();
                     // End task early
                 }
             } else {
+                GameManager.Instance.GoToCheckpoint();
                 //Debug.Log("Task failed.");
             }
         }

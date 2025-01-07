@@ -64,9 +64,33 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -4409447335136935255, guid: d99784601bdacbd459a08d2214611f90, type: 3}
+      propertyPath: m_Layer
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: -4186194182379584800, guid: d99784601bdacbd459a08d2214611f90, type: 3}
+      propertyPath: m_Layer
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: -3275582240539947622, guid: d99784601bdacbd459a08d2214611f90, type: 3}
+      propertyPath: m_Layer
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d99784601bdacbd459a08d2214611f90, type: 3}
       propertyPath: m_Name
       value: Fuse
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d99784601bdacbd459a08d2214611f90, type: 3}
+      propertyPath: m_Layer
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 1092179050124001086, guid: d99784601bdacbd459a08d2214611f90, type: 3}
+      propertyPath: m_Layer
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 7852290140832495916, guid: d99784601bdacbd459a08d2214611f90, type: 3}
+      propertyPath: m_Layer
+      value: 17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

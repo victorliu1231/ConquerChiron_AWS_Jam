@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -48,7 +49,7 @@ namespace XEntity.InventoryItemSystem
 
             if (interactionTarget?.gameObject != null) Utils.UnhighlightObject(interactionTarget.gameObject, originalColors);
 
-            if (Physics.Raycast(ray, out hit) && InRange(hit.transform.position))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("PickableItem")) && InRange(hit.transform.position))
             {
                 IInteractable target = hit.transform.GetComponent<IInteractable>();
                 if (target != null)
