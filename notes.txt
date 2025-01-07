@@ -33,6 +33,9 @@
 - PlayerInventory has to be active in order for it to work bc of Awake functions
 
 - todo list
+- ugh random bug with model not animating correctly for drawer :/
+- need generic item click sfx and use for replacing fuse
+- need unwrench sfx and use for unwrenching fuse
 - texturize fusebox and cabinet
 - GameManager EquipItem(Item item) function throwing error when called as a UnityEvent
 - prevent dragging entire inventory screen?

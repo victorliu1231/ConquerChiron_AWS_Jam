@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bb37a5e4810a7744a6b9d1f88712c1d, type: 3}
   m_Name: Fuse
   m_EditorClassIdentifier: 
-  type: 4
+  type: 3
   itemName: Fuse
   itemPerSlot: 1
   icon: {fileID: 1455181733, guid: f7eb3e8f907d96045b572b7f87846753, type: 3}
   prefab: {fileID: 5789605794434489170, guid: 44d1043760d1468488d236612c6302a5, type: 3}
+  isEquipped: 0
   itemInformation: I'm not going to lie, I had to look up how these worked.

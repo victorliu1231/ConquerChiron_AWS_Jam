@@ -7,28 +7,51 @@ using DG.Tweening;
 public class MeltedFuse : Interactable {
     public Item meltedFuse;
     public GameObject workingFuse;
+    public bool canBeReplaced = false;
 
     public override void Interact() {
         base.Interact();
-        if (ItemManager.Instance.inventory.ContainsItem(ItemManager.Instance.GetItemByName("Fuse"))){
-            ItemManager.Instance.UseItem(ItemManager.Instance.GetItemSlot(ItemManager.Instance.GetItemByName("Fuse")));
-            ItemManager.Instance.inventory.AddItem(meltedFuse);
-            Instantiate(workingFuse, transform.position, transform.rotation, transform.parent);
-            // Hand motion to replace fuse
+        if (!canBeReplaced){
+            if (ItemManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Wrench"))){
+                canBeReplaced = true;
+                GameManager.Instance.sfxParent.Find("ItemPickup").GetComponent<AudioSource>().Play();
+                // Hand motion to unwrench fuse
 
-            Destroy(gameObject);
+
+            } else {
+                // Shake replaceableGO in GameManager
+                GameManager.Instance.replaceableGO.transform.DOShakePosition(0.5f, new Vector3(20f, 0f, 0f), 10, 0, false, true);
+            }
         } else {
-            // Shake replaceableGO in GameManager
-            GameManager.Instance.replaceableGO.transform.DOShakePosition(0.5f, new Vector3(20f, 0f, 0f), 10, 0, false, true);
+            if (ItemManager.Instance.inventory.ContainsItem(ItemManager.Instance.GetItemByName("Fuse"))){
+                ItemManager.Instance.UseItem(ItemManager.Instance.GetItemSlot(ItemManager.Instance.GetItemByName("Fuse")));
+                ItemManager.Instance.inventory.AddItem(meltedFuse);
+                Instantiate(workingFuse, transform.position, transform.rotation, transform.parent);
+                GameManager.Instance.sfxParent.Find("ItemPickup").GetComponent<AudioSource>().Play();
+                // Hand motion to replace fuse
+
+                Destroy(gameObject);
+            } else {
+                // Shake replaceableGO in GameManager
+                GameManager.Instance.replaceableGO.transform.DOShakePosition(0.5f, new Vector3(20f, 0f, 0f), 10, 0, false, true);
+            }
         }
     }
 
     public override void SetText()
     {
-        if (ItemManager.Instance.inventory.ContainsItem(ItemManager.Instance.GetItemByName("Fuse"))){
-            GameManager.Instance.replaceableText.text = "Replace Fuse";
+        if (!canBeReplaced){
+            if (ItemManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Wrench"))){
+                GameManager.Instance.replaceableText.text = "Unscrew Fuse";
+            } else {
+                GameManager.Instance.replaceableText.text = "Must Equip Wrench";
+            }
         } else {
-            GameManager.Instance.replaceableText.text = "Missing New Fuse";
+            if (ItemManager.Instance.inventory.ContainsItem(ItemManager.Instance.GetItemByName("Fuse"))){
+                GameManager.Instance.replaceableText.text = "Replace Fuse";
+            } else {
+                GameManager.Instance.replaceableText.text = "Missing New Fuse";
+            }
         }
     }
 }

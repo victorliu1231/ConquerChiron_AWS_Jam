@@ -4,15 +4,23 @@ using UnityEngine;
 
 public class Fusebox : Interactable {
     public bool isOpen = false;
+    public Interactable meltedFuse;
+
+    public override void Start() {
+        base.Start();
+        meltedFuse.canInteract = false;
+    }
 
     public override void Interact() {
         base.Interact();
         if (isOpen){
             GetComponent<Animator>().Play("Close");
             isOpen = false;
+            meltedFuse.canInteract = false;
         } else {
             GetComponent<Animator>().Play("Open");
             isOpen = true;
+            meltedFuse.canInteract = true;
         }
     }
 

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Interaction Settings
   m_EditorClassIdentifier: 
   itemCollectorMode: 0
-  highlightColor: {r: 0.27727836, g: 0.5497934, b: 0.8773585, a: 0}
+  highlightColor: {r: 0.27727836, g: 0.5497934, b: 0.8773585, a: 0.5254902}
   itemDropHeightOffset: 0.3
   interactionRange: 5
   autoCloseExternalContainer: 1
