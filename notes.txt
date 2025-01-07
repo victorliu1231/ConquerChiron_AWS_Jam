@@ -27,22 +27,22 @@
 --- lockers by studio_23 (https://www.turbosquid.com/3d-models/low-poly-lockers-filing-cabinet-with-three-drawers-3d-model-2118653), animated by Will
 --- pressure gauge meter, Speedometer by Poly by Google [CC-BY] via Poly Pizza https://poly.pizza/m/17WlSF6dD-r
 --- crowbar by milanbon, https://www.turbosquid.com/3d-models/free-crowbar-3d-model/641578
+--- hanging monitor by Hanging Monitor, https://www.turbosquid.com/3d-models/hanging-monitor-lowpoly-pbr-3d-model-2284054
 -- 2D sprites:
 --- the wire for ConnectTheDots  "Sparky wire" by MrA https://asamusev.itch.io/sparkywire
 
 - PlayerInventory has to be active in order for it to work bc of Awake functions
 
 - todo list
+- implement limit to prevent query spamming the bot
 - move player to proper transform location so that it's hands look correct
 - add whoosh sfx and cabinet open/close sfx
 - maybe in horror mode you have to physically open the doors, it's no longer automatic
-- ugh random bug with model not animating correctly for drawer :/
 - need generic item click sfx and use for replacing fuse
 - need unwrench sfx and use for unwrenching fuse
 - GameManager EquipItem(Item item) function throwing error when called as a UnityEvent
 - prevent dragging entire inventory screen?
 - preferably autosave settings in playerprefs
-- add in cargo hold tasks
 - fix picking up items not properly setting a fixed rotation bug
 - in dialogue for AI, make sure it mentions to actually open the panel
 - task to train the model falls on me :/
@@ -52,12 +52,10 @@
 - make a "gamer mode" where the asteroid task starts out with 50 asteroids, and a "non-gamer mode" for judges,
 -- where the task starts out with 30 asteroids
 - make used battery be more rusty than new battery
-- make battery sprite when in inventory be sized correctly
+- make sprites when in inventory be sized correctly
 - dirty window changing into clean window animation
 - add horror vibes, e.g. alarm blaring sounds, red alarm lights, etc
 - decorate cockpit
-- still weird bug with cannot interact with purge air alarm
-- implement camera view for pressure gauge task
 - fix entrance door texture so that it's not one-side transparent other side not transparent
 
 -- 3D player model

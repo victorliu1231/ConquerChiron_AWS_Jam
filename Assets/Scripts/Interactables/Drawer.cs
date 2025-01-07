@@ -13,9 +13,11 @@ public class Drawer : Interactable {
         if (isOpen) {
             isOpen = false;
             transform.DOMove(moveFromTransform.position, 0.5f);
+            GameManager.Instance.sfxParent.Find("CabinetClose").GetComponent<AudioSource>().Play();
         } else {
             isOpen = true;
             transform.DOMove(moveToTransform.position, 0.5f);
+            GameManager.Instance.sfxParent.Find("CabinetOpen").GetComponent<AudioSource>().Play();
         }
     }
 

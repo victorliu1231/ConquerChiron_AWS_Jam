@@ -26,6 +26,9 @@ public class GameManager : MonoBehaviour {
     private float _eerieNoiseTimer = 0f;
     public FirstPersonController playerController;
     private List<AudioSource> _footstepsSFX;
+    [Header("AI")]
+    public AI_Blink aiBlink;
+    public Transform aiViewTransform;
     [Header("Interact")]
     public GameObject interactGO;
     public float interactDistance = 5f;
@@ -167,6 +170,42 @@ public class GameManager : MonoBehaviour {
     #endregion
 
     #region Handle Functions
+    public void HandleInput(){
+        if (Input.GetKeyDown(KeyCode.Tab)){
+            if (_isAsteroidTaskOn) TurnOffAsteroidTask(); else TurnOnAsteroidTask();
+        }
+        if (Input.GetKeyDown(KeyCode.P)){
+            if (isWindowCleaningTaskOn) TurnOffWindowCleaningTask(); else TurnOnWindowCleaningTask();
+        }
+        if (Input.GetKeyDown(KeyCode.L)){
+            if (isPressureGaugeTaskOn) TurnOffPressureGaugeTask(); else TurnOnPressureGaugeTask();
+        }
+        if (Input.GetKeyDown(KeyCode.O)){
+            if (horrorMode) TurnOffHorrorMode(); else TurnOnHorrorMode();
+        }
+        if (Input.GetKeyDown(KeyCode.Q)){
+            if (connectTheWiresGO.activeSelf) {
+                connectTheWiresGO.SetActive(false); 
+            } else {
+                StartTimer();
+                connectTheWiresGO.SetActive(true);
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Escape)){
+            if (settingsGO.activeSelf){
+                settingsGO.SetActive(false);
+            } else {
+                if (pauseGO.activeSelf){
+                    pauseGO.SetActive(false);
+                    ResumeGame();
+                } else {
+                    pauseGO.SetActive(true);
+                    PauseGame();
+                }
+            }
+        }
+    }
+    
     public void HandleAsteroidsTask(){
         if (_isAsteroidTaskOn){
             if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)){
@@ -218,42 +257,6 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public void HandleInput(){
-        if (Input.GetKeyDown(KeyCode.Tab)){
-            if (_isAsteroidTaskOn) TurnOffAsteroidTask(); else TurnOnAsteroidTask();
-        }
-        if (Input.GetKeyDown(KeyCode.P)){
-            if (isWindowCleaningTaskOn) TurnOffWindowCleaningTask(); else TurnOnWindowCleaningTask();
-        }
-        if (Input.GetKeyDown(KeyCode.L)){
-            if (isPressureGaugeTaskOn) TurnOffPressureGaugeTask(); else TurnOnPressureGaugeTask();
-        }
-        if (Input.GetKeyDown(KeyCode.O)){
-            if (horrorMode) TurnOffHorrorMode(); else TurnOnHorrorMode();
-        }
-        if (Input.GetKeyDown(KeyCode.Q)){
-            if (connectTheWiresGO.activeSelf) {
-                connectTheWiresGO.SetActive(false); 
-            } else {
-                StartTimer();
-                connectTheWiresGO.SetActive(true);
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.Escape)){
-            if (settingsGO.activeSelf){
-                settingsGO.SetActive(false);
-            } else {
-                if (pauseGO.activeSelf){
-                    pauseGO.SetActive(false);
-                    ResumeGame();
-                } else {
-                    pauseGO.SetActive(true);
-                    PauseGame();
-                }
-            }
-        }
-    }
-
     public void HandleInteract(){
         // Raycast from player position in direction of mouse to screen and see if it hits any objects with the layer "Interactable"
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -269,7 +272,6 @@ public class GameManager : MonoBehaviour {
                 interactGO.SetActive(true);
                 interactable.SetText();
                 if (Input.GetKeyDown(KeyCode.E)){
-                    Debug.Log("test");
                     interactable.Interact();
                     interactGO.SetActive(false);
                 }
