@@ -36,7 +36,6 @@ public class AIMonitor : Interactable {
             foreach (TextMeshProUGUI text in typingTexts) {
                 text.enabled = false;
             }
-            Debug.Log("AI Monitor Closed");
             GameManager.Instance.aiBlink.ResumeBlinking();
             GameManager.Instance.MoveCamera(GameManager.Instance.player.transform.Find("PlayerCameraRoot"), GameManager.Instance.asteroidCameraTransitionTime, false);
         }

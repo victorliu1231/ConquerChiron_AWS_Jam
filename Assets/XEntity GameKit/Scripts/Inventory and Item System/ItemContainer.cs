@@ -37,7 +37,7 @@ namespace XEntity.InventoryItemSystem
         protected GameObject itemInfoPanel;
         protected GameObject slotOptionsMenu;
         protected bool isContainerUIOpen = false;
-        protected bool isUIInitialized;
+        public bool isUIInitialized;
         protected Transform containerPanel;
 
         private List<SlotOptionButtonInfo> slotOptionButtonInfoList;
@@ -74,8 +74,6 @@ namespace XEntity.InventoryItemSystem
         protected virtual void Update()
         {
             if (isUIInitialized == false) return;
-
-            CheckForUIToggleInput();
         }
 
         //All the container variables are assigned here based.
@@ -268,7 +266,7 @@ namespace XEntity.InventoryItemSystem
         }
 
         //Checks for user inputs and updates the toggle state of the UI accordingly.
-        protected void CheckForUIToggleInput()
+        public void CheckForUIToggleInput()
         {
             if (Input.GetKeyDown(UIToggleKey)) ToggleUI();
         }

@@ -171,36 +171,39 @@ public class GameManager : MonoBehaviour {
 
     #region Handle Functions
     public void HandleInput(){
-        if (Input.GetKeyDown(KeyCode.Tab)){
-            if (_isAsteroidTaskOn) TurnOffAsteroidTask(); else TurnOnAsteroidTask();
-        }
-        if (Input.GetKeyDown(KeyCode.P)){
-            if (isWindowCleaningTaskOn) TurnOffWindowCleaningTask(); else TurnOnWindowCleaningTask();
-        }
-        if (Input.GetKeyDown(KeyCode.L)){
-            if (isPressureGaugeTaskOn) TurnOffPressureGaugeTask(); else TurnOnPressureGaugeTask();
-        }
-        if (Input.GetKeyDown(KeyCode.O)){
-            if (horrorMode) TurnOffHorrorMode(); else TurnOnHorrorMode();
-        }
-        if (Input.GetKeyDown(KeyCode.Q)){
-            if (connectTheWiresGO.activeSelf) {
-                connectTheWiresGO.SetActive(false); 
-            } else {
-                StartTimer();
-                connectTheWiresGO.SetActive(true);
+        if (aiBlink.isBlinking){
+            if (ItemManager.Instance.inventory.isUIInitialized) ItemManager.Instance.inventory.CheckForUIToggleInput();
+            if (Input.GetKeyDown(KeyCode.Tab)){
+                if (_isAsteroidTaskOn) TurnOffAsteroidTask(); else TurnOnAsteroidTask();
             }
-        }
-        if (Input.GetKeyDown(KeyCode.Escape)){
-            if (settingsGO.activeSelf){
-                settingsGO.SetActive(false);
-            } else {
-                if (pauseGO.activeSelf){
-                    pauseGO.SetActive(false);
-                    ResumeGame();
+            if (Input.GetKeyDown(KeyCode.P)){
+                if (isWindowCleaningTaskOn) TurnOffWindowCleaningTask(); else TurnOnWindowCleaningTask();
+            }
+            if (Input.GetKeyDown(KeyCode.L)){
+                if (isPressureGaugeTaskOn) TurnOffPressureGaugeTask(); else TurnOnPressureGaugeTask();
+            }
+            if (Input.GetKeyDown(KeyCode.O)){
+                if (horrorMode) TurnOffHorrorMode(); else TurnOnHorrorMode();
+            }
+            if (Input.GetKeyDown(KeyCode.K)){
+                if (connectTheWiresGO.activeSelf) {
+                    connectTheWiresGO.SetActive(false); 
                 } else {
-                    pauseGO.SetActive(true);
-                    PauseGame();
+                    StartTimer();
+                    connectTheWiresGO.SetActive(true);
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.Escape)){
+                if (settingsGO.activeSelf){
+                    settingsGO.SetActive(false);
+                } else {
+                    if (pauseGO.activeSelf){
+                        pauseGO.SetActive(false);
+                        ResumeGame();
+                    } else {
+                        pauseGO.SetActive(true);
+                        PauseGame();
+                    }
                 }
             }
         }

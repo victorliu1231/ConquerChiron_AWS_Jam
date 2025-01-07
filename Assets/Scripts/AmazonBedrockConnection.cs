@@ -13,6 +13,7 @@ using Newtonsoft.Json.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.XR;
 
 #region AmazonBedrock Class
 public class AmazonBedrockConnection : MonoBehaviour {
@@ -27,14 +28,14 @@ public class AmazonBedrockConnection : MonoBehaviour {
     [SerializeField] private Button submitButton;
     [SerializeField] private TTSSpeaker ttsSpeaker;
 
-    [Header("User Prompt Settings")]
-    [SerializeField] private string userPrompt = "Answer in one sentence please:";
-
     private AmazonBedrockRuntimeClient client;
-    private const string ModelId = "meta.llama3-8b-instruct-v1:0"; // Adjust llama model
+    private const string ModelId = "amazon.nova-lite-v1:0";//"meta.llama3-8b-instruct-v1:0"; // Adjust llama model
     private static readonly RegionEndpoint RegionEndpoint = RegionEndpoint.USEast1; // Adjust server region
+    private string lastResponse;
+    public string context;
 
     private void Awake(){
+        responseText.text = "";
         // var credentials = new BasicAWSCredentials(
         //     Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID"),
         //     Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY")
@@ -42,34 +43,61 @@ public class AmazonBedrockConnection : MonoBehaviour {
         var credentials = new BasicAWSCredentials(accessKeyId, secretAccessKey);
         client = new AmazonBedrockRuntimeClient(credentials, RegionEndpoint);
 
-        submitButton.onClick.AddListener(() => SendPrompt(inputField.text));
+        inputField.onSubmit.AddListener((string prompt) => SendPrompt(prompt));
+        //submitButton.onClick.AddListener(() => SendPrompt(inputField.text));
     }
 
     public async void SendPrompt(string prompt){
+        if (string.IsNullOrEmpty(prompt)){ 
+            responseText.text = "Please enter a prompt.";
+            return;
+        }
         if (!InputValidator.ValidateInput(prompt)){
             responseText.text = "Invalid input detected";
             return;
         }
         prompt = InputSanitizer.SanitizeInput(prompt);
-        promptText.text = $"User: {prompt}";
-        var fullPrompt = $"user\n{userPrompt} {prompt}\n\nassistant\n";
+        promptText.text = prompt;
+        var fullPrompt = $"{context}{prompt}";
 
-        var request = new InvokeModelRequest(){
+        // The response structure from Bedrock models can vary. For debugging, let's log the full response
+var requestBody = new{
+            inferenceConfig = new{
+                max_new_tokens = 1000
+            },
+            messages = new[]{
+                new{
+                    role = "user",
+                    content = new[]{
+                        new{
+                            text = fullPrompt
+                        }
+                    }
+                }
+            }
+        };
+
+        var request = new InvokeModelRequest
+        {
             ModelId = ModelId,
-            Body = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new {
-                prompt = fullPrompt,
-                max_gen_len = 512,
-                temperature = 0.5,
-            }))),
             ContentType = "application/json",
+            Accept = "application/json",
+            Body = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(requestBody)))
         };
 
         var response = await client.InvokeModelAsync(request);
         var responseBody = await new StreamReader(response.Body).ReadToEndAsync();
         var modelResponse = JObject.Parse(responseBody);
-
-        var assistantResponse = modelResponse["generation"]?.ToString();
+        
+        // For Nova-lite model, the response is in "content" field
+        var assistantResponse = modelResponse["output"]?["message"]?["content"]?[0]?["text"]?.ToString();
+        
+        // Fallback to checking other common response fields if content is null
+        if (string.IsNullOrEmpty(assistantResponse)) {
+            assistantResponse = "No response found in expected fields";
+        }
         responseText.text = assistantResponse;
+        lastResponse = assistantResponse;
         ttsSpeaker.Speak(assistantResponse);
     }
 }
