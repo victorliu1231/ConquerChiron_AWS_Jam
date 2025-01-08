@@ -10,6 +10,7 @@ public class Settings : MonoBehaviour
     public bool fullScreen;
     public Slider soundtrackSlider;
     public Slider sfxSlider;
+    public Slider aiVoiceSlider;
     public Slider mouseSensitivitySlider;
     public Toggle fullScreenToggle;
     public float maxMouseSensitivity = 11f;
@@ -22,10 +23,11 @@ public class Settings : MonoBehaviour
 
     void LoadDefaultSettings(){
         LoadScreen(defaultSettings.fullScreen);
-        LoadSliders(defaultSettings.soundtrackVolume, defaultSettings.sfxVolume, defaultSettings.mouseSensitivity);
+        LoadSliders(defaultSettings.soundtrackVolume, defaultSettings.sfxVolume, defaultSettings.aiVoiceVolume, defaultSettings.mouseSensitivity);
         SetMouseSensitivity(defaultSettings.mouseSensitivity);
         AudioManager.Instance.SetSoundtrackLevel(defaultSettings.soundtrackVolume);
         AudioManager.Instance.SetSFXLevel(defaultSettings.sfxVolume);
+        // No SetAILevel in initial load default settings because the start screen Settings won't have access to AIVoice AudioSource in the MainMenu scene
         gameObject.SetActive(false);
     }
 
@@ -33,7 +35,8 @@ public class Settings : MonoBehaviour
         fullScreenToggle.isOn = fullScreen;
         soundtrackSlider.value = AudioManager.Instance.GetSoundtrackLevel(out float soundtrackVolume);
         sfxSlider.value = AudioManager.Instance.GetSFXLevel(out float sfxVolume);
-        mouseSensitivitySlider.value = GameManager.Instance.player.GetComponentInChildren<FirstPersonController>().RotationSpeed / maxMouseSensitivity;
+        aiVoiceSlider.value = AudioManager.Instance.GetAILevel(out float aiVoiceVolume);
+        if (GameManager.Instance != null) mouseSensitivitySlider.value = GameManager.Instance.player.GetComponentInChildren<FirstPersonController>().RotationSpeed / maxMouseSensitivity;
     }
 
     public void LoadScreen(bool settingsFullScreen){
@@ -46,9 +49,10 @@ public class Settings : MonoBehaviour
         }
     }
 
-    public void LoadSliders(float volumeBGM, float volumeSFX, float mouseSensitivity){
+    public void LoadSliders(float volumeBGM, float volumeSFX, float volumeAI, float mouseSensitivity){
         soundtrackSlider.value = volumeBGM;
         sfxSlider.value = volumeSFX;
+        aiVoiceSlider.value = volumeAI;
         mouseSensitivitySlider.value = mouseSensitivity;
     }
 
@@ -66,6 +70,6 @@ public class Settings : MonoBehaviour
     }
 
     public void SetMouseSensitivity(float value){
-        GameManager.Instance.player.GetComponentInChildren<FirstPersonController>().RotationSpeed = value * (maxMouseSensitivity - minMouseSensitivity) + minMouseSensitivity;
+        if (GameManager.Instance != null) GameManager.Instance.player.GetComponentInChildren<FirstPersonController>().RotationSpeed = value * (maxMouseSensitivity - minMouseSensitivity) + minMouseSensitivity;
     }
 }

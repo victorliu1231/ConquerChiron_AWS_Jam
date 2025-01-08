@@ -13,6 +13,7 @@ public class BatteryInPanel : Interactable {
             ItemManager.Instance.UseItem(ItemManager.Instance.GetItemSlot(ItemManager.Instance.GetItemByName("Battery")));
             ItemManager.Instance.inventory.AddItem(usedBattery);
             canInteract = false;
+            GameManager.Instance.TaskComplete(Task.ReplaceNightLampBattery);
             // If have battery in inventory, make hand motion to replace battery in lamp            
 
 
@@ -25,8 +26,10 @@ public class BatteryInPanel : Interactable {
     public override void SetText()
     {
         if (ItemManager.Instance.inventory.ContainsItem(ItemManager.Instance.GetItemByName("Battery"))){
+            GameManager.Instance.replaceableKeyGO.SetActive(true);
             GameManager.Instance.replaceableText.text = "Replace Battery";
         } else {
+            GameManager.Instance.replaceableKeyGO.SetActive(false);
             GameManager.Instance.replaceableText.text = "Missing New Battery";
         }
     }

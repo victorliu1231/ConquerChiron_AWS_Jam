@@ -772,7 +772,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d037fd830a7a053449006d79556d7305, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotateSpeed: 3000
+  rotateSpeed: 1000
   naturalFallbackSpeed: 50
   maxAngleFromVertical: 90
   angleOfVertical: 187.303

@@ -35,15 +35,17 @@ MonoBehaviour:
     isPrivate: 1
     createdAt: 2024-12-20T20:35:25-0800
     trainingStatus: 1
-    lastTrainDuration: 67
-    lastTrainedAt: 2024-12-20T20:40:17-0800
-    nextTrainAt: 2024-12-20T20:39:10-0800
+    lastTrainDuration: 50
+    lastTrainedAt: 2024-12-25T17:23:16-0800
+    nextTrainAt: 2024-12-25T17:22:26-0800
     intents:
-    - id: 1243256063602518
-      name: aws_jam
+    - id: 530115486756609
+      name: tasks
       entities:
       - name: aws_jam:aws_jam
         id: 1646878296259225
+      - name: aws_jam:tasks
+        id: 9402973986394141
     entities:
     - name: aws_jam
       id: 1174027490956509
@@ -53,7 +55,12 @@ MonoBehaviour:
       roles:
       - name: aws_jam
         id: 1646878296259225
+      - name: tasks
+        id: 9402973986394141
       keywords:
+      - keyword: cockpit
+        synonyms:
+        - cockpit
       - keyword: ello
         synonyms:
         - ello
@@ -69,7 +76,21 @@ MonoBehaviour:
       - keyword: hi
         synonyms:
         - hi
-    traits: []
+      - keyword: task
+        synonyms:
+        - task
+      - keyword: tell
+        synonyms:
+        - tell
+      - keyword: what
+        synonyms:
+        - what
+    traits:
+    - name: command
+      id: 1269005747579264
+      values:
+      - id: 1327582728426050
+        value: tell
     versionTags: []
     voices:
     - name: wit$British Butler

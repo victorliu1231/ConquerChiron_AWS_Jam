@@ -6,6 +6,7 @@ using UnityEngine;
 public class DefaultSettings : ScriptableObject {
     public float soundtrackVolume = 0.5f;
     public float sfxVolume = 0.5f;
-    public float mouseSensitivity = 0.5f;
+    public float mouseSensitivity = 0.75f;
+    public float aiVoiceVolume = 0.5f;
     public bool fullScreen = true;
 }

@@ -16,6 +16,7 @@ public class AIMonitor : Interactable {
 
     public override void Interact() {
         base.Interact();
+        GameManager.Instance.awsConnection.inputField.enabled = true;
         canInteract = false;
         GameManager.Instance.aiBlink.PauseBlinking();
         foreach (TextMeshProUGUI text in typingTexts) {
@@ -36,7 +37,12 @@ public class AIMonitor : Interactable {
             foreach (TextMeshProUGUI text in typingTexts) {
                 text.enabled = false;
             }
+            if (GameManager.Instance.awsConnection.inputField.isFocused) {
+                // Remove Q / q from input field
+                GameManager.Instance.awsConnection.inputField.text = GameManager.Instance.awsConnection.inputField.text.Substring(0, GameManager.Instance.awsConnection.inputField.text.Length - 1);
+            }
             GameManager.Instance.aiBlink.ResumeBlinking();
+            GameManager.Instance.awsConnection.inputField.enabled = false;
             GameManager.Instance.MoveCamera(GameManager.Instance.player.transform.Find("PlayerCameraRoot"), GameManager.Instance.asteroidCameraTransitionTime, false);
         }
     }

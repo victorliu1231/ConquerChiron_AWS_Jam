@@ -42,14 +42,18 @@ public class MeltedFuse : Interactable {
     {
         if (!canBeReplaced){
             if (ItemManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Wrench"))){
+                GameManager.Instance.replaceableKeyGO.SetActive(true);
                 GameManager.Instance.replaceableText.text = "Unscrew Fuse";
             } else {
+                GameManager.Instance.replaceableKeyGO.SetActive(false);
                 GameManager.Instance.replaceableText.text = "Must Equip Wrench";
             }
         } else {
             if (ItemManager.Instance.inventory.ContainsItem(ItemManager.Instance.GetItemByName("Fuse"))){
+                GameManager.Instance.replaceableKeyGO.SetActive(true);
                 GameManager.Instance.replaceableText.text = "Replace Fuse";
             } else {
+                GameManager.Instance.replaceableKeyGO.SetActive(false);
                 GameManager.Instance.replaceableText.text = "Missing New Fuse";
             }
         }

@@ -112,7 +112,11 @@ namespace XEntity.InventoryItemSystem
         //Returns the item from the itemList with the name.
         public Item GetItemByName(string name) 
         {
-            foreach (Item item in itemList) if (item.itemName == name) return item;
+            
+            foreach (Item item in itemList) {
+                Debug.Log(item);
+                if (item.itemName == name) return item;
+            }
             return null;
         }
 

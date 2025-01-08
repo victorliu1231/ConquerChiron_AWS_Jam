@@ -5,7 +5,7 @@
 --- XEntity Inventory system
 --- Asteroids 3D model pack
 -- AI:
---- Meta llama model
+--- Nova Lite model
 --- WitAI
 -- Scripts:
 --- ConnectTheDots scripts by Nichathan Gaming, https://www.youtube.com/watch?v=PZQK4ADyqdY
@@ -28,15 +28,40 @@
 --- pressure gauge meter, Speedometer by Poly by Google [CC-BY] via Poly Pizza https://poly.pizza/m/17WlSF6dD-r
 --- crowbar by milanbon, https://www.turbosquid.com/3d-models/free-crowbar-3d-model/641578
 --- hanging monitor by Hanging Monitor, https://www.turbosquid.com/3d-models/hanging-monitor-lowpoly-pbr-3d-model-2284054
+--- notepad by PAS_Studios, https://www.turbosquid.com/3d-models/bloc-3d-model-1352531
 -- 2D sprites:
 --- the wire for ConnectTheDots  "Sparky wire" by MrA https://asamusev.itch.io/sparkywire
 
 - PlayerInventory has to be active in order for it to work bc of Awake functions
 
 - todo list
-- implement limit to prevent query spamming the bot
+-- could ask Will to texture the notepad, would make it look really cool
+-- extra: add in dictation to the game
+- make sure settings and player inventory are setactive and gamemanager isdebugging is false
+- if I have the input field, then exit by clicking Q, then quickly press E to go back, the AI UI somehow breaks.
+-- if have extra time -- sort out the most hostile of player responses and use those as the top three to guide AI's response
+-- also give history of AI responses and player prompts if extra time
+- have the AI bot be context-aware of game state (for the later half of the game too).
+- when successfully hitting a pressure gauge mark, turn it green and fade, when fail turn it red and fade
+- implement what happens when you fail a task
+- figure out transition to horror
+
+- have AI greet you upon starting a run (Perhaps query: "Hi, who are you?" to the AI)
+- have AI be context-aware and give you a summary upon continuing a run
+- clear out tasks when complete with them, and make a sfx
+- prevent repeat tasks from showing up in tasks panel
+- ai boss fight mode... HUGE next step
+
+- new sfx needed:
+-- unwrench something
+-- task complete sfx
+
+- finally add in tasksCompleted section
+- maybe in easy mode, the AI gives more on-the-nose directions
+
+- add in game title
+- add in Will's animation models
 - move player to proper transform location so that it's hands look correct
-- add whoosh sfx and cabinet open/close sfx
 - maybe in horror mode you have to physically open the doors, it's no longer automatic
 - need generic item click sfx and use for replacing fuse
 - need unwrench sfx and use for unwrenching fuse

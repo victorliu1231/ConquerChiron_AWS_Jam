@@ -9,33 +9,63 @@ using UnityEngine.SceneManagement;
 using XEntity.InventoryItemSystem;
 using StarterAssets;
 
+public enum Task {
+    Unpack,
+    ReplaceNightLampBattery,
+    RecalibratePressureGauge,
+    CleanCockpitWindows,
+    Asteroids,
+    AirPurge
+}
+
 public class GameManager : MonoBehaviour {
     #region Variables
     public static GameManager Instance;
+    public bool isDebugging = true;
     public GameObject pauseGO;
     public GameObject settingsGO;
     public Checkpoint currentCheckpoint;
-    public List<string> tasksCompleted;
     public bool isGamePaused;
     public TextMeshProUGUI inventoryFullText;
     public Animator playerAnimator;
+    public bool horrorMode = false;
+    public FirstPersonController playerController;
+    
+    [Header("Sounds")]
     public Transform sfxParent;
     public Transform soundtrackParents;
-    public bool horrorMode = false;
     public float timeBetweenEerieNoises = 15f;
     private float _eerieNoiseTimer = 0f;
-    public FirstPersonController playerController;
     private List<AudioSource> _footstepsSFX;
+    [Header("Tasks")]
+    public List<Task> tasksCompleted;
+    public List<Task> tasksRemaining;
+    public List<Task> assignedTasks;
+    public List<string> playerPrompts;
+    public TextMeshProUGUI tasksAssignedText;
+    public Transform tasksPanelTransform;
+    public Transform tasksPanelMoveToTransform;
+    [Header("Tutorials")]
+    public GameObject notepad;
+    public GameObject windowCleaningTutorial;
+    public GameObject pressureGaugeTutorial;
+    public GameObject asteroidsTutorial;
+    public GameObject connectWiresTutorial;
     [Header("AI")]
     public AI_Blink aiBlink;
     public Transform aiViewTransform;
+    public AmazonBedrockConnection awsConnection;
+    public float waitTimeBetweenPrompting = 5f; // in seconds
+    public float timerBetweenPrompting = 0f;
     [Header("Interact")]
-    public GameObject interactGO;
     public float interactDistance = 5f;
     public Transform holdObjectTransform;
     public bool isHoldingObject = false;
+    public GameObject interactGO;
+    public GameObject interactKeyGO;
     public TextMeshProUGUI interactText;
     public GameObject replaceableGO;
+    public GameObject replaceableKeyGO;
     public TextMeshProUGUI replaceableText;
     [Header("Timer")]
     public Image timerForegroundImage;
@@ -66,10 +96,12 @@ public class GameManager : MonoBehaviour {
     [Header("Connect the Wires Task")]
     public GameObject connectTheWiresGO;
     [Header("Pressure Gauge Task")]
+    public Interactable pressureGauge;
     public Transform pressureGaugeViewTransform;
     public bool isPressureGaugeTaskOn;
     public Needle needle;
     [Header("Window Cleaning Task")]
+    public Interactable cockpitWindow;
     public GameObject cleaningDotPrefab;
     public List<Transform> windowCleaningCameraTransforms;
     public Transform dotsParent;
@@ -80,16 +112,24 @@ public class GameManager : MonoBehaviour {
     public int numDotsInWindowComplete = 0;
     public int numDotsPerWindowToComplete = 3;
     public int windowIndex = 0;
+    [Header("Misc Tasks")]
+    public Interactable nightLamp;
     #endregion
 
     #region Awake
     void Awake(){
         Instance = this;
-        tasksCompleted = new List<string>();
+        tasksCompleted = new List<Task>();
+        tasksRemaining = new List<Task>{Task.CleanCockpitWindows, Task.RecalibratePressureGauge, Task.ReplaceNightLampBattery, Task.Unpack};
+        assignedTasks = new List<Task>();
+        playerPrompts = new List<string>();
         timerGO.SetActive(false);
         shipHealthSlider.gameObject.SetActive(false);
         diedScreen.SetActive(false);
         _footstepsSFX = new List<AudioSource>();
+        tasksPanelTransform.localPosition = Vector3.zero;
+        tasksPanelTransform.localScale = Vector3.zero;
+        tasksAssignedText.text = "";
         foreach (Transform child in sfxParent){
             if (child.name.Contains("Step")){
                 _footstepsSFX.Add(child.GetComponent<AudioSource>());
@@ -100,7 +140,8 @@ public class GameManager : MonoBehaviour {
 
     #region Update
     void Update(){
-        //Debug.Log(Input.mousePosition);
+        timerBetweenPrompting += Time.deltaTime;
+
         if (_timerOn) {
             timer += Time.deltaTime;
             timerForegroundImage.fillAmount = timeToCompleteTasks - timer > 0 ? (timeToCompleteTasks - timer) / timeToCompleteTasks : 0f;
@@ -173,24 +214,17 @@ public class GameManager : MonoBehaviour {
     public void HandleInput(){
         if (aiBlink.isBlinking){
             if (ItemManager.Instance.inventory.isUIInitialized) ItemManager.Instance.inventory.CheckForUIToggleInput();
-            if (Input.GetKeyDown(KeyCode.Tab)){
-                if (_isAsteroidTaskOn) TurnOffAsteroidTask(); else TurnOnAsteroidTask();
-            }
-            if (Input.GetKeyDown(KeyCode.P)){
-                if (isWindowCleaningTaskOn) TurnOffWindowCleaningTask(); else TurnOnWindowCleaningTask();
-            }
-            if (Input.GetKeyDown(KeyCode.L)){
-                if (isPressureGaugeTaskOn) TurnOffPressureGaugeTask(); else TurnOnPressureGaugeTask();
-            }
-            if (Input.GetKeyDown(KeyCode.O)){
-                if (horrorMode) TurnOffHorrorMode(); else TurnOnHorrorMode();
-            }
-            if (Input.GetKeyDown(KeyCode.K)){
-                if (connectTheWiresGO.activeSelf) {
-                    connectTheWiresGO.SetActive(false); 
-                } else {
-                    StartTimer();
-                    connectTheWiresGO.SetActive(true);
+            if (isDebugging){
+                if (Input.GetKeyDown(KeyCode.O)){
+                    if (horrorMode) TurnOffHorrorMode(); else TurnOnHorrorMode();
+                }
+                if (Input.GetKeyDown(KeyCode.K)){
+                    if (connectTheWiresGO.activeSelf) {
+                        connectTheWiresGO.SetActive(false); 
+                    } else {
+                        StartTimer();
+                        connectTheWiresGO.SetActive(true);
+                    }
                 }
             }
             if (Input.GetKeyDown(KeyCode.Escape)){
@@ -358,8 +392,9 @@ public class GameManager : MonoBehaviour {
         StopTimer();
     }
 
-    public void TaskComplete(){
-        Debug.Log("Task complete");
+    public void TaskComplete(Task task){
+        tasksCompleted.Add(task);
+        tasksRemaining.Remove(task);
         // Play some sound effect
         StopTimer();
     }
@@ -392,6 +427,37 @@ public class GameManager : MonoBehaviour {
     }
     #endregion
 
+    #region Tasks
+    public void AssignTask(Task task){
+        if (assignedTasks.Count == 0){
+            tasksPanelTransform.DOScale(1, 1f).SetDelay(2f).OnComplete(() => StartCoroutine(MoveTasksPanel()));
+        }
+        assignedTasks.Add(task);
+        if (task == Task.CleanCockpitWindows){
+            tasksAssignedText.text += "- Clean cockpit windows\n";
+            cockpitWindow.canInteract = true;
+        }
+        if (task == Task.RecalibratePressureGauge){
+            tasksAssignedText.text += "- Recalibrate pressure gauge in engineering room\n";
+            pressureGauge.canInteract = true;
+        }
+        if (task == Task.ReplaceNightLampBattery){
+            tasksAssignedText.text += "- Replace night lamp battery in crew cabin\n";
+            nightLamp.canInteract = true;
+        }
+        if (task == Task.Unpack){
+            tasksAssignedText.text += "- Unpack boxes in cargo hold\n";
+        }
+    }
+
+    IEnumerator MoveTasksPanel(){
+        while (Vector3.Distance(tasksPanelTransform.position, tasksPanelMoveToTransform.position) > 0.01f){
+            tasksPanelTransform.position = Vector3.MoveTowards(tasksPanelTransform.position, tasksPanelMoveToTransform.position, 0.01f);
+            yield return new WaitForSeconds(0.01f);
+        }
+    }
+    #endregion
+
     #region Asteroid Functions
     public void ShipTakeDamage(){
         shipHealth -= damagePerAsteroidHit;
@@ -415,7 +481,7 @@ public class GameManager : MonoBehaviour {
         asteroidGenerator.ClearAsteroids();
         _isAsteroidTaskOn = false;
         shipHealthSlider.gameObject.SetActive(false);
-        TaskComplete();
+        TaskComplete(Task.Asteroids);
         MoveCamera(player.transform.Find("PlayerCameraRoot"), asteroidCameraTransitionTime, false);
     }
     public void TurnOnSecondStageAsteroids(){
@@ -442,7 +508,7 @@ public class GameManager : MonoBehaviour {
     public void TurnOffWindowCleaningTask(){
         isWindowCleaningTaskOn = false;
         cleaningGOs.SetActive(false);
-        TaskComplete();
+        TaskComplete(Task.CleanCockpitWindows);
         MoveCamera(player.transform.Find("PlayerCameraRoot"), asteroidCameraTransitionTime, false);
     }
 
@@ -473,7 +539,7 @@ public class GameManager : MonoBehaviour {
 
     public void TurnOffAirPurgeTask(){
         sfxParent.Find("Alarm").GetComponent<AudioSource>().Stop();
-        TaskComplete();
+        TaskComplete(Task.AirPurge);
     }
     #endregion
 
@@ -481,14 +547,13 @@ public class GameManager : MonoBehaviour {
     public void TurnOnPressureGaugeTask(){
         isPressureGaugeTaskOn = true;
         needle.Restart();
-        StartTimer();
         CameraStaticMode();
         MoveCamera(pressureGaugeViewTransform, asteroidCameraTransitionTime, true);
     }
 
     public void TurnOffPressureGaugeTask(){
         isPressureGaugeTaskOn = false;
-        TaskComplete();
+        TaskComplete(Task.RecalibratePressureGauge);
         MoveCamera(player.transform.Find("PlayerCameraRoot"), asteroidCameraTransitionTime, false);
     }
     #endregion
@@ -500,6 +565,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public void MoveCamera(Transform moveToTransform, float transitionTime, bool cameraStaticMode, float delay = 0f){
+        Debug.Log(moveToTransform.name);
         Camera.main.transform.DORotateQuaternion(moveToTransform.rotation, transitionTime).SetDelay(delay);
         if (cameraStaticMode) Camera.main.transform.DOMove(moveToTransform.position, transitionTime).SetDelay(delay);
         else Camera.main.transform.DOMove(moveToTransform.position, transitionTime).SetDelay(delay).OnComplete(() => {

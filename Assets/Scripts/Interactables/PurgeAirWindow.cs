@@ -44,8 +44,10 @@ public class PurgeAirWindow : Interactable {
     public override void SetText()
     {
         if (ItemManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Crowbar"))){
+            GameManager.Instance.interactKeyGO.SetActive(true);
             GameManager.Instance.interactText.text = "Smash Window";
         } else {
+            GameManager.Instance.interactKeyGO.SetActive(false);
             GameManager.Instance.interactText.text = "Must Equip Crowbar";
         }
     }

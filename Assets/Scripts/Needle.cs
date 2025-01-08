@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,9 +19,12 @@ public class Needle : MonoBehaviour {
     private int _numBenchmarksCompleted = 0;
     private int _numAttempts = 0;
     private bool _isTaskCompleted = false;
+    private Color _originalShadeColor;
+    private bool _currentlyShadingOut = false;
 
     void Start(){
         Restart();
+        _originalShadeColor = shadeImage.color;
     }
 
     public void Restart(){
@@ -40,7 +44,7 @@ public class Needle : MonoBehaviour {
         if (!_isTaskCompleted && GameManager.Instance.isPressureGaugeTaskOn){
             if (_numAttempts < rotationBenchmarks.Count){
                 _timer += Time.deltaTime;
-                if (_timer < timeBetweenBenchmarks){
+                if (_timer < timeBetweenBenchmarks || _currentlyShadingOut){
                     if (transform.localRotation.eulerAngles.y >= angleOfVertical - maxAngleFromVertical - 1f && transform.localRotation.eulerAngles.y <= angleOfVertical + maxAngleFromVertical){
                         if (Input.GetKeyDown(KeyCode.Space)){
                             transform.Rotate(0,rotateSpeed*Time.deltaTime,0);
@@ -54,13 +58,25 @@ public class Needle : MonoBehaviour {
                     }
                 } else {
                     if (transform.localRotation.eulerAngles.y >= angleOfVertical - maxAngleFromVertical + rotationBenchmarks[_numAttempts] - angleErrorMargin && transform.localRotation.eulerAngles.y <= angleOfVertical - maxAngleFromVertical + rotationBenchmarks[_numAttempts] + angleErrorMargin){
-                        _timer = 0f;
                         _numBenchmarksCompleted++;
+                        _currentlyShadingOut = true;
+                        shadeImage.DOColor(new Color(Color.green.r, Color.green.g, Color.green.b, _originalShadeColor.a), 0.5f).OnComplete(() => {
+                            shadeImage.color = _originalShadeColor;
+                            _timer = 0f;
+                            _currentlyShadingOut = false;
+                            _numAttempts++;
+                            SetRotation(rotationBenchmarks[_numAttempts]);
+                        });
                     } else {
-                        _timer = 0f;
+                        _currentlyShadingOut = true;
+                        shadeImage.DOColor(new Color(Color.red.r, Color.red.g, Color.red.b, _originalShadeColor.a), 0.5f).OnComplete(() => {
+                            shadeImage.color = _originalShadeColor;
+                            _timer = 0f;
+                            _currentlyShadingOut = false;
+                            _numAttempts++;
+                            SetRotation(rotationBenchmarks[_numAttempts]);
+                        });
                     }
-                    _numAttempts++;
-                    SetRotation(rotationBenchmarks[_numAttempts]);
                 }
                 
                 if (_numBenchmarksCompleted >= minBenchmarksCompleted){

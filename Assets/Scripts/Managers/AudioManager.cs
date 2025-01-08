@@ -7,6 +7,7 @@ public class AudioManager : MonoBehaviour {
     public static AudioManager Instance;
     public AudioMixer soundtrackMixer;
     public AudioMixer sfxMixer;
+    public AudioSource aiAudioSource;
 
     void Awake(){
         Instance = this;
@@ -30,6 +31,11 @@ public class AudioManager : MonoBehaviour {
         }
     }
 
+    public void SetAILevel (float level) {
+        if (aiAudioSource == null) return;
+        aiAudioSource.volume = level;
+    }
+
     public float GetSoundtrackLevel (out float level) {
         soundtrackMixer.GetFloat("Volume", out level);
         if (level == 0) return 0;
@@ -44,5 +50,15 @@ public class AudioManager : MonoBehaviour {
         // Convert decibels to level from 0 to 1
         level = Mathf.Pow(10, level / 20);
         return level;
+    }
+
+    public float GetAILevel (out float level) {
+        if (aiAudioSource == null) {
+            level = -1f; 
+            return level;
+        } else {
+            level = aiAudioSource.volume;
+            return level;
+        }
     }
 }
