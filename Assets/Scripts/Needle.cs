@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -81,8 +82,7 @@ public class Needle : MonoBehaviour {
                 
                 if (_numBenchmarksCompleted >= minBenchmarksCompleted){
                     _isTaskCompleted = true;
-                    GameManager.Instance.TurnOffPressureGaugeTask();
-                    // End task early
+                    GameManager.Instance.TaskComplete(Task.RecalibratePressureGauge);
                 }
             } else {
                 GameManager.Instance.GoToCheckpoint();

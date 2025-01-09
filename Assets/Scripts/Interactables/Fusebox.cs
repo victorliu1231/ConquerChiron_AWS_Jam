@@ -8,6 +8,7 @@ public class Fusebox : Interactable {
 
     public override void Start() {
         base.Start();
+        canInteract = false;
         meltedFuse.canInteract = false;
     }
 

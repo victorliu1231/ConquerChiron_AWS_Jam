@@ -100,7 +100,7 @@ public class ConnectDotsGameController : MonoBehaviour
         if (CountFilledCells() < cells.Count) return;
 
         isGameActive = false;
-        winScreen.SetActive(true);
+        GameManager.Instance.TaskComplete(Task.ConnectWires);
     }
 
     /// <summary>

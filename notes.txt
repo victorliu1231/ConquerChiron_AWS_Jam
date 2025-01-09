@@ -32,8 +32,6 @@
 -- 2D sprites:
 --- the wire for ConnectTheDots  "Sparky wire" by MrA https://asamusev.itch.io/sparkywire
 
-- PlayerInventory has to be active in order for it to work bc of Awake functions
-
 - todo list
 -- could ask Will to texture the notepad, would make it look really cool
 -- extra: add in dictation to the game
@@ -42,21 +40,29 @@
 -- if have extra time -- sort out the most hostile of player responses and use those as the top three to guide AI's response
 -- also give history of AI responses and player prompts if extra time
 - have the AI bot be context-aware of game state (for the later half of the game too).
-- when successfully hitting a pressure gauge mark, turn it green and fade, when fail turn it red and fade
-- implement what happens when you fail a task
-- figure out transition to horror
+- implement what happens when you fail a task (should take advantage of current checkpoint)
+
+- debug why asteroid task has player FirstPersonController as isCameraFree = true when it is supposed to have been set to false
+
+- horror mode
+--- okay the transitions are pretty bad, the player should APPROACH these tasks, not be forced into them.
+--- also the AI responses during horror mode are pretty bad, test these
+- have player give its own responses and dictate them
 
 - have AI greet you upon starting a run (Perhaps query: "Hi, who are you?" to the AI)
 - have AI be context-aware and give you a summary upon continuing a run
-- clear out tasks when complete with them, and make a sfx
-- prevent repeat tasks from showing up in tasks panel
 - ai boss fight mode... HUGE next step
+
+- transition to AI being evil comes from talking to Chiron
+- AI transitions faster to evil if you trashed talked it earlier?? (maybe have this integrated into gameplay somehow, need WitAI sentiment analysis
+-- have it override tasksRemaining bool)
+- make AI bring up daily maintenance tasks needs periodically
+- Windows in Grace rooms should be transparent
 
 - new sfx needed:
 -- unwrench something
 -- task complete sfx
 
-- finally add in tasksCompleted section
 - maybe in easy mode, the AI gives more on-the-nose directions
 
 - add in game title
@@ -69,11 +75,8 @@
 - prevent dragging entire inventory screen?
 - preferably autosave settings in playerprefs
 - fix picking up items not properly setting a fixed rotation bug
-- in dialogue for AI, make sure it mentions to actually open the panel
-- task to train the model falls on me :/
 - coroutine bug with inventory being set inactive early???
 - weird bug where player moves when picking up object
-- do prelim research if it's easy to train meta llama model for customized output (lowkey could task Grace with this??? But I might be better since I actually took an ML class)
 - make a "gamer mode" where the asteroid task starts out with 50 asteroids, and a "non-gamer mode" for judges,
 -- where the task starts out with 30 asteroids
 - make used battery be more rusty than new battery

@@ -28,6 +28,7 @@ public class MeltedFuse : Interactable {
                 ItemManager.Instance.inventory.AddItem(meltedFuse);
                 Instantiate(workingFuse, transform.position, transform.rotation, transform.parent);
                 GameManager.Instance.sfxParent.Find("ItemPickup").GetComponent<AudioSource>().Play();
+                GameManager.Instance.TaskComplete(Task.ReplaceFuse);
                 // Hand motion to replace fuse
 
                 Destroy(gameObject);

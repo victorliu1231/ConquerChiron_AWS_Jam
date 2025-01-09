@@ -114,7 +114,6 @@ namespace XEntity.InventoryItemSystem
         {
             
             foreach (Item item in itemList) {
-                Debug.Log(item);
                 if (item.itemName == name) return item;
             }
             return null;

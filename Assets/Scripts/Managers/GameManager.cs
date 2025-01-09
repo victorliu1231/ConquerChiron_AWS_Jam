@@ -14,8 +14,11 @@ public enum Task {
     ReplaceNightLampBattery,
     RecalibratePressureGauge,
     CleanCockpitWindows,
-    Asteroids,
-    AirPurge
+    TalkToChiron,
+    SurviveAsteroids,
+    PurgeAir,
+    ConnectWires,
+    ReplaceFuse,
 }
 
 public class GameManager : MonoBehaviour {
@@ -30,6 +33,7 @@ public class GameManager : MonoBehaviour {
     public Animator playerAnimator;
     public bool horrorMode = false;
     public FirstPersonController playerController;
+    private bool _justExitedTransitionPeriod = true;
     
     [Header("Sounds")]
     public Transform sfxParent;
@@ -45,6 +49,7 @@ public class GameManager : MonoBehaviour {
     public TextMeshProUGUI tasksAssignedText;
     public Transform tasksPanelTransform;
     public Transform tasksPanelMoveToTransform;
+    public bool allPeacefulTasksComplete = false;
     [Header("Tutorials")]
     public GameObject notepad;
     public GameObject windowCleaningTutorial;
@@ -114,6 +119,8 @@ public class GameManager : MonoBehaviour {
     public int windowIndex = 0;
     [Header("Misc Tasks")]
     public Interactable nightLamp;
+    public Interactable fusebox;
+    public Interactable purgeAirWindow;
     #endregion
 
     #region Awake
@@ -158,6 +165,11 @@ public class GameManager : MonoBehaviour {
         HandlePlacing();
 
         if (horrorMode){
+            if (aiBlink.isBlinking && _justExitedTransitionPeriod){
+                _justExitedTransitionPeriod = false;
+                Invoke("AssignHorrorTask", 10f);
+            }
+
             _eerieNoiseTimer += Time.deltaTime;
             if (_eerieNoiseTimer >= timeBetweenEerieNoises){
                 int random = Random.Range(0, 4);
@@ -267,16 +279,13 @@ public class GameManager : MonoBehaviour {
             if (timer >= secondStageAsteroidsTime && !_isSecondAsteroidStageOn){
                 TurnOnSecondStageAsteroids();
                 timerForegroundImage.color = Color.red;
-                // wtf this shit is not looping
                 timerGO.transform.DOScale(1.1f, 0.5f).SetLoops(-1, LoopType.Yoyo);
             }
-        } else {
-            if (timer >= timeToCompleteTasks - timeStartPulsing && timerForegroundImage.color != Color.red){
-                timerForegroundImage.color = Color.red;
-                // wtf this shit is not looping
-                timerGO.transform.DOScale(1.1f, 0.5f).SetLoops(-1, LoopType.Yoyo);
+            if (timer >= timeToCompleteTasks){
+                if (shipHealth > 0) TaskComplete(Task.SurviveAsteroids);
+                else GoToCheckpoint();
             }
-        } 
+        }
     }
 
     public void HandleWindowCleaningTask(){
@@ -289,7 +298,7 @@ public class GameManager : MonoBehaviour {
                     Invoke("GenerateCleaningDots", asteroidCameraTransitionTime*2);
                 }
             } else {
-                TurnOffWindowCleaningTask();
+                TaskComplete(Task.CleanCockpitWindows);
             }
         }
     }
@@ -392,13 +401,6 @@ public class GameManager : MonoBehaviour {
         StopTimer();
     }
 
-    public void TaskComplete(Task task){
-        tasksCompleted.Add(task);
-        tasksRemaining.Remove(task);
-        // Play some sound effect
-        StopTimer();
-    }
-
     public void StopTimer(){
         _timerOn = false;
         timerGO.SetActive(false);
@@ -448,6 +450,27 @@ public class GameManager : MonoBehaviour {
         if (task == Task.Unpack){
             tasksAssignedText.text += "- Unpack boxes in cargo hold\n";
         }
+        if (task == Task.TalkToChiron){
+            tasksAssignedText.text += "- Talk to Chiron for a while\n";
+        }
+        if (task == Task.SurviveAsteroids){
+            tasksAssignedText.text += "- Pilot the spaceship from cockpit and survive the onslaught of asteroids\n";
+            TurnOnAsteroidTask();
+        }
+        if (task == Task.PurgeAir){
+            tasksAssignedText.text += "- Purge the air in the spaceship. Button is in cargo hold.\n";
+            TurnOnAirPurgeTask();
+        }
+        if (task == Task.ConnectWires){
+            tasksAssignedText.text += "- Turn on backup generators in engineering room\n";
+            connectTheWiresGO.SetActive(true);
+            StartTimer();
+        }
+        if (task == Task.ReplaceFuse){
+            tasksAssignedText.text += "- Replace the melted fuse in the fusebox in the crew cabin\n";
+            fusebox.canInteract = true;
+            StartTimer();
+        }
     }
 
     IEnumerator MoveTasksPanel(){
@@ -455,6 +478,66 @@ public class GameManager : MonoBehaviour {
             tasksPanelTransform.position = Vector3.MoveTowards(tasksPanelTransform.position, tasksPanelMoveToTransform.position, 0.01f);
             yield return new WaitForSeconds(0.01f);
         }
+    }
+
+    public void TaskComplete(Task task){
+        tasksCompleted.Add(task);
+        if (tasksRemaining.Contains(task)) tasksRemaining.Remove(task);
+        if (tasksRemaining.Contains(task)) assignedTasks.Remove(task);
+        // Remove the task string from tasksAssignedText
+        if (task == Task.CleanCockpitWindows){
+            tasksAssignedText.text = tasksAssignedText.text.Replace("- Clean cockpit windows\n", "");
+            TurnOffWindowCleaningTask();
+        }
+        if (task == Task.RecalibratePressureGauge){
+            TurnOffPressureGaugeTask();
+            tasksAssignedText.text = tasksAssignedText.text.Replace("- Recalibrate pressure gauge in engineering room\n", "");
+        }
+        if (task == Task.ReplaceNightLampBattery){
+            tasksAssignedText.text = tasksAssignedText.text.Replace("- Replace night lamp battery in crew cabin\n", "");
+        }
+        if (task == Task.Unpack){
+            tasksAssignedText.text = tasksAssignedText.text.Replace("- Unpack boxes in cargo hold\n", "");
+        }
+        if (task == Task.TalkToChiron){
+            tasksAssignedText.text = tasksAssignedText.text.Replace("- Talk to Chiron for a while\n", "");
+        }
+        if (horrorMode){
+            if (!_justExitedTransitionPeriod) Invoke("AssignHorrorTask", 5f);
+
+            if (task == Task.SurviveAsteroids){
+                tasksAssignedText.text = tasksAssignedText.text.Replace("- Pilot the spaceship from cockpit and survive the onslaught of asteroids\n", "");
+                TurnOffAsteroidTask();
+            }
+            if (task == Task.PurgeAir){
+                tasksAssignedText.text = tasksAssignedText.text.Replace("- Purge the air in the spaceship. Button is in cargo hold.\n", "");
+                TurnOffAirPurgeTask();
+            }
+            if (task == Task.ConnectWires){
+                tasksAssignedText.text = tasksAssignedText.text.Replace("- Turn on backup generators in engineering room\n", "");
+                connectTheWiresGO.SetActive(false);
+            }
+            if (task == Task.ReplaceFuse){
+                tasksAssignedText.text = tasksAssignedText.text.Replace("- Replace the melted fuse in the fusebox in the crew cabin\n", "");
+            }
+        }
+        if (assignedTasks.Count == 0 && !horrorMode){
+            if (tasksRemaining.Count == 0){
+                AssignTask(Task.TalkToChiron);
+                allPeacefulTasksComplete = true;
+            } else {
+                tasksAssignedText.text += "- Ask Chiron for another task\n";
+            }
+        }
+
+        // Play some sound effect
+        StopTimer();
+    }
+
+    public void AssignHorrorTask(){
+        Debug.Log("tracing path...");
+        if (GameManager.Instance.tasksRemaining.Count > 0) awsConnection.SendPrompt("I survived what you just threw at me. What next?", true);
+        else awsConnection.SendPrompt("I survived all the assassination attempts you just threw at me. I'm ready to go home.", true);
     }
     #endregion
 
@@ -481,7 +564,6 @@ public class GameManager : MonoBehaviour {
         asteroidGenerator.ClearAsteroids();
         _isAsteroidTaskOn = false;
         shipHealthSlider.gameObject.SetActive(false);
-        TaskComplete(Task.Asteroids);
         MoveCamera(player.transform.Find("PlayerCameraRoot"), asteroidCameraTransitionTime, false);
     }
     public void TurnOnSecondStageAsteroids(){
@@ -508,7 +590,6 @@ public class GameManager : MonoBehaviour {
     public void TurnOffWindowCleaningTask(){
         isWindowCleaningTaskOn = false;
         cleaningGOs.SetActive(false);
-        TaskComplete(Task.CleanCockpitWindows);
         MoveCamera(player.transform.Find("PlayerCameraRoot"), asteroidCameraTransitionTime, false);
     }
 
@@ -533,13 +614,15 @@ public class GameManager : MonoBehaviour {
     #region Air Purge Functions
     public void TurnOnAirPurgeTask(){
         StartTimer();
+        purgeAirWindow.canInteract = true;
         sfxParent.Find("Shake").GetComponent<AudioSource>().Play();
         sfxParent.Find("Alarm").GetComponent<AudioSource>().PlayDelayed(5f);
     }
 
     public void TurnOffAirPurgeTask(){
-        sfxParent.Find("Alarm").GetComponent<AudioSource>().Stop();
-        TaskComplete(Task.AirPurge);
+        sfxParent.Find("Alarm").GetComponent<AudioSource>().DOFade(0f, 2f).OnComplete(() => {
+            sfxParent.Find("Alarm").GetComponent<AudioSource>().Stop();
+        });
     }
     #endregion
 
@@ -553,7 +636,6 @@ public class GameManager : MonoBehaviour {
 
     public void TurnOffPressureGaugeTask(){
         isPressureGaugeTaskOn = false;
-        TaskComplete(Task.RecalibratePressureGauge);
         MoveCamera(player.transform.Find("PlayerCameraRoot"), asteroidCameraTransitionTime, false);
     }
     #endregion
@@ -565,7 +647,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public void MoveCamera(Transform moveToTransform, float transitionTime, bool cameraStaticMode, float delay = 0f){
-        Debug.Log(moveToTransform.name);
+        Debug.Log(cameraStaticMode);
         Camera.main.transform.DORotateQuaternion(moveToTransform.rotation, transitionTime).SetDelay(delay);
         if (cameraStaticMode) Camera.main.transform.DOMove(moveToTransform.position, transitionTime).SetDelay(delay);
         else Camera.main.transform.DOMove(moveToTransform.position, transitionTime).SetDelay(delay).OnComplete(() => {
