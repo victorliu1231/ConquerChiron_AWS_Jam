@@ -27,11 +27,12 @@ public class GameManager : MonoBehaviour {
     public bool isDebugging = true;
     public GameObject pauseGO;
     public GameObject settingsGO;
-    public Checkpoint currentCheckpoint;
+    public Vector3 currentCheckpoint;
     public bool isGamePaused;
     public TextMeshProUGUI inventoryFullText;
     public Animator playerAnimator;
     public bool horrorMode = false;
+    public bool frenzyMode = false;
     public FirstPersonController playerController;
     private bool _justExitedTransitionPeriod = true;
     
@@ -152,17 +153,18 @@ public class GameManager : MonoBehaviour {
         if (_timerOn) {
             timer += Time.deltaTime;
             timerForegroundImage.fillAmount = timeToCompleteTasks - timer > 0 ? (timeToCompleteTasks - timer) / timeToCompleteTasks : 0f;
-            if (timer >= timeToCompleteTasks){
-                GoToCheckpoint();
+            if (timer >= timeToCompleteTasks && !_isAsteroidTaskOn){
+                PlayerDied();
             } 
             HandleAsteroidsTask();
-            HandleWindowCleaningTask();
+            
         } else {
             timer = 0f;
         }
         HandleInput();
         HandleInteract();
         HandlePlacing();
+        HandleWindowCleaningTask();
 
         if (horrorMode){
             if (aiBlink.isBlinking && _justExitedTransitionPeriod){
@@ -283,7 +285,6 @@ public class GameManager : MonoBehaviour {
             }
             if (timer >= timeToCompleteTasks){
                 if (shipHealth > 0) TaskComplete(Task.SurviveAsteroids);
-                else GoToCheckpoint();
             }
         }
     }
@@ -367,22 +368,23 @@ public class GameManager : MonoBehaviour {
     #region Horror Mode
     public void TurnOnHorrorMode(){
         horrorMode = true;
-        soundtrackParents.Find("Peaceful_Soundtrack").GetComponent<AudioSource>().DOFade(0f, 2f).OnComplete(() => {
-            soundtrackParents.Find("Peaceful_Soundtrack").GetComponent<AudioSource>().Stop();
-        });
-        soundtrackParents.Find("Horror_Soundtrack").GetComponent<AudioSource>().Play();
-        soundtrackParents.Find("Horror_Soundtrack").GetComponent<AudioSource>().volume = 0f;
-        soundtrackParents.Find("Horror_Soundtrack").GetComponent<AudioSource>().DOFade(1f, 2f).SetDelay(2f);
+        FadeIntoNewSoundtrack("Peaceful_Soundtrack", "Horror_Soundtrack");
     }
 
     public void TurnOffHorrorMode(){
         horrorMode = false;
-        soundtrackParents.Find("Horror_Soundtrack").GetComponent<AudioSource>().DOFade(0f, 2f).OnComplete(() => {
-            soundtrackParents.Find("Horror_Soundtrack").GetComponent<AudioSource>().Stop();
+        FadeIntoNewSoundtrack("Horror_Soundtrack", "Peaceful_Soundtrack");
+    }
+    #endregion
+
+    #region Soundtrack Functions
+    public void FadeIntoNewSoundtrack(string currSoundtrack, string newSoundtrack){
+        soundtrackParents.Find(currSoundtrack).GetComponent<AudioSource>().DOFade(0f, 2f).OnComplete(() => {
+            soundtrackParents.Find(currSoundtrack).GetComponent<AudioSource>().Stop();
         });
-        soundtrackParents.Find("Peaceful_Soundtrack").GetComponent<AudioSource>().Play();
-        soundtrackParents.Find("Peaceful_Soundtrack").GetComponent<AudioSource>().volume = 0f;
-        soundtrackParents.Find("Peaceful_Soundtrack").GetComponent<AudioSource>().DOFade(1f, 2f).SetDelay(2f);
+        soundtrackParents.Find(newSoundtrack).GetComponent<AudioSource>().Play();
+        soundtrackParents.Find(newSoundtrack).GetComponent<AudioSource>().volume = 0f;
+        soundtrackParents.Find(newSoundtrack).GetComponent<AudioSource>().DOFade(1f, 2f).SetDelay(2f);
     }
     #endregion
 
@@ -394,11 +396,20 @@ public class GameManager : MonoBehaviour {
         timerGO.SetActive(true);
     }
 
+    public void PlayerDied(){
+        sfxParent.Find("Alarm").GetComponent<AudioSource>().Stop();
+        Time.timeScale = 0f;  
+        diedScreen.SetActive(true);
+        StopTimer();
+    }
+
     // Restarts player at checkpoint
     [ContextMenu("Go to Checkpoint")]
     public void GoToCheckpoint(){
-        Debug.Log("Going to checkpoint");   
-        StopTimer();
+        player.transform.position = currentCheckpoint;
+        Time.timeScale = 1f;
+        MoveCamera(player.transform.Find("PlayerCameraRoot"), asteroidCameraTransitionTime, false);
+        diedScreen.SetActive(false);
     }
 
     public void StopTimer(){
@@ -453,6 +464,7 @@ public class GameManager : MonoBehaviour {
         if (task == Task.TalkToChiron){
             tasksAssignedText.text += "- Talk to Chiron for a while\n";
         }
+        if (horrorMode) currentCheckpoint = player.transform.position;
         if (task == Task.SurviveAsteroids){
             tasksAssignedText.text += "- Pilot the spaceship from cockpit and survive the onslaught of asteroids\n";
             TurnOnAsteroidTask();
@@ -502,24 +514,22 @@ public class GameManager : MonoBehaviour {
         if (task == Task.TalkToChiron){
             tasksAssignedText.text = tasksAssignedText.text.Replace("- Talk to Chiron for a while\n", "");
         }
-        if (horrorMode){
-            if (!_justExitedTransitionPeriod) Invoke("AssignHorrorTask", 5f);
+        if (horrorMode && !_justExitedTransitionPeriod) Invoke("AssignHorrorTask", 5f);
 
-            if (task == Task.SurviveAsteroids){
-                tasksAssignedText.text = tasksAssignedText.text.Replace("- Pilot the spaceship from cockpit and survive the onslaught of asteroids\n", "");
-                TurnOffAsteroidTask();
-            }
-            if (task == Task.PurgeAir){
-                tasksAssignedText.text = tasksAssignedText.text.Replace("- Purge the air in the spaceship. Button is in cargo hold.\n", "");
-                TurnOffAirPurgeTask();
-            }
-            if (task == Task.ConnectWires){
-                tasksAssignedText.text = tasksAssignedText.text.Replace("- Turn on backup generators in engineering room\n", "");
-                connectTheWiresGO.SetActive(false);
-            }
-            if (task == Task.ReplaceFuse){
-                tasksAssignedText.text = tasksAssignedText.text.Replace("- Replace the melted fuse in the fusebox in the crew cabin\n", "");
-            }
+        if (task == Task.SurviveAsteroids){
+            tasksAssignedText.text = tasksAssignedText.text.Replace("- Pilot the spaceship from cockpit and survive the onslaught of asteroids\n", "");
+            TurnOffAsteroidTask();
+        }
+        if (task == Task.PurgeAir){
+            tasksAssignedText.text = tasksAssignedText.text.Replace("- Purge the air in the spaceship. Button is in cargo hold.\n", "");
+            TurnOffAirPurgeTask();
+        }
+        if (task == Task.ConnectWires){
+            tasksAssignedText.text = tasksAssignedText.text.Replace("- Turn on backup generators in engineering room\n", "");
+            connectTheWiresGO.SetActive(false);
+        }
+        if (task == Task.ReplaceFuse){
+            tasksAssignedText.text = tasksAssignedText.text.Replace("- Replace the melted fuse in the fusebox in the crew cabin\n", "");
         }
         if (assignedTasks.Count == 0 && !horrorMode){
             if (tasksRemaining.Count == 0){
@@ -547,7 +557,7 @@ public class GameManager : MonoBehaviour {
         Debug.Log("Ship Health: " + shipHealth);
         shipHealthSlider.value = shipHealth / 100f;
         if (shipHealth <= 0){
-            GoToCheckpoint();
+            PlayerDied();
         }
     }
 
@@ -556,8 +566,7 @@ public class GameManager : MonoBehaviour {
         _isAsteroidTaskOn = true;
         shipHealthSlider.gameObject.SetActive(true);
         StartTimer();
-        CameraStaticMode();
-        MoveCamera(cockpitViewTransform, asteroidCameraTransitionTime, true);
+        cockpitWindow.canInteract = true;
     }
 
     public void TurnOffAsteroidTask(){
@@ -581,7 +590,6 @@ public class GameManager : MonoBehaviour {
     public void TurnOnWindowCleaningTask(){
         isWindowCleaningTaskOn = true;
         cleaningGOs.SetActive(true);
-        StartTimer();
         CameraStaticMode();
         MoveCamera(windowCleaningCameraTransforms[0], asteroidCameraTransitionTime, true);
         Invoke("GenerateCleaningDots", asteroidCameraTransitionTime);
@@ -615,6 +623,7 @@ public class GameManager : MonoBehaviour {
     public void TurnOnAirPurgeTask(){
         StartTimer();
         purgeAirWindow.canInteract = true;
+        Camera.main.DOShakePosition(0.5f, 0.5f);
         sfxParent.Find("Shake").GetComponent<AudioSource>().Play();
         sfxParent.Find("Alarm").GetComponent<AudioSource>().PlayDelayed(5f);
     }
@@ -656,8 +665,17 @@ public class GameManager : MonoBehaviour {
         });
     }
 
-    public void CameraShake(){
-        Camera.main.DOShakePosition(0.5f, 0.5f);
+    public void CameraShake(bool enableFreeCamMovementAfter = false){
+        // Make camera shake even though every frame it is set to a transform position
+        if (enableFreeCamMovementAfter){
+            Camera.main.GetComponent<CinemachineBrain>().enabled = false;
+            player.GetComponent<FirstPersonController>().isCameraFree = false;
+            Camera.main.DOShakePosition(0.5f, 0.5f).OnComplete(() => 
+                {player.GetComponent<FirstPersonController>().isCameraFree = true;
+                Camera.main.GetComponent<CinemachineBrain>().enabled = true;});
+        } else {
+            Camera.main.DOShakePosition(0.5f, 0.5f);
+        }
     }
     #endregion
 

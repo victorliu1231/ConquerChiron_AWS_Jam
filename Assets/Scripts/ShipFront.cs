@@ -7,7 +7,7 @@ public class ShipFront : MonoBehaviour {
         if (collider.gameObject.tag == "Asteroid"){
             GameManager.Instance.ShipTakeDamage();
             GameManager.Instance.sfxParent.Find("AsteroidHit").GetComponent<AudioSource>().Play();
-            GameManager.Instance.CameraShake();
+            GameManager.Instance.CameraShake(true);
             Destroy(collider.gameObject);
         }
     }

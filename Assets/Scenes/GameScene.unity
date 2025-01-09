@@ -1531,7 +1531,7 @@ MonoBehaviour:
   BottomLeftFrontVertex: {fileID: 915154343}
   TopRightBackVertex: {fileID: 1926593317}
   asteroidsParent: {fileID: 39483056}
-  numAsteroidsToGenerate: 50
+  numAsteroidsToGenerate: 70
 --- !u!1001 &41846384
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1729,7 +1729,7 @@ GameObject:
   - component: {fileID: 47148071}
   - component: {fileID: 47148070}
   m_Layer: 5
-  m_Name: DoneButton
+  m_Name: CheckpointButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1753,7 +1753,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.5, y: -72.3}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 320, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &47148070
 MonoBehaviour:
@@ -5852,12 +5852,12 @@ GameObject:
   m_Component:
   - component: {fileID: 173079439}
   m_Layer: 5
-  m_Name: WinScreen
+  m_Name: DiedScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &173079439
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8733,7 +8733,6 @@ RectTransform:
   - {fileID: 1102297092}
   - {fileID: 1272440236}
   - {fileID: 864800464}
-  - {fileID: 173079439}
   - {fileID: 1839787473}
   - {fileID: 2137793815}
   - {fileID: 8060343720194083203}
@@ -8741,6 +8740,7 @@ RectTransform:
   - {fileID: 1851976345}
   - {fileID: 835667113}
   - {fileID: 36474101}
+  - {fileID: 173079439}
   - {fileID: 1831792721}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -17888,7 +17888,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Exit
+  m_text: Go to Checkpoint
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fcd08ad5b9faa2f4a8c124d64adb51de, type: 2}
   m_sharedMaterial: {fileID: 3711642518169155187, guid: fcd08ad5b9faa2f4a8c124d64adb51de, type: 2}
@@ -44798,7 +44798,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Finished
+  m_text: You died...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fcd08ad5b9faa2f4a8c124d64adb51de, type: 2}
   m_sharedMaterial: {fileID: 3711642518169155187, guid: fcd08ad5b9faa2f4a8c124d64adb51de, type: 2}
@@ -44807,8 +44807,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190335
+  m_fontColor: {r: 1, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -46253,6 +46253,7 @@ RectTransform:
   - {fileID: 1547063108}
   - {fileID: 675384035}
   - {fileID: 179336232}
+  - {fileID: 2023869512}
   m_Father: {fileID: 1463529535}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -55111,6 +55112,100 @@ Transform:
   m_Children: []
   m_Father: {fileID: 878706724}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2023869511
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2023869512}
+  - component: {fileID: 2023869513}
+  m_Layer: 0
+  m_Name: Light
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2023869512
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2023869511}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -500}
+  m_LocalScale: {x: 100, y: 99.999985, z: 99.999985}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1683316454}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!108 &2023869513
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2023869511}
+  m_Enabled: 1
+  serializedVersion: 10
+  m_Type: 2
+  m_Shape: 0
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 1
+  m_Range: 0.37
+  m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
 --- !u!1001 &2024186841
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -57517,11 +57612,12 @@ MonoBehaviour:
   isDebugging: 1
   pauseGO: {fileID: 5387806241072869155}
   settingsGO: {fileID: 1831792722}
-  currentCheckpoint: {fileID: 0}
+  currentCheckpoint: {x: 0, y: 0, z: 0}
   isGamePaused: 0
   inventoryFullText: {fileID: 1851976346}
   playerAnimator: {fileID: 520365361}
   horrorMode: 0
+  frenzyMode: 0
   playerController: {fileID: 156032502}
   sfxParent: {fileID: 854596537}
   soundtrackParents: {fileID: 990856926}

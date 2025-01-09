@@ -43,8 +43,10 @@
 - implement what happens when you fail a task (should take advantage of current checkpoint)
 
 - debug why asteroid task has player FirstPersonController as isCameraFree = true when it is supposed to have been set to false
+- when finishing connectthewires, the player somehow has clipped through the floor
 
 - horror mode
+--- test out shaking position during air purge task
 --- okay the transitions are pretty bad, the player should APPROACH these tasks, not be forced into them.
 --- also the AI responses during horror mode are pretty bad, test these
 - have player give its own responses and dictate them
@@ -52,6 +54,8 @@
 - have AI greet you upon starting a run (Perhaps query: "Hi, who are you?" to the AI)
 - have AI be context-aware and give you a summary upon continuing a run
 - ai boss fight mode... HUGE next step
+- died screen sfx
+- reset game upon going to checkpoint, e.g. making sure asteroid task is restarted etc
 
 - transition to AI being evil comes from talking to Chiron
 - AI transitions faster to evil if you trashed talked it earlier?? (maybe have this integrated into gameplay somehow, need WitAI sentiment analysis
@@ -63,7 +67,15 @@
 -- unwrench something
 -- task complete sfx
 
+- test checkpointing
+-- checkpoint should have gamestate, player position, player rotation, player inventory, etc
+- make death screen better looking
+- have AI mock player when they die
+
+- implement frenzy mode
+
 - maybe in easy mode, the AI gives more on-the-nose directions
+- on failing oxygen pressure gauge calibration, have player AI narrate a response
 
 - add in game title
 - add in Will's animation models
@@ -102,9 +114,5 @@
 -- wasd + arrow keys to move
 -- space to jump
 -- I for inventory
--- Shift for spring
--- E to interact with items
+-- Shift for sprint
 -- L Mouse Click to place down item
-
-- bottom priority:
--- have player not able to look or interact when settings is open

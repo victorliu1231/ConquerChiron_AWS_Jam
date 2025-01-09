@@ -85,8 +85,9 @@ public class Needle : MonoBehaviour {
                     GameManager.Instance.TaskComplete(Task.RecalibratePressureGauge);
                 }
             } else {
-                GameManager.Instance.GoToCheckpoint();
+                GameManager.Instance.MoveCamera(GameManager.Instance.player.transform.Find("PlayerCameraRoot"), GameManager.Instance.asteroidCameraTransitionTime, false, 1f);
                 //Debug.Log("Task failed.");
+                // Player narrate "Darn I failed that task." or something akin to it using player narration's own AI
             }
         }
     }

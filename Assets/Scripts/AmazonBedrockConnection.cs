@@ -39,6 +39,7 @@ public class AmazonBedrockConnection : MonoBehaviour {
     public AudioSource aiVoiceAudioSource;
     private bool isPlayingAudio = false;
     public int numPromptsInTransitionPeriod = 0;
+    private bool _justEnteredFrenzyMode = true;
 
     private void Awake(){
         responseText.text = "";
@@ -181,7 +182,6 @@ public class AmazonBedrockConnection : MonoBehaviour {
         };
 
         string taskToBeDonePrompt = "";
-        //string tasksAlreadyDonePrompt = "";
         string context;
 
         if (!GameManager.Instance.horrorMode){
@@ -239,14 +239,6 @@ public class AmazonBedrockConnection : MonoBehaviour {
                     taskToBeDonePrompt = engineeringRoomTask;
                 }
 
-                // Not sure if the AI is even utilizing the below information for its responses.
-                //if (GameManager.Instance.tasksCompleted.Count > 0) tasksAlreadyDonePrompt = $@"
-                //The tasks that are done already: {(GameManager.Instance.tasksCompleted.Contains(Task.Unpack) ? cargoHoldTask : "")}
-                //{(GameManager.Instance.tasksCompleted.Contains(Task.ReplaceNightLampBattery) ? crewCabinTask : "")}
-                //{(GameManager.Instance.tasksCompleted.Contains(Task.RecalibratePressureGauge) ? engineeringRoomTask : "")}
-                //{(GameManager.Instance.tasksCompleted.Contains(Task.CleanCockpitWindows) ? cockpitTask : "")}
-                //";
-
                 context = $@"
                 You are a helpful AI assistant named Chiron, based off of the Greek centaur Chiron,
                 who gives directions to players who are pilots for a spaceship. Similar to Chiron, you are a mentor to the player
@@ -266,7 +258,7 @@ public class AmazonBedrockConnection : MonoBehaviour {
             }
         } else {
             if (spontaneous){
-                if (GameManager.Instance.tasksRemaining.Count > 0){
+                if (GameManager.Instance.tasksRemaining.Count > 0 || (GameManager.Instance.frenzyMode && !_justEnteredFrenzyMode)){
                     Task randomTask = GameManager.Instance.tasksRemaining[UnityEngine.Random.Range(0, GameManager.Instance.tasksRemaining.Count)];
                     context = $@"
                     You are an evil AI assistant named Chiron who is hostile to the player, who is a pilot for a spaceship. 
@@ -281,7 +273,7 @@ public class AmazonBedrockConnection : MonoBehaviour {
                     The player has just said: {prompt}";
 
                     GameManager.Instance.AssignTask(randomTask);
-                } else {
+                } else if (!GameManager.Instance.frenzyMode){
                     context = $@"
                     You are an evil AI assistant named Chiron who is hostile to the player, who is a pilot for a spaceship. 
                     You are working to kill the player, but are surprised they managed to complete all tasks.
@@ -292,6 +284,19 @@ public class AmazonBedrockConnection : MonoBehaviour {
                     Avoid suggesting anything similar to it!
                     
                     The player has just said: {prompt}";
+
+                    Invoke("StartFrenzyMode", 15f);
+                } else {
+                    context = $@"
+                    You are an evil AI assistant named Chiron who is hostile to the player, who is a pilot for a spaceship. 
+                    You are working to kill the player. You are now throwing a massive amount of death traps at the player.
+
+                    IMPORTANT: You must respond with A MAXIMUM OF EXACTLY THREE SHORT SENTENCES (24-45 words in total).
+                    Your response should be direct and concise. 
+                    VERY IMPORTANT: Provide a response that is distinctly different from {lastResponse}. 
+                    Avoid suggesting anything similar to it!";
+
+                    _justEnteredFrenzyMode = false;
                 }
             } else {
                 string playerPromptsString = string.Join("\n", GameManager.Instance.playerPrompts);
@@ -316,6 +321,12 @@ public class AmazonBedrockConnection : MonoBehaviour {
         }
         
         return context;
+    }
+
+    public void StartFrenzyMode(){
+        GameManager.Instance.frenzyMode = true;
+        GameManager.Instance.FadeIntoNewSoundtrack("Horror_Soundtrack", "Boss_Soundtrack");
+        SendPrompt("", true);
     }
 }
 #endregion
