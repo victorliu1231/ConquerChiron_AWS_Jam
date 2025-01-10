@@ -218,7 +218,7 @@ using UnityEngine.UI;
                     else slotOptions.Add(SlotOptions.Equip); break;
                 case ItemType.Placeable: slotOptions.Add(SlotOptions.Use); break;
                 case ItemType.Consumeable: slotOptions.Add(SlotOptions.Use); break;
-                case ItemType:Unusable: break;
+                default: break;
             }
             
             slotOptionsMenu.SetActive(false);

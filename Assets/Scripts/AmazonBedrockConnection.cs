@@ -12,11 +12,8 @@ using Meta.WitAi.TTS.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.XR;
 
 public enum AIState {
     Peaceful,
