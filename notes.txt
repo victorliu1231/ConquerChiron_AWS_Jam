@@ -37,16 +37,17 @@
 --- Metal click, Metal Click.wav by Sheyvan -- https://freesound.org/s/475195/ -- License: Creative Commons 0
 
 - to do list
--- send ship as model to Will for footage
--- could ask Will to texture the notepad, would make it look really cool
 -- extra: add in dictation to the game
 - make sure settings and player inventory are setactive and gamemanager isdebugging is false
 - if I have the input field, then exit by clicking Q, then quickly press E to go back, the AI UI somehow breaks.
--- if have extra time -- sort out the most hostile of player responses and use those as the top three to guide AI's response
 -- also give history of AI responses and player prompts if extra time
 
 --- extra time, make the player be an actual hand model (probably can do this by smart anim rigging)
 - when finishing connectthewires, the player somehow has clipped through the floor
+
+- wrench pivot, lever pull might be unnecessary
+- equipping items should pop up model for hand on screen
+- DEFINITELY add human voice AI otherwise game is too confusing
 
 - horror mode
 --- also the AI responses during horror mode are pretty bad, test these
@@ -55,6 +56,9 @@
 - have AI greet you upon starting a run (Perhaps query: "Hi, who are you?" to the AI)
 - have AI be context-aware and give you a summary upon continuing a run
 - died screen sfx
+
+- unequip items upon dying
+- make set equippable positions in Equippable for all equiped items
 
 - make AI bring up daily maintenance tasks needs periodically
 - Windows in Grace rooms should be transparent
@@ -68,6 +72,11 @@
 
 - make death screen better looking
 - have AI mock player when they die
+
+- inventory bug
+--- i had done the pressure gauge and then purged the air, so i had the crowbar equipped
+after i picked up the spray bottle and the towel, i went to the window, but it wasn't activating the task (i think because i was still holding the crowbar)
+and then pressing 'i' didn't do anything
 
 - probably want to make sure going back to checkpoint preserves item UI whether an item is equipped or not
 -- bug with preserving equippedItems, might not be the worst thing though to unequip all items upon death

@@ -26,14 +26,10 @@ public class PurgeAirWindow : Interactable {
     public override void Interact() {
         base.Interact();
         if (ItemManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Crowbar"))){
-            canInteract = false;
-            brokenWindow.SetActive(true);
-            purgeAirButton.canInteract = true;
-            purgeAirButton.GetComponent<Collider>().enabled = true;
-            this.gameObject.SetActive(false);
-            // If have crowbar in inventory, make hand motion to smash window            
-            GameManager.Instance.sfxParent.Find("GlassSmash").GetComponent<AudioSource>().Play();
-
+            GameManager.Instance.CameraStaticMode();
+            GameManager.Instance.MoveCamera(GameManager.Instance.pressPurgeButtonTransform, GameManager.Instance.asteroidCameraTransitionTime, MoveCameraMode.CameraStaticAndAnimOn, 0, GameManager.Instance.swingCrowbar, 0.5f, "CrowbarSmash");
+            Invoke("GlassSmash", GameManager.Instance.asteroidCameraTransitionTime + 0.5f + 0.467f); // 0.5s for waiting till player hand moves, 0.467s for animation to play
+            Invoke("SetCrowbarSmashObjectFalse", GameManager.Instance.asteroidCameraTransitionTime + 0.5f + 0.467f + 0.25f); // 0.5s for waiting till player hand moves, 0.467s for animation to play + 0.25s to transition out
         } else {
             // Shake replaceableGO in GameManager
             GameManager.Instance.replaceableGO.transform.DOShakePosition(0.5f, new Vector3(20f, 0f, 0f), 10, 0, false, true);
@@ -49,5 +45,19 @@ public class PurgeAirWindow : Interactable {
             GameManager.Instance.interactKeyGO.SetActive(false);
             GameManager.Instance.interactText.text = "Must Equip Crowbar";
         }
+    }
+
+    void GlassSmash(){
+        canInteract = false;
+        brokenWindow.SetActive(true);
+        purgeAirButton.canInteract = true;
+        GetComponent<MeshRenderer>().enabled = false;
+        purgeAirButton.GetComponent<Collider>().enabled = true;
+        purgeAirButton.canInteract = true;
+        GameManager.Instance.sfxParent.Find("GlassSmash").GetComponent<AudioSource>().Play();
+    }
+
+    void SetCrowbarSmashObjectFalse(){
+        GameManager.Instance.swingCrowbar.SetActive(false);
     }
 }

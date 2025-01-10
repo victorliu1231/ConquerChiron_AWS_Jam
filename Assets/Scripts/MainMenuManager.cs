@@ -16,4 +16,8 @@ public class MainMenuManager : MonoBehaviour
     {
         Application.Quit();
     }
+
+    void Update(){
+        Cursor.visible = true;
+    }
 }

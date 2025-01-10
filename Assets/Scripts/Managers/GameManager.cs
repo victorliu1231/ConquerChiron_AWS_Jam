@@ -139,12 +139,16 @@ public class GameManager : MonoBehaviour {
     public GameObject genericHandInteract;
     public GameObject windowWipe;
     public GameObject wrenchUnscrew;
+    public GameObject handPress;
     [Header("Misc Tasks")]
     public Interactable nightLamp;
+    public Transform replaceBatteryTransform;
     public Interactable fusebox;
     public GameObject meltedFuse;
     public GameObject unMeltedFuse;
+    public Transform fuseboxViewTransform;
     public Interactable purgeAirWindow;
+    public Transform pressPurgeButtonTransform;
     #endregion
 
     #region Awake
@@ -152,7 +156,7 @@ public class GameManager : MonoBehaviour {
         Instance = this;
         aiState = AIState.Peaceful;
         tasksCompleted = new List<Task>();
-        tasksRemaining = new List<Task>{Task.CleanCockpitWindows, Task.RecalibratePressureGauge, Task.ReplaceNightLampBattery, Task.Unpack};
+        tasksRemaining = new List<Task>{Task.CleanCockpitWindows, Task.RecalibratePressureGauge, Task.ReplaceNightLampBattery,};// Task.Unpack};
         assignedTasks = new List<Task>();
         playerPrompts = new List<string>();
         timerGO.SetActive(false);
@@ -172,15 +176,27 @@ public class GameManager : MonoBehaviour {
 
     #region Update
     void Update(){
+        Cursor.visible = true;
         timerBetweenPrompting += Time.deltaTime;
 
         if (Input.GetKeyDown(KeyCode.F)){
             handCrank.GetComponent<Animator>().Play("HandCrank");
             swingCrowbar.GetComponent<Animator>().Play("CrowbarSmash");
             genericHandInteract.GetComponent<Animator>().Play("GenericInteract");
-            windowWipe.GetComponent<Animator>().Play("WindowWipe");
+            windowWipe.GetComponent<Animator>().Play("WindowWipe", 0, 0.75f);
             wrenchUnscrew.GetComponent<Animator>().Play("WrenchPivot");
-            TurnOnAirPurgeTask();
+            handPress.GetComponent<Animator>().Play("ButtonPress");
+        }
+
+        if (Input.GetKeyDown(KeyCode.G)){
+            //CameraStaticMode();
+            //MoveCamera(fuseboxViewTransform, asteroidCameraTransitionTime, MoveCameraMode.CameraStaticAndAnimOn, 0, wrenchUnscrew);
+            GameManager.Instance.CameraStaticMode();
+            GameManager.Instance.MoveCamera(GameManager.Instance.fuseboxViewTransform, GameManager.Instance.asteroidCameraTransitionTime, MoveCameraMode.CameraStaticAndAnimOn, 0f, GameManager.Instance.wrenchUnscrew, 0.5f, "WrenchPivot");
+            GameManager.Instance.transform.DOScale(1f, 0f).SetDelay(GameManager.Instance.asteroidCameraTransitionTime + 1f).OnComplete(() => {
+                GameManager.Instance.wrenchUnscrew.SetActive(false);
+                GameManager.Instance.MoveCamera(GameManager.Instance.player.transform.Find("PlayerCameraRoot").transform, GameManager.Instance.asteroidCameraTransitionTime, MoveCameraMode.CameraFreeMode);
+            });
         }
 
         if (_timerOn) {
@@ -320,12 +336,17 @@ public class GameManager : MonoBehaviour {
                 if (numDotsInWindowComplete == numDotsPerWindowToComplete){
                     numDotsInWindowComplete = 0;
                     windowIndex++;
+                    windowWipe.SetActive(true);
+                    windowWipe.GetComponent<Animator>().Play("WindowWipe", 0, 0.75f);
+                    windowWipe.transform.DOScale(windowWipe.transform.localScale, 0f).SetDelay(1f).OnComplete(() => windowWipe.SetActive(false));
                     sfxParent.Find("WindowWipe").GetComponent<AudioSource>().Play();
-                    MoveCamera(windowCleaningCameraTransforms[windowIndex], asteroidCameraTransitionTime, MoveCameraMode.CameraStaticMode, asteroidCameraTransitionTime);
-                    Invoke("GenerateCleaningDots", asteroidCameraTransitionTime*2);
+                    if (windowIndex < windowCleaningCameraTransforms.Count) {
+                        MoveCamera(windowCleaningCameraTransforms[windowIndex], asteroidCameraTransitionTime, MoveCameraMode.CameraStaticMode, asteroidCameraTransitionTime);
+                        Invoke("GenerateCleaningDots", asteroidCameraTransitionTime*2);
+                    }
                 }
             } else {
-                TaskComplete(Task.CleanCockpitWindows);
+                this.transform.DOScale(1f, 0f).SetDelay(1.5f).OnComplete(() => TaskComplete(Task.CleanCockpitWindows));
             }
         }
     }
@@ -618,7 +639,7 @@ public class GameManager : MonoBehaviour {
         isWindowCleaningTaskOn = true;
         cleaningGOs.SetActive(true);
         CameraStaticMode();
-        MoveCamera(windowCleaningCameraTransforms[0], asteroidCameraTransitionTime, MoveCameraMode.CameraStaticAndAnimOn, 0, windowWipe);
+        MoveCamera(windowCleaningCameraTransforms[0], asteroidCameraTransitionTime, MoveCameraMode.CameraStaticMode);
         Invoke("GenerateCleaningDots", asteroidCameraTransitionTime);
     }
 
@@ -635,7 +656,7 @@ public class GameManager : MonoBehaviour {
                                             Random.Range(topLeftCleaningCanvas.position.y, bottomRightCleaningCanvas.position.y),
                                             Random.Range(topLeftCleaningCanvas.position.z, bottomRightCleaningCanvas.position.z));
             if (i == 0) lastPosition = position;
-            else if (Vector3.Distance(lastPosition, position) < 0.075f){
+            else if (Vector3.Distance(lastPosition, position) < 0.25f){
                 i--;
                 continue;
             } else {
@@ -763,7 +784,7 @@ public class GameManager : MonoBehaviour {
         Camera.main.GetComponent<CinemachineBrain>().enabled = false;
     }
 
-    public void MoveCamera(Transform moveToTransform, float transitionTime, MoveCameraMode moveCameraMode, float delay = 0f, GameObject animObj = null){
+    public void MoveCamera(Transform moveToTransform, float transitionTime, MoveCameraMode moveCameraMode, float delay = 0f, GameObject animObj = null, float animDelay = 0f, string animToPlay = ""){
         Camera.main.transform.DORotateQuaternion(moveToTransform.rotation, transitionTime).SetDelay(delay);
         switch (moveCameraMode) {
             case MoveCameraMode.CameraStaticMode:
@@ -772,12 +793,12 @@ public class GameManager : MonoBehaviour {
             case MoveCameraMode.CameraStaticAndAnimOn:
                 Camera.main.transform.DOMove(moveToTransform.position, transitionTime).SetDelay(delay).OnComplete(() => {
                     if (animObj != null) animObj.SetActive(true);
+                    if (animToPlay != "") animObj.transform.DOScale(animObj.transform.localScale, 0f).SetDelay(animDelay).OnComplete(() => animObj.GetComponent<Animator>().Play(animToPlay));
                 });
                 break;
             case MoveCameraMode.CameraFreeMode:
                 Camera.main.transform.DOMove(moveToTransform.position, transitionTime).SetDelay(delay).OnComplete(() => {
                     Camera.main.GetComponent<CinemachineBrain>().enabled = true;
-                    player.SetActive(true);
                     player.SetActive(true);
                 });
                 break;
