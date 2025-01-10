@@ -31,84 +31,71 @@
 --- notepad by PAS_Studios, https://www.turbosquid.com/3d-models/bloc-3d-model-1352531
 -- 2D sprites:
 --- the wire for ConnectTheDots  "Sparky wire" by MrA https://asamusev.itch.io/sparkywire
+-- Sounds:
+--- Bicycle Pump - Metal - Fast Release 06.wav by Phi_Sound -- https://freesound.org/s/236826/ -- License: Attribution 4.0
+--- Unscrewing fuse, Drinkbottle, metalic, steel, unscrew, screw, Open_96Khz_Mono_ZoomH4n_NT5-001.wav by MattRuthSound -- https://freesound.org/s/561586/ -- License: Attribution 4.0
+--- Metal click, Metal Click.wav by Sheyvan -- https://freesound.org/s/475195/ -- License: Creative Commons 0
 
-- todo list
+- to do list
+-- send ship as model to Will for footage
 -- could ask Will to texture the notepad, would make it look really cool
 -- extra: add in dictation to the game
 - make sure settings and player inventory are setactive and gamemanager isdebugging is false
 - if I have the input field, then exit by clicking Q, then quickly press E to go back, the AI UI somehow breaks.
 -- if have extra time -- sort out the most hostile of player responses and use those as the top three to guide AI's response
 -- also give history of AI responses and player prompts if extra time
-- have the AI bot be context-aware of game state (for the later half of the game too).
-- implement what happens when you fail a task (should take advantage of current checkpoint)
 
-- debug why asteroid task has player FirstPersonController as isCameraFree = true when it is supposed to have been set to false
+--- extra time, make the player be an actual hand model (probably can do this by smart anim rigging)
 - when finishing connectthewires, the player somehow has clipped through the floor
 
 - horror mode
---- test out shaking position during air purge task
---- okay the transitions are pretty bad, the player should APPROACH these tasks, not be forced into them.
 --- also the AI responses during horror mode are pretty bad, test these
 - have player give its own responses and dictate them
 
 - have AI greet you upon starting a run (Perhaps query: "Hi, who are you?" to the AI)
 - have AI be context-aware and give you a summary upon continuing a run
-- ai boss fight mode... HUGE next step
 - died screen sfx
-- reset game upon going to checkpoint, e.g. making sure asteroid task is restarted etc
 
-- transition to AI being evil comes from talking to Chiron
-- AI transitions faster to evil if you trashed talked it earlier?? (maybe have this integrated into gameplay somehow, need WitAI sentiment analysis
--- have it override tasksRemaining bool)
 - make AI bring up daily maintenance tasks needs periodically
 - Windows in Grace rooms should be transparent
+-- extra: checkpointing into positions doesn't work
 
-- new sfx needed:
--- unwrench something
--- task complete sfx
+- uhh need to add unpacking task
 
-- test checkpointing
--- checkpoint should have gamestate, player position, player rotation, player inventory, etc
+- test frenzy mode stuff
+
+- game should be fully complete now though
+
 - make death screen better looking
 - have AI mock player when they die
+
+- probably want to make sure going back to checkpoint preserves item UI whether an item is equipped or not
+-- bug with preserving equippedItems, might not be the worst thing though to unequip all items upon death
+
+- now fix the connect wires task, and make sure player is stationary and camera is frozen while doing it
 
 - implement frenzy mode
 
 - maybe in easy mode, the AI gives more on-the-nose directions
 - on failing oxygen pressure gauge calibration, have player AI narrate a response
+- make win sequence
 
 - add in game title
 - add in Will's animation models
 - move player to proper transform location so that it's hands look correct
 - maybe in horror mode you have to physically open the doors, it's no longer automatic
 - need generic item click sfx and use for replacing fuse
-- need unwrench sfx and use for unwrenching fuse
-- GameManager EquipItem(Item item) function throwing error when called as a UnityEvent
 - prevent dragging entire inventory screen?
-- preferably autosave settings in playerprefs
 - fix picking up items not properly setting a fixed rotation bug
 - coroutine bug with inventory being set inactive early???
 - weird bug where player moves when picking up object
 - make a "gamer mode" where the asteroid task starts out with 50 asteroids, and a "non-gamer mode" for judges,
 -- where the task starts out with 30 asteroids
-- make used battery be more rusty than new battery
-- make sprites when in inventory be sized correctly
 - dirty window changing into clean window animation
 - add horror vibes, e.g. alarm blaring sounds, red alarm lights, etc
 - decorate cockpit
-- fix entrance door texture so that it's not one-side transparent other side not transparent
 
--- 3D player model
---- first person POV try to pick up lamp with grab motion
---- make the player taller
---- use Mixamo
----- use Unity Muse for grab motion
----- make hand motion for replacing battery
----- use Unity Muse for two hand hold object motion
----- need hand crank and hand motion models for pressure gauge task
----- need window spray animation for window cleaning task
----- need window wipe animation for window cleaning task
---- need some way to equip items in code so it looks good
+- need some way to equip items to show up as a model so it looks good
 
 - tutorial
 -- wasd + arrow keys to move

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using XEntity.InventoryItemSystem;
 using DG.Tweening;
 
 public class BatteryInPanel : Interactable {
@@ -14,6 +13,7 @@ public class BatteryInPanel : Interactable {
             ItemManager.Instance.inventory.AddItem(usedBattery);
             canInteract = false;
             GameManager.Instance.TaskComplete(Task.ReplaceNightLampBattery);
+            GameManager.Instance.sfxParent.Find("MetalClick").GetComponent<AudioSource>().Play();
             // If have battery in inventory, make hand motion to replace battery in lamp            
 
 

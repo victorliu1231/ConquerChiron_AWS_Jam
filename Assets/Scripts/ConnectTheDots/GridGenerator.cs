@@ -90,9 +90,8 @@ public class GridGenerator : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        if (GameManager.Instance.isDebugging && Input.GetKeyDown(KeyCode.P))
         {
-            print(randomSeed);
             PrintGrid();
             PrintWalks();
         }
@@ -101,7 +100,7 @@ public class GridGenerator : MonoBehaviour
     /// <summary>
     /// Generates locations 
     /// </summary>
-    void GenerateLocations()
+    public void GenerateLocations()
     {
         #region initialize the grid
         grid = new byte[width, height];
@@ -282,7 +281,7 @@ public class GridGenerator : MonoBehaviour
     /// <summary>
     /// Creates and places images on the screen
     /// </summary>
-    void PlaceImages()
+    public void PlaceImages()
     {
         Cell[,] newCells = new Cell[width, height];
 

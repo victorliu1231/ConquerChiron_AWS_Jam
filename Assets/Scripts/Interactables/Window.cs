@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using XEntity.InventoryItemSystem;
 using DG.Tweening;
 
 public class Window : Interactable {
@@ -23,15 +22,16 @@ public class Window : Interactable {
                 GameManager.Instance.asteroidsTutorial.SetActive(false);
                 GameManager.Instance.notepad.SetActive(false);
                 Time.timeScale = 1f;
+                GameManager.Instance.isPilotingShip = true;
                 GameManager.Instance.CameraStaticMode();
-                GameManager.Instance.MoveCamera(GameManager.Instance.cockpitViewTransform, GameManager.Instance.asteroidCameraTransitionTime, true);
+                GameManager.Instance.MoveCamera(GameManager.Instance.cockpitViewTransform, GameManager.Instance.asteroidCameraTransitionTime, MoveCameraMode.CameraStaticMode);
             }
         }
     }
 
     public override void Interact(){
         canInteract = false;
-        if (GameManager.Instance.horrorMode){
+        if (GameManager.Instance.gameMode == GameMode.Horror){
             GameManager.Instance.notepad.SetActive(true);
             GameManager.Instance.asteroidsTutorial.SetActive(true);
             GameManager.Instance.CameraStaticMode();
@@ -48,7 +48,7 @@ public class Window : Interactable {
     }
 
     public override void SetText(){
-        if (GameManager.Instance.horrorMode){
+        if (GameManager.Instance.gameMode == GameMode.Horror){
             GameManager.Instance.interactKeyGO.SetActive(true);
             GameManager.Instance.interactText.text = "Pilot Ship";
         } else {

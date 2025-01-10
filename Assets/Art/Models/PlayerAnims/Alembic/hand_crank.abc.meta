@@ -1,0 +1,118 @@
+fileFormatVersion: 2
+guid: 3a1f380cb7af67345ae5b508bc525f5c
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Crank_Gun_001/Mesh_001:000:Black
+    second: {fileID: 2100000, guid: 28e71d9f3e1438f4789119ef9f6fe354, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Crank_Gun_001/Mesh_001:001:White
+    second: {fileID: 2100000, guid: 5548f6c7b29e01f4a84d341fb96dd7ac, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Crank_Gun_002/Mesh_028:000:Black
+    second: {fileID: 2100000, guid: 28e71d9f3e1438f4789119ef9f6fe354, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Crank_Gun_003/Mesh_029:000:Blue
+    second: {fileID: 2100000, guid: 670a0c6cb28ab2443858feb8578ae7e1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Crank_Gun_004/Mesh_030:000:Blue
+    second: {fileID: 2100000, guid: 670a0c6cb28ab2443858feb8578ae7e1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Crank_Gun_005/Mesh_031:000:Blue
+    second: {fileID: 2100000, guid: 670a0c6cb28ab2443858feb8578ae7e1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Crank_Gun_006/Mesh_032:000:Blue
+    second: {fileID: 2100000, guid: 670a0c6cb28ab2443858feb8578ae7e1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Crank_Gun_007/Mesh_033:000:Blue
+    second: {fileID: 2100000, guid: 670a0c6cb28ab2443858feb8578ae7e1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Crank_Gun_008/Mesh_034:000:Blue
+    second: {fileID: 2100000, guid: 670a0c6cb28ab2443858feb8578ae7e1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Crank_Gun_009/Mesh_035:000:Blue
+    second: {fileID: 2100000, guid: 670a0c6cb28ab2443858feb8578ae7e1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Crank_Gun_010/Mesh_036:000:Blue
+    second: {fileID: 2100000, guid: 670a0c6cb28ab2443858feb8578ae7e1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Crank_Gun_011/Mesh_037:000:Blue
+    second: {fileID: 2100000, guid: 670a0c6cb28ab2443858feb8578ae7e1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Crank_Gun_012/Mesh_038:000:Blue
+    second: {fileID: 2100000, guid: 670a0c6cb28ab2443858feb8578ae7e1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Crank_Gun_013/Mesh_039:000:Black
+    second: {fileID: 2100000, guid: 28e71d9f3e1438f4789119ef9f6fe354, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Crank_Gun_013/Mesh_039:001:Red
+    second: {fileID: 2100000, guid: 5a0dc53315fa15c4c8f0ef077910a7b7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LP_Hands/Hand_Mesh_001/Plane_001:000:Material
+    second: {fileID: 2100000, guid: 60c2c930dcd5583479de9b8ea904b175, type: 2}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: f53f5fc499d31e44b9deee84d28a9ee8, type: 3}
+  rootGameObjectId: 
+  rootGameObjectName: 
+  importerVersion: 1
+  streamSettings:
+    normals: 1
+    tangents: 1
+    cameraAspectRatio: 2
+    importVisibility: 1
+    scaleFactor: 0.01
+    swapHandedness: 1
+    flipFaces: 0
+    interpolateSamples: 1
+    importPointPolygon: 1
+    importLinePolygon: 1
+    importTrianglePolygon: 1
+    importXform: 1
+    importCameras: 0
+    importMeshes: 1
+    importPoints: 0
+    importCurves: 1
+    createCurveRenderers: 0
+  abcStartTime: 0.041666666666666664
+  abcEndTime: 1.25
+  startTime: 0.041666666666666664
+  endTime: 1.25
+  importWarning: 
+  firstImport: 0
+  isHDF5: 0

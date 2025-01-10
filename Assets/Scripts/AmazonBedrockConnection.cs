@@ -18,6 +18,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR;
 
+public enum AIState {
+    Peaceful,
+    TransitionToHorror,
+    HorrorSpontaneous,
+    HorrorPrompted,
+    TransitionToFrenzy,
+    FrenzySpontaneous,
+    FrenzyPrompted,
+    Death,
+}
+
 #region AmazonBedrock Class
 public class AmazonBedrockConnection : MonoBehaviour {
     [Header("AWS Credentials")]
@@ -40,6 +51,7 @@ public class AmazonBedrockConnection : MonoBehaviour {
     private bool isPlayingAudio = false;
     public int numPromptsInTransitionPeriod = 0;
     private bool _justEnteredFrenzyMode = true;
+    public List<Task> frenzyModeTasks;
 
     private void Awake(){
         responseText.text = "";
@@ -53,6 +65,13 @@ public class AmazonBedrockConnection : MonoBehaviour {
 
         inputField.onSubmit.AddListener((string prompt) => SendPrompt(prompt));
         //submitButton.onClick.AddListener(() => SendPrompt(inputField.text));
+
+        frenzyModeTasks = new List<Task>(){
+            Task.ConnectWires,
+            Task.PurgeAir,
+            Task.ReplaceFuse,
+            Task.RecalibratePressureGauge,
+        };
     }
 
     void Update(){
@@ -93,9 +112,21 @@ public class AmazonBedrockConnection : MonoBehaviour {
         }
 
         promptText.text = prompt;
+        if (GameManager.Instance.gameMode == GameMode.Horror){
+            if (spontaneous) {
+                if (GameManager.Instance.tasksRemaining.Count > 0) GameManager.Instance.aiState = AIState.HorrorSpontaneous; 
+                else GameManager.Instance.aiState = AIState.TransitionToFrenzy;
+            }
+            else GameManager.Instance.aiState = AIState.HorrorPrompted;
+        }
+        if (GameManager.Instance.gameMode == GameMode.Frenzy){
+            if (spontaneous) GameManager.Instance.aiState = AIState.FrenzySpontaneous;
+            else GameManager.Instance.aiState = AIState.FrenzyPrompted;
+        }
+        
         if (!spontaneous) GameManager.Instance.playerPrompts.Add(prompt);
 
-        var fullPrompt = $"{GenerateContext(prompt, spontaneous)}{prompt}";
+        var fullPrompt = $"{GenerateContext(prompt)}{prompt}";
 
         // The response structure from Bedrock models can vary. For debugging, let's log the full response
         var requestBody = new{
@@ -140,7 +171,7 @@ public class AmazonBedrockConnection : MonoBehaviour {
             assistantResponse = assistantResponse.Substring(0, 1000);
         }
         string lowercased = assistantResponse.ToLower();
-        if (!GameManager.Instance.allPeacefulTasksComplete && !GameManager.Instance.horrorMode){
+        if (!GameManager.Instance.allPeacefulTasksComplete && GameManager.Instance.gameMode == GameMode.Peaceful){
             if (!GameManager.Instance.assignedTasks.Contains(Task.CleanCockpitWindows) && (lowercased.Contains("cockpit") || lowercased.Contains("windows") || lowercased.Contains("window") || lowercased.Contains("clean"))){
                 GameManager.Instance.AssignTask(Task.CleanCockpitWindows);
             }
@@ -160,7 +191,7 @@ public class AmazonBedrockConnection : MonoBehaviour {
         ttsSpeaker.Speak(assistantResponse);
     }
 
-    public string GenerateContext(string prompt, bool spontaneous = false){
+    public string GenerateContext(string prompt){
         string cargoHoldTask = "the cargo hold, which needs boxes to be unpacked.";
         string crewCabinTask = "the crew cabin, which needs to have its night lamp's battery replaced. The replacement battery is in the crew cabin.";
         string engineeringRoomTask = "the engineering room, whose pressure gauge for its oxygen tank has gone out of calibration and needs to be recalibrated.";
@@ -184,8 +215,44 @@ public class AmazonBedrockConnection : MonoBehaviour {
         string taskToBeDonePrompt = "";
         string context;
 
-        if (!GameManager.Instance.horrorMode){
-            if (GameManager.Instance.allPeacefulTasksComplete){
+        switch (GameManager.Instance.aiState){
+            case AIState.Peaceful:
+                if (GameManager.Instance.tasksRemaining.Count > 0){
+                    taskToBeDonePrompt = "One of the tasks that needs to be done is: " + taskDescriptions[GameManager.Instance.tasksRemaining[UnityEngine.Random.Range(0, GameManager.Instance.tasksRemaining.Count)]];
+                }
+
+                // Override taskToBeDonePrompt if explicitly mention the different rooms
+                if (prompt.ToLower().Contains("cockpit") || prompt.ToLower().Contains("windows") || prompt.ToLower().Contains("window") || prompt.ToLower().Contains("clean")){
+                    taskToBeDonePrompt = cockpitTask;
+                }
+                if (prompt.ToLower().Contains("crew") || prompt.ToLower().Contains("cabin") || prompt.ToLower().Contains("nightlamp") || prompt.ToLower().Contains("night lamp") || prompt.ToLower().Contains("battery")){
+                    taskToBeDonePrompt = crewCabinTask;
+                }
+                if (prompt.ToLower().Contains("cargo") || prompt.ToLower().Contains("hold") || prompt.ToLower().Contains("box") || prompt.ToLower().Contains("unpack")){
+                    taskToBeDonePrompt = cargoHoldTask;
+                }
+                if (prompt.ToLower().Contains("engineering") || prompt.ToLower().Contains("pressure") || prompt.ToLower().Contains("gauge") || prompt.ToLower().Contains("oxygen") || prompt.ToLower().Contains("recalibrate")){
+                    taskToBeDonePrompt = engineeringRoomTask;
+                }
+
+                context = $@"
+                You are a helpful AI assistant named Chiron, based off of the Greek centaur Chiron,
+                who gives directions to players who are pilots for a spaceship. Similar to Chiron, you are a mentor to the player
+                and seek to help them with their tasks.
+                The player is navigating the spaceship towards an unchartered planet called Proxima Centauri B 
+                in order to scout whether the planet has the desired minerals for your home planet. {(
+                    (prompt.ToLower().Contains("task") || prompt.ToLower().Contains("do") || prompt.ToLower().Contains("finished") || prompt.ToLower().Contains("else") || prompt.ToLower().Contains("next")) ? taskToBeDonePrompt : "")
+                }
+                IMPORTANT: You must respond with A MAXIMUM OF EXACTLY THREE SHORT SENTENCES (24-45 words in total).
+                Your response should be direct and concise. 
+                VERY IMPORTANT: Provide advice that is distinctly different from {lastResponse}. 
+                Avoid suggesting anything similar to it!
+
+                The player has just said: {prompt}
+
+                ";
+                break;
+            case AIState.TransitionToHorror:
                 context = $@"
                 You are a AI assistant named Chiron. {(
                     numPromptsInTransitionPeriod switch{
@@ -219,62 +286,46 @@ public class AmazonBedrockConnection : MonoBehaviour {
                 }
 
                 numPromptsInTransitionPeriod++;
-            } else {
-                if (GameManager.Instance.tasksRemaining.Count > 0){
-                    Task randomTask = GameManager.Instance.tasksRemaining[UnityEngine.Random.Range(0, GameManager.Instance.tasksRemaining.Count)];
-                    taskToBeDonePrompt = "One of the tasks that needs to be done is: " + taskDescriptions[randomTask];
-                }
-
-                // Override taskToBeDonePrompt if explicitly mention the different rooms
-                if (prompt.ToLower().Contains("cockpit") || prompt.ToLower().Contains("windows") || prompt.ToLower().Contains("window") || prompt.ToLower().Contains("clean")){
-                    taskToBeDonePrompt = cockpitTask;
-                }
-                if (prompt.ToLower().Contains("crew") || prompt.ToLower().Contains("cabin") || prompt.ToLower().Contains("nightlamp") || prompt.ToLower().Contains("night lamp") || prompt.ToLower().Contains("battery")){
-                    taskToBeDonePrompt = crewCabinTask;
-                }
-                if (prompt.ToLower().Contains("cargo") || prompt.ToLower().Contains("hold") || prompt.ToLower().Contains("box") || prompt.ToLower().Contains("unpack")){
-                    taskToBeDonePrompt = cargoHoldTask;
-                }
-                if (prompt.ToLower().Contains("engineering") || prompt.ToLower().Contains("pressure") || prompt.ToLower().Contains("gauge") || prompt.ToLower().Contains("oxygen") || prompt.ToLower().Contains("recalibrate")){
-                    taskToBeDonePrompt = engineeringRoomTask;
-                }
+                break;
+            case AIState.HorrorSpontaneous:
+                Task randomTask = GameManager.Instance.tasksRemaining[UnityEngine.Random.Range(0, GameManager.Instance.tasksRemaining.Count)];
 
                 context = $@"
-                You are a helpful AI assistant named Chiron, based off of the Greek centaur Chiron,
-                who gives directions to players who are pilots for a spaceship. Similar to Chiron, you are a mentor to the player
-                and seek to help them with their tasks.
-                The player is navigating the spaceship towards an unchartered planet called Proxima Centauri B 
-                in order to scout whether the planet has the desired minerals for your home planet. {(
-                    (prompt.ToLower().Contains("task") || prompt.ToLower().Contains("do") || prompt.ToLower().Contains("finished") || prompt.ToLower().Contains("else") || prompt.ToLower().Contains("next")) ? taskToBeDonePrompt : "")
-                }
-                IMPORTANT: You must respond with A MAXIMUM OF EXACTLY THREE SHORT SENTENCES (24-45 words in total).
+                You are an evil AI assistant named Chiron who is hostile to the player, who is a pilot for a spaceship. 
+                You are working to kill the player. You have caused the following scenario, and announce it to the player: 
+                {taskDescriptions[randomTask]}
+
+                IMPORTANT: You must respond with A MAXIMUM OF EXACTLY FIVE SHORT SENTENCES (40-75 words in total).
                 Your response should be direct and concise. 
-                VERY IMPORTANT: Provide advice that is distinctly different from {lastResponse}. 
+                VERY IMPORTANT: Provide a response that is distinctly different from {lastResponse}. 
                 Avoid suggesting anything similar to it!
+                
+                The player has just said: {prompt}";
 
-                The player has just said: {prompt}
+                GameManager.Instance.AssignTask(randomTask);
+                break;
+            case AIState.HorrorPrompted:
+                string playerPromptsString = string.Join("\n", GameManager.Instance.playerPrompts);
 
-                ";
-            }
-        } else {
-            if (spontaneous){
-                if (GameManager.Instance.tasksRemaining.Count > 0 || (GameManager.Instance.frenzyMode && !_justEnteredFrenzyMode)){
-                    Task randomTask = GameManager.Instance.tasksRemaining[UnityEngine.Random.Range(0, GameManager.Instance.tasksRemaining.Count)];
-                    context = $@"
+                context = $@"
                     You are an evil AI assistant named Chiron who is hostile to the player, who is a pilot for a spaceship. 
-                    You are working to kill the player. You have caused the following scenario, and announce it to the player: 
-                    {taskDescriptions[randomTask]}
+                    You are based off of the Greek centaur Chiron, who gives directions to players who are pilots for a spaceship.
+                    The player is navigating the spaceship towards an unchartered planet called Proxima Centauri B 
+                    in order to scout whether the planet has the desired minerals for your home planet. 
+                    You are working to kill the player. Use the previous player prompts to guide your response.
 
-                    IMPORTANT: You must respond with A MAXIMUM OF EXACTLY FIVE SHORT SENTENCES (40-75 words in total).
+                    Previous Player Prompts: 
+                    {playerPromptsString}
+
+                    IMPORTANT: You must respond with A MAXIMUM OF EXACTLY THREE SHORT SENTENCES (24-45 words in total).
                     Your response should be direct and concise. 
                     VERY IMPORTANT: Provide a response that is distinctly different from {lastResponse}. 
                     Avoid suggesting anything similar to it!
-                    
-                    The player has just said: {prompt}";
 
-                    GameManager.Instance.AssignTask(randomTask);
-                } else if (!GameManager.Instance.frenzyMode){
-                    context = $@"
+                    The player has just said: {prompt}";
+                break;
+            case AIState.TransitionToFrenzy:
+                context = $@"
                     You are an evil AI assistant named Chiron who is hostile to the player, who is a pilot for a spaceship. 
                     You are working to kill the player, but are surprised they managed to complete all tasks.
 
@@ -285,46 +336,54 @@ public class AmazonBedrockConnection : MonoBehaviour {
                     
                     The player has just said: {prompt}";
 
-                    Invoke("StartFrenzyMode", 15f);
-                } else {
-                    context = $@"
-                    You are an evil AI assistant named Chiron who is hostile to the player, who is a pilot for a spaceship. 
-                    You are working to kill the player. You are now throwing a massive amount of death traps at the player.
+                Invoke("StartFrenzyMode", 15f);
+                break;
+            case AIState.FrenzySpontaneous:
+                context = $@"
+                    You are an evil crazed AI assistant named Chiron who is hostile to the player, who is a pilot for a spaceship. 
+                    You are working to kill the player. You are now throwing all the death traps you have at the player.
+                    State that you will use up the last of your electric power supply and shut down if necessary to kill the player.
+
+                    IMPORTANT: You must respond with A MAXIMUM OF EXACTLY FIVE SHORT SENTENCES (40-75 words in total).
+                    Your response should be direct and concise.";
+
+                _justEnteredFrenzyMode = false;
+                GameManager.Instance.tasksRemaining = frenzyModeTasks;
+                foreach (Task task in frenzyModeTasks){
+                    GameManager.Instance.AssignTask(task);
+                }
+                break;
+            case AIState.FrenzyPrompted:
+                context = $@"
+                    You are an evil crazed AI assistant named Chiron who is hostile to the player, who is a pilot for a spaceship. 
+                    You are working to kill the player. You are now throwing all the death traps you have at the player.
+                    State that you will use up the last of your electric power supply and shut down if necessary to kill the player.
 
                     IMPORTANT: You must respond with A MAXIMUM OF EXACTLY THREE SHORT SENTENCES (24-45 words in total).
                     Your response should be direct and concise. 
                     VERY IMPORTANT: Provide a response that is distinctly different from {lastResponse}. 
-                    Avoid suggesting anything similar to it!";
+                    Avoid suggesting anything similar to it!
+                    
+                    The player has just said: {prompt}";
+                break;
+            case AIState.Death:
+                context = @"You are an evil crazed AI assistant named Chiron who is hostile to the player, who is a pilot for a spaceship. 
+                    You have tried to kill the player, but in doing so you used up the last of your electric power supply and will shut down.
+                    You are now on your last breath. You have failed to kill the player. The player has won.
 
-                    _justEnteredFrenzyMode = false;
-                }
-            } else {
-                string playerPromptsString = string.Join("\n", GameManager.Instance.playerPrompts);
-
-                context = $@"
-                You are an evil AI assistant named Chiron who is hostile to the player, who is a pilot for a spaceship. 
-                You are based off of the Greek centaur Chiron, who gives directions to players who are pilots for a spaceship.
-                The player is navigating the spaceship towards an unchartered planet called Proxima Centauri B 
-                in order to scout whether the planet has the desired minerals for your home planet. 
-                You are working to kill the player. Use the previous player prompts to guide your response.
-
-                Previous Player Prompts: 
-                {playerPromptsString}
-
-                IMPORTANT: You must respond with A MAXIMUM OF EXACTLY THREE SHORT SENTENCES (24-45 words in total).
-                Your response should be direct and concise. 
-                VERY IMPORTANT: Provide a response that is distinctly different from {lastResponse}. 
-                Avoid suggesting anything similar to it!
-
-                The player has just said: {prompt}";
-            }
+                    IMPORTANT: You must respond with A MAXIMUM OF EXACTLY FIVE SHORT SENTENCES (40-75 words in total).
+                    Your response should be direct and concise.";
+                break;
+            default:
+                context = "You are an AI assistant named Chiron. You are based off of the Greek centaur Chiron, who gives directions to players who are pilots for a spaceship.";
+                break;
         }
         
         return context;
     }
 
     public void StartFrenzyMode(){
-        GameManager.Instance.frenzyMode = true;
+        GameManager.Instance.gameMode = GameMode.Frenzy;
         GameManager.Instance.FadeIntoNewSoundtrack("Horror_Soundtrack", "Boss_Soundtrack");
         SendPrompt("", true);
     }

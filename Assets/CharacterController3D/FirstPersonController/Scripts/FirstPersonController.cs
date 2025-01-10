@@ -50,8 +50,6 @@ namespace StarterAssets
 		public float TopClamp = 90.0f;
 		[Tooltip("How far in degrees can you move the camera down")]
 		public float BottomClamp = -90.0f;
-		[HideInInspector]
-		public bool isCameraFree = true;
 
 		// cinemachine
 		private float _cinemachineTargetPitch;
@@ -75,11 +73,6 @@ namespace StarterAssets
 		private GameObject _mainCamera;
 
 		private const float _threshold = 0.01f;
-
-		public void SetCameraFree(bool free)
-		{
-			isCameraFree = free;
-		}
 
 		private bool IsCurrentDeviceMouse
 		{
@@ -115,21 +108,18 @@ namespace StarterAssets
 			// reset our timeouts on start
 			_jumpTimeoutDelta = JumpTimeout;
 			_fallTimeoutDelta = FallTimeout;
-			isCameraFree = true;
 		}
 
 		private void Update()
 		{
-			if (isCameraFree){
-				JumpAndGravity();
-				GroundedCheck();
-				Move();
-			}
+			JumpAndGravity();
+			GroundedCheck();
+			Move();
 		}
 
 		private void LateUpdate()
 		{
-			if (isCameraFree) CameraRotation();
+			CameraRotation();
 		}
 
 		private void GroundedCheck()
@@ -163,7 +153,6 @@ namespace StarterAssets
 
 		private void Move()
 		{
-			Debug.Log("okay");
 			// set target speed based on move speed, sprint speed and if sprint is pressed
 			float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
 
@@ -211,8 +200,6 @@ namespace StarterAssets
 
 		private void JumpAndGravity()
 		{
-			if (!isCameraFree) return;
-
 			if (Grounded)
 			{
 				// reset the fall timeout timer

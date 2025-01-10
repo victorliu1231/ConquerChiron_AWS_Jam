@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using XEntity.InventoryItemSystem;
 
 public class NightLamp : Interactable {
     public GameObject lampPanelOpen;

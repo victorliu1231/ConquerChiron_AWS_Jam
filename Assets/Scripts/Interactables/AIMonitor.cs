@@ -23,7 +23,7 @@ public class AIMonitor : Interactable {
             text.enabled = true;
         }
         GameManager.Instance.CameraStaticMode();
-        GameManager.Instance.MoveCamera(GameManager.Instance.aiViewTransform, GameManager.Instance.asteroidCameraTransitionTime, true);
+        GameManager.Instance.MoveCamera(GameManager.Instance.aiViewTransform, GameManager.Instance.asteroidCameraTransitionTime, MoveCameraMode.CameraStaticMode);
     }
 
     public override void SetText()
@@ -43,7 +43,7 @@ public class AIMonitor : Interactable {
             }
             GameManager.Instance.aiBlink.ResumeBlinking();
             GameManager.Instance.awsConnection.inputField.enabled = false;
-            GameManager.Instance.MoveCamera(GameManager.Instance.player.transform.Find("PlayerCameraRoot"), GameManager.Instance.asteroidCameraTransitionTime, false);
+            GameManager.Instance.MoveCamera(GameManager.Instance.player.transform.Find("PlayerCameraRoot"), GameManager.Instance.asteroidCameraTransitionTime, MoveCameraMode.CameraFreeMode);
         }
     }
 }

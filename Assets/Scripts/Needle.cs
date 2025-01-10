@@ -49,6 +49,10 @@ public class Needle : MonoBehaviour {
                     if (transform.localRotation.eulerAngles.y >= angleOfVertical - maxAngleFromVertical - 1f && transform.localRotation.eulerAngles.y <= angleOfVertical + maxAngleFromVertical){
                         if (Input.GetKeyDown(KeyCode.Space)){
                             transform.Rotate(0,rotateSpeed*Time.deltaTime,0);
+                            GameManager.Instance.handCrank.GetComponent<Animator>().Play("HandCrank");
+                            if (!GameManager.Instance.sfxParent.Find("PressurePump").GetComponent<AudioSource>().isPlaying) {
+                                GameManager.Instance.sfxParent.Find("PressurePump").GetComponent<AudioSource>().Play();
+                            }
                         } else {
                             transform.Rotate(0, -naturalFallbackSpeed*Time.deltaTime, 0);
                         }
@@ -85,7 +89,7 @@ public class Needle : MonoBehaviour {
                     GameManager.Instance.TaskComplete(Task.RecalibratePressureGauge);
                 }
             } else {
-                GameManager.Instance.MoveCamera(GameManager.Instance.player.transform.Find("PlayerCameraRoot"), GameManager.Instance.asteroidCameraTransitionTime, false, 1f);
+                GameManager.Instance.MoveCamera(GameManager.Instance.player.transform.Find("PlayerCameraRoot"), GameManager.Instance.asteroidCameraTransitionTime, MoveCameraMode.CameraFreeMode, 1f);
                 //Debug.Log("Task failed.");
                 // Player narrate "Darn I failed that task." or something akin to it using player narration's own AI
             }

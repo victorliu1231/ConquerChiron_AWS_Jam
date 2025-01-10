@@ -9,6 +9,12 @@ public class AsteroidGenerator : MonoBehaviour
     public Transform TopRightBackVertex;
     public Transform asteroidsParent;
     public int numAsteroidsToGenerate = 100;
+    [HideInInspector]
+    public int originalNumAsteroidsToGenerate;
+
+    void Start(){
+        originalNumAsteroidsToGenerate = numAsteroidsToGenerate;
+    }
 
     [ContextMenu("Generate Asteroids")]
     public void GenerateAsteroids(){
@@ -23,7 +29,7 @@ public class AsteroidGenerator : MonoBehaviour
     [ContextMenu("Clear Asteroids")]
     public void ClearAsteroids(){
         foreach (Transform child in asteroidsParent){
-            DestroyImmediate(child.gameObject);
+            Destroy(child.gameObject);
         }
     }
 }

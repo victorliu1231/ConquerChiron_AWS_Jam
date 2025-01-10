@@ -16,8 +16,6 @@ public class ConnectDotsGameController : MonoBehaviour
 
     int movesCount = 0;
 
-    [SerializeField] GameObject winScreen;
-
     internal static bool isGameActive = true;
 
     private void Awake()
