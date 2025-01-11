@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour {
     public GameObject player;
     private bool _justExitedTransitionPeriod = true;
     public GameMode gameMode = GameMode.Peaceful;
+    public GameObject winScreen;
     [Header("Login")]
     public string username;
     public int playerID;
@@ -271,6 +272,7 @@ public class GameManager : MonoBehaviour {
         }
 
         if (isDebugging && Input.GetKeyDown(KeyCode.G)){
+            UpdateLeaderboard();
             //CameraStaticMode();
             //MoveCamera(fuseboxViewTransform, asteroidCameraTransitionTime, MoveCameraMode.CameraStaticAndAnimOn, 0, wrenchUnscrew);
         }
@@ -914,14 +916,62 @@ public class GameManager : MonoBehaviour {
     #region Win
     public void WinGame(){
         canBeCountingTotalTime = false;
-        dynamoDB.CreateAndUpdateUser(new UserStats{id = playerID, username = username, totalTime = totalTimeSinceGameBeginning});
+        FadeIntoNewSoundtrack("Boss_Soundtrack", "StartScreen_Soundtrack");
+        //dynamoDB.CreateAndUpdateUser(new UserStats{id = playerID, username = username, totalTime = totalTimeSinceGameBeginning});
         aiState = AIState.Death;
         awsConnection.SendPrompt("", true);
-        Invoke("WinSequence", 10f);
+        player.SetActive(false);
+        ItemManager.Instance.inventory.containerInteractor.canInteract = false;
+        CameraStaticMode();
+        MoveCamera(cockpitViewTransform, 0f, MoveCameraMode.CameraStaticMode);
+        StartCoroutine(WinSequence());
     }
     
-    public void WinSequence(){
+    IEnumerator WinSequence(){
+        string playerResponse;
+        yield return new WaitForSeconds(2f);
+        while (awsConnection.aiVoiceAudioSource.isPlaying){
+            yield return new WaitForSeconds(0.5f);
+        }
+        playerResponse = "What a nightmare. I'm glad it's over. This trip will definitely be a story to tell my grandchildren.";
+        awsConnection.responseText.text = $"{mainCharName}: {playerResponse}";
+        awsConnection.playerSpeaker.Speak(playerResponse);
+        yield return new WaitForSeconds(2f);
+        while (awsConnection.aiVoiceAudioSource.isPlaying){
+            yield return new WaitForSeconds(0.5f);
+        }
+        playerResponse = "Might as well set route to Proxima Centauri B since I'm so close there. Onwards!";
+        yield return new WaitForSeconds(2f);
+        while (awsConnection.aiVoiceAudioSource.isPlaying){
+            yield return new WaitForSeconds(0.5f);
+        }
+        yield return new WaitForSeconds(1f);
+        sfxParent.Find("Whoosh").GetComponent<AudioSource>().Play();
+        yield return new WaitForSeconds(1f);
+        winScreen.SetActive(true);
+        //leaderboardContent.gameObject.SetActive(true);
+        //leaderboardContent.DOScale(1, 1f);
+        //List<UserStats> listUserStats = dynamoDB.GetAllUsers();
+        //listUserStats.Sort((x, y) => y.totalTime.CompareTo(x.totalTime));
+        //listUserStats = listUserStats.Take(5).ToList();
+        //foreach (var user in listUserStats){
+        //    GameObject leaderboardEntry = Instantiate(leaderboardEntryPrefab, leaderboardContent);
+        //    leaderboardEntry.GetComponent<LeaderboardEntryUI>().SetLeaderboardEntry(user.username, user.totalTime);
+        //}
+        //playerLeaderboardEntry.SetLeaderboardEntry(username, totalTimeSinceGameBeginning);
+    }
 
+    public async void UpdateLeaderboard(){
+        var userStats = await dynamoDB.GetById(1);
+        Debug.Log(userStats.username);
+        Debug.Log(userStats.totalTime);
+        var listUserStats = dynamoDB.GetAllUsers();
+        //listUserStats = (List<UserStats>)listUserStats;
+        //listUserStats.Sort((x, y) => y.totalTime.CompareTo(x.totalTime));
+        //listUserStats = listUserStats.Take(5).ToList();
+        //foreach (var user in listUserStats){
+        //    Debug.Log(user.username);
+        //}
     }
     #endregion
 
@@ -956,7 +1006,6 @@ public class GameManager : MonoBehaviour {
         isGamePaused = false;
         player.SetActive(true);
         ItemManager.Instance.inventory.containerInteractor.canInteract = true;
-        // Add stuff later
     }
 
     public void QuitGame(){

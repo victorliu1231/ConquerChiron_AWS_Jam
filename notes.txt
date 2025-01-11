@@ -52,7 +52,6 @@
 - same for player realizing entering frenzy mode
 
 - implement leaderboard
-- implement end of story
 
 - horror mode
 --- also the AI responses during horror mode are pretty bad, test these
@@ -71,7 +70,6 @@
 
 - game should be fully complete now though
 
-- make death screen better looking
 - have AI mock player when they die
 
 - inventory bug

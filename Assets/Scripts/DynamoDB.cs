@@ -19,17 +19,16 @@ public class DynamoDB : MonoBehaviour {
         Context = new DynamoDBContext(client);
     }
     
-    public async Task<bool> GetById(int userId)
+    public async Task<UserStats> GetById(int userId)
     {
         var user = await Context.LoadAsync<UserStats>(userId);
-        Debug.Log(user.username);
-        return (user != null);
+        return user;
     }
     
-    public async Task<bool> GetAllUsers()
+    public async Task<List<UserStats>> GetAllUsers()
     {
         var user = await Context.ScanAsync<UserStats>(default).GetRemainingAsync();
-        return (user != null);
+        return user;
     }
     
     public async Task<bool> CreateAndUpdateUser(UserStats userRequest)
