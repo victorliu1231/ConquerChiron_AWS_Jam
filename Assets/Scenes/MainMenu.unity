@@ -1391,7 +1391,7 @@ GameObject:
   - component: {fileID: 1811888084}
   - component: {fileID: 1811888083}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: GameName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1413,8 +1413,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -331, y: 361}
-  m_SizeDelta: {x: -845.4, y: -892.5}
+  m_AnchoredPosition: {x: -165.5, y: 361}
+  m_SizeDelta: {x: -514.5, y: -892.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1811888083
 MonoBehaviour:
@@ -1436,7 +1436,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Game Name
+  m_text: Conquering Chiron
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fcd08ad5b9faa2f4a8c124d64adb51de, type: 2}
   m_sharedMaterial: {fileID: 3711642518169155187, guid: fcd08ad5b9faa2f4a8c124d64adb51de, type: 2}

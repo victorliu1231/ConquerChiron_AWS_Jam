@@ -37,8 +37,8 @@ public enum TaskState {
 #region AmazonBedrock Class
 public class AmazonBedrockConnection : MonoBehaviour {
     [Header("AWS Credentials")]
-    [SerializeField] private string accessKeyId;
-    [SerializeField] private string secretAccessKey;
+    [SerializeField] public string accessKeyId;
+    [SerializeField] public string secretAccessKey;
 
     [Header("Experience Settings")]
     [SerializeField] public TextMeshProUGUI responseText;

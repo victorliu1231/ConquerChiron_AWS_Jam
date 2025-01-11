@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>AWSSDK.Extensions.NETCore.Setup</id>
+    <version>3.7.301</version>
+    <title>AWSSDK - Extensions for NETCore Setup</title>
+    <authors>Amazon Web Services</authors>
+    <owners>Amazon Web Services</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">Apache-2.0</license>
+    <licenseUrl>https://licenses.nuget.org/Apache-2.0</licenseUrl>
+    <icon>images\AWSLogo.png</icon>
+    <projectUrl>https://github.com/aws/aws-sdk-net/</projectUrl>
+    <description>Extensions for the AWS SDK for .NET to integrate with .NET Core configuration and dependency injection frameworks.</description>
+    <language>en-US</language>
+    <tags>AWS Amazon aws-sdk-v3</tags>
+    <dependencies>
+      <dependency id="AWSSDK.Core" version="3.7.300" />
+      <dependency id="Microsoft.Extensions.Configuration.Abstractions" version="2.0.0" />
+      <dependency id="Microsoft.Extensions.DependencyInjection.Abstractions" version="2.0.0" />
+      <dependency id="Microsoft.Extensions.Logging.Abstractions" version="2.0.0" />
+    </dependencies>
+  </metadata>
+</package>

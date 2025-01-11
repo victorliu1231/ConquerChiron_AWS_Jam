@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 using StarterAssets;
 using Unity.VisualScripting;
 using Meta.WitAi.TTS.Utilities;
+using Amazon.DynamoDBv2.Model;
 
 public enum Task {
     Unpack,
@@ -52,6 +53,9 @@ public class GameManager : MonoBehaviour {
     public GameObject player;
     private bool _justExitedTransitionPeriod = true;
     public GameMode gameMode = GameMode.Peaceful;
+    [Header("Login")]
+    public string username;
+    public int playerID;
     [Header("Frenzy Mode")]
     public float timeToCompleteTasksInFrenzyMode = 120f;
     [Header("Sounds")]
@@ -102,6 +106,8 @@ public class GameManager : MonoBehaviour {
     public float timeStartPulsing = 15f; // in seconds
     public GameObject diedScreen;
     private bool _timerOn = false;
+    public float totalTimeSinceGameBeginning = 0f;
+    public bool canBeCountingTotalTime = true;
     [Header("Asteroid Task")]
     public Transform asteroidsParent;
     public Slider shipHealthSlider;
@@ -156,6 +162,11 @@ public class GameManager : MonoBehaviour {
     public Transform fuseboxViewTransform;
     public Interactable purgeAirWindow;
     public Transform pressPurgeButtonTransform;
+    [Header("Leaderboard")]
+    public DynamoDB dynamoDB;
+    public Transform leaderboardContent;
+    public GameObject leaderboardEntryPrefab;
+    public LeaderboardEntryUI playerLeaderboardEntry;
     #endregion
 
     #region Awake
@@ -177,6 +188,9 @@ public class GameManager : MonoBehaviour {
             if (child.name.Contains("Step")){
                 _footstepsSFX.Add(child.GetComponent<AudioSource>());
             }
+        }
+        foreach (Transform child in leaderboardContent){
+            Destroy(child.gameObject);
         }
         if (!isDebugging){
             isBeginningOfGame = true;
@@ -245,6 +259,7 @@ public class GameManager : MonoBehaviour {
     void Update(){
         Cursor.visible = true;
         timerBetweenPrompting += Time.deltaTime;
+        if (!isBeginningOfGame && canBeCountingTotalTime) totalTimeSinceGameBeginning += Time.deltaTime;
 
         if (isDebugging && Input.GetKeyDown(KeyCode.F)){
             handCrank.GetComponent<Animator>().Play("HandCrank");
@@ -689,9 +704,7 @@ public class GameManager : MonoBehaviour {
         }
 
         if (gameMode == GameMode.Frenzy && tasksRemaining.Count == 0){
-            aiState = AIState.Death;
-            awsConnection.SendPrompt("", true);
-            Invoke("WinSequence", 10f);
+            WinGame();
         }
 
         // Play some sound effect
@@ -898,7 +911,15 @@ public class GameManager : MonoBehaviour {
     }
     #endregion
 
-    #region 
+    #region Win
+    public void WinGame(){
+        canBeCountingTotalTime = false;
+        dynamoDB.CreateAndUpdateUser(new UserStats{id = playerID, username = username, totalTime = totalTimeSinceGameBeginning});
+        aiState = AIState.Death;
+        awsConnection.SendPrompt("", true);
+        Invoke("WinSequence", 10f);
+    }
+    
     public void WinSequence(){
 
     }

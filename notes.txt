@@ -40,6 +40,7 @@
 - make sure settings and player inventory are setactive and gamemanager isdebugging is false
 - if I have the input field, then exit by clicking Q, then quickly press E to go back, the AI UI somehow breaks.
 -- also give history of AI responses and player prompts if extra time
+-- window cleaning animation, add in Will's updated model
 
 --- extra time, make the player be an actual hand model (probably can do this by smart anim rigging)
 - when finishing connectthewires, the player somehow has clipped through the floor
@@ -56,6 +57,7 @@
 - horror mode
 --- also the AI responses during horror mode are pretty bad, test these
 
+- hide aws credentials by using aws cognito
 - maybe make Chiron a male voice idk
 
 - died screen sfx
@@ -87,7 +89,6 @@ and then pressing 'i' didn't do anything
 - on failing oxygen pressure gauge calibration, have player AI narrate a response
 - make win sequence
 
-- add in game title
 - move player to proper transform location so that it's hands look correct
 - maybe in horror mode you have to physically open the doors, it's no longer automatic
 - need generic item click sfx and use for replacing fuse
