@@ -13,24 +13,28 @@ public class NightLamp : Interactable {
     }
 
     public override void Interact() {
-        base.Interact();
-        if (lampPanelOpen.activeSelf){
-            lampPanelOpen.SetActive(false);
-            lampPanelClosed.SetActive(true);
-            batteryInPanel.canInteract = false;
-        } else {
-            lampPanelOpen.SetActive(true);
-            lampPanelClosed.SetActive(false);
-            batteryInPanel.canInteract = true;
+        if (GameManager.Instance.assignedTasks.Contains(Task.ReplaceNightLampBattery)){
+            base.Interact();
+            if (lampPanelOpen.activeSelf){
+                lampPanelOpen.SetActive(false);
+                lampPanelClosed.SetActive(true);
+                batteryInPanel.canInteract = false;
+            } else {
+                lampPanelOpen.SetActive(true);
+                lampPanelClosed.SetActive(false);
+                batteryInPanel.canInteract = true;
+            }
         }
     }
 
     public override void SetText()
     {
-        if (lampPanelOpen.activeSelf){
-            GameManager.Instance.interactText.text = "Close Battery Box";
-        } else {
-            GameManager.Instance.interactText.text = "Open Battery Box";
+        if (GameManager.Instance.assignedTasks.Contains(Task.ReplaceNightLampBattery)){
+            if (lampPanelOpen.activeSelf){
+                GameManager.Instance.interactText.text = "Close Battery Box";
+            } else {
+                GameManager.Instance.interactText.text = "Open Battery Box";
+            }
         }
     }
 }

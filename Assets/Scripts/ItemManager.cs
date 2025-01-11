@@ -21,8 +21,6 @@ using UnityEngine.Events;
         [Header("My Code")]
         public ItemContainer inventory;
         public List<Item> equippedItems;
-        public UnityEvent<Item> OnEquip;
-        public UnityEvent<Item> OnUnequip;
 
         private void Awake()
         {
@@ -79,6 +77,7 @@ using UnityEngine.Events;
             GameObject equippedItem = Instantiate(slot.slotItem.prefab, GameManager.Instance.holdObjectTransform, false);
             if (equippedItem.GetComponent<Equippable>() != null){
                 equippedItem.transform.localPosition = equippedItem.GetComponent<Equippable>().equippedPosition;
+                equippedItem.transform.localRotation = Quaternion.Euler(equippedItem.GetComponent<Equippable>().equippedRotation);
             }
         }
 
@@ -88,7 +87,7 @@ using UnityEngine.Events;
             equippedItems.Remove(slot.slotItem);
             GameManager.Instance.sfxParent.Find("ItemPickup").GetComponent<AudioSource>().Play();
             // Find a way to find which child is the item and destroy it
-            Destroy(GameManager.Instance.holdObjectTransform.GetChild(0).gameObject);
+            if (GameManager.Instance.holdObjectTransform.childCount > 0) Destroy(GameManager.Instance.holdObjectTransform.GetChild(0).gameObject);
         }
 
         private void PlaceItem(ItemSlot slot) 

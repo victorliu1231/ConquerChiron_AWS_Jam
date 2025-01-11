@@ -14,7 +14,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TMPro;
 using Unity.VisualScripting;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -92,7 +91,7 @@ public class AmazonBedrockConnection : MonoBehaviour {
         if (!GameManager.Instance.isBeginningOfGame){
             _timer += Time.deltaTime;
             if (_timer >= timeTillTips){
-                if (GameManager.Instance.assignedTasks.Count == 0){
+                if (GameManager.Instance.assignedTasks.Count == 0 && GameManager.Instance.tasksCompleted.Count == 0){
                     _timer = 0f;
                     string tip = "I wonder what if I say the words 'task' or 'do' in my prompt to Chiron. Maybe it will help me get a task to do.";
                     responseText.text = $"{GameManager.Instance.mainCharName}: {tip}";

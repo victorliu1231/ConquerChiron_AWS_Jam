@@ -266,7 +266,10 @@ using UnityEngine.UI;
         //Checks for user inputs and updates the toggle state of the UI accordingly.
         public void CheckForUIToggleInput()
         {
-            if (Input.GetKeyDown(UIToggleKey)) ToggleUI();
+            if (Input.GetKeyDown(UIToggleKey)) {
+                Debug.Log("testing"); 
+                ToggleUI();
+            }
         }
 
         //Returns true if it's able to add the item to the container.
@@ -299,6 +302,7 @@ using UnityEngine.UI;
         //Updates the UI toggle state.
         protected void ToggleUI()
         {
+            Debug.Log(mainContainerUI.name);
             CloseSlotOptionsMenu();
 
             //Tweens in/out the UI.
@@ -307,14 +311,14 @@ using UnityEngine.UI;
                 isContainerUIOpen = false;
                 OnCloseUI.Invoke();
                 containerInteractor.canInteract = true;
-                StartCoroutine(Utils.TweenScaleOut(mainContainerUI.gameObject, toggleDurationInFrames, false));
+                GameManager.Instance.StartCoroutine(Utils.TweenScaleOut(mainContainerUI.gameObject, toggleDurationInFrames, false));
             }
             else if(!mainContainerUI.gameObject.activeSelf && !isContainerUIOpen)
             {
                 isContainerUIOpen = true;
                 OnOpenUI.Invoke();
                 containerInteractor.canInteract = false;
-                StartCoroutine(Utils.TweenScaleIn(mainContainerUI.gameObject, toggleDurationInFrames, Vector3.one));
+                GameManager.Instance.StartCoroutine(Utils.TweenScaleIn(mainContainerUI.gameObject, toggleDurationInFrames, Vector3.one));
             }
         }
 

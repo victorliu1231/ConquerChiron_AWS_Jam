@@ -25,6 +25,7 @@ using UnityEngine;
                 {
                     GameObject.Find("ItemPickup").GetComponent<AudioSource>().Play();
                     isHarvested = true;
+                    harvestItem.isEquipped = false;
                 }
             }
         }

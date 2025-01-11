@@ -31,13 +31,13 @@ public class Window : Interactable {
 
     public override void Interact(){
         canInteract = false;
-        if (GameManager.Instance.gameMode == GameMode.Horror){
+        if (GameManager.Instance.gameMode == GameMode.Horror && GameManager.Instance.assignedTasks.Contains(Task.SurviveAsteroids)){
             GameManager.Instance.notepad.SetActive(true);
             GameManager.Instance.asteroidsTutorial.SetActive(true);
             GameManager.Instance.CameraStaticMode();
             Time.timeScale = 0f;
         } else {
-            if (ItemManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Spindex")) && ItemManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Towel"))){
+            if (ItemManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Spindex")) && ItemManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Towel")) && GameManager.Instance.assignedTasks.Contains(Task.CleanCockpitWindows)){
                 GameManager.Instance.notepad.SetActive(true);
                 GameManager.Instance.windowCleaningTutorial.SetActive(true);
                 GameManager.Instance.CameraStaticMode();
@@ -48,11 +48,11 @@ public class Window : Interactable {
     }
 
     public override void SetText(){
-        if (GameManager.Instance.gameMode == GameMode.Horror){
+        if (GameManager.Instance.gameMode == GameMode.Horror && GameManager.Instance.assignedTasks.Contains(Task.SurviveAsteroids)){
             GameManager.Instance.interactKeyGO.SetActive(true);
             GameManager.Instance.interactText.text = "Pilot Ship";
         } else {
-            if (ItemManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Spindex")) && ItemManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Towel"))){
+            if (ItemManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Spindex")) && ItemManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Towel")) && GameManager.Instance.assignedTasks.Contains(Task.CleanCockpitWindows)){
                 GameManager.Instance.interactKeyGO.SetActive(true);
                 GameManager.Instance.interactText.text = "Start Cleaning";
             } else {

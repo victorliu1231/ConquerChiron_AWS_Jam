@@ -19,14 +19,21 @@ public class PressureGauge : Interactable {
     }
 
     public override void Interact(){
-        canInteract = false;
-        GameManager.Instance.notepad.SetActive(true);
-        GameManager.Instance.pressureGaugeTutorial.SetActive(true);
-        GameManager.Instance.CameraStaticMode();
+        if (GameManager.Instance.assignedTasks.Contains(Task.RecalibratePressureGauge)){
+            canInteract = false;
+            GameManager.Instance.notepad.SetActive(true);
+            GameManager.Instance.pressureGaugeTutorial.SetActive(true);
+            GameManager.Instance.CameraStaticMode();
+        }
     }
 
     public override void SetText(){
-        GameManager.Instance.interactKeyGO.SetActive(true);
-        GameManager.Instance.interactText.text = "Calibrate";
+        if (GameManager.Instance.assignedTasks.Contains(Task.RecalibratePressureGauge)){
+            GameManager.Instance.interactKeyGO.SetActive(true);
+            GameManager.Instance.interactText.text = "Calibrate";
+        } else {
+            GameManager.Instance.interactKeyGO.SetActive(false);
+            GameManager.Instance.interactText.text = "";
+        }
     }
 }

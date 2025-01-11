@@ -258,6 +258,7 @@ public class GameManager : MonoBehaviour {
 
     #region Update
     void Update(){
+        ItemManager.Instance.inventory.gameObject.SetActive(true);
         Cursor.visible = true;
         timerBetweenPrompting += Time.deltaTime;
         if (!isBeginningOfGame && canBeCountingTotalTime) totalTimeSinceGameBeginning += Time.deltaTime;
@@ -539,6 +540,10 @@ public class GameManager : MonoBehaviour {
         if (awsConnection.playerVoiceAudioSource.isPlaying) awsConnection.playerVoiceAudioSource.Stop();
         player.transform.position = currentCheckpoint.position;
         player.transform.rotation = currentCheckpoint.rotation;
+        foreach (Transform child in holdObjectTransform){
+            if (child.GetComponent<Equippable>() != null) child.GetComponent<Equippable>().item.isEquipped = false;
+            Destroy(child.gameObject);
+        }
         player.SetActive(true);
         Camera.main.GetComponent<CinemachineBrain>().enabled = true;
         ItemManager.Instance.equippedItems = currentCheckpoint.equippedItems;

@@ -16,6 +16,7 @@ MonoBehaviour:
   itemName: Towel
   itemPerSlot: 1
   icon: {fileID: 2055750280, guid: 2811efddd6aa97e4ab2f1d02aaced25e, type: 3}
-  prefab: {fileID: 5325248172631146878, guid: d6849d9aa32dd9543b9e1dcb640f1f70, type: 3}
+  prefab: {fileID: 5583759997540371087, guid: afeaf42c525ce7043bdd4a9f62f8ceae, type: 3}
+  isEquipped: 1
   itemInformation: Used for cleaning windows, washing faces, and stuffing your sibling's
     dirty mouth when they talk back.

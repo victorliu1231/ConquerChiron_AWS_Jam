@@ -9,6 +9,7 @@ public class PurgeAirWindow : Interactable {
 
     public override void Start(){
         base.Start();
+        canInteract = false;
         brokenWindow.SetActive(false);
         purgeAirButton.canInteract = false;
         purgeAirButton.GetComponent<Collider>().enabled = false;
@@ -16,17 +17,15 @@ public class PurgeAirWindow : Interactable {
 
     public override void Update(){
         base.Update();
-        if (ItemManager.Instance.inventory.ContainsItem(ItemManager.Instance.GetItemByName("Crowbar"))){
-            canInteract = true;
-        } else {
-            canInteract = false;
-        }
     }
 
     public override void Interact() {
         base.Interact();
         if (ItemManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Crowbar"))){
             GameManager.Instance.CameraStaticMode();
+            GameManager.Instance.transform.DOScale(1f, 0f).SetDelay(GameManager.Instance.asteroidCameraTransitionTime).OnComplete(() => {
+                GameManager.Instance.holdObjectTransform.Find("CrowbarEquippable").gameObject.SetActive(false);
+            });
             GameManager.Instance.MoveCamera(GameManager.Instance.pressPurgeButtonTransform, GameManager.Instance.asteroidCameraTransitionTime, MoveCameraMode.CameraStaticAndAnimOn, 0, GameManager.Instance.swingCrowbar, 0.5f, "CrowbarSmash");
             Invoke("GlassSmash", GameManager.Instance.asteroidCameraTransitionTime + 0.5f + 0.467f); // 0.5s for waiting till player hand moves, 0.467s for animation to play
             Invoke("SetCrowbarSmashObjectFalse", GameManager.Instance.asteroidCameraTransitionTime + 0.5f + 0.467f + 0.25f); // 0.5s for waiting till player hand moves, 0.467s for animation to play + 0.25s to transition out
@@ -38,12 +37,15 @@ public class PurgeAirWindow : Interactable {
 
     public override void SetText()
     {
-        if (ItemManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Crowbar"))){
-            GameManager.Instance.interactKeyGO.SetActive(true);
-            GameManager.Instance.interactText.text = "Smash Window";
-        } else {
-            GameManager.Instance.interactKeyGO.SetActive(false);
-            GameManager.Instance.interactText.text = "Must Equip Crowbar";
+        if (GameManager.Instance.assignedTasks.Contains(Task.PurgeAir)){
+            Debug.Log("PurgeAirWindow SetText");
+            if (ItemManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Crowbar"))){
+                GameManager.Instance.interactKeyGO.SetActive(true);
+                GameManager.Instance.interactText.text = "Smash Window";
+            } else {
+                GameManager.Instance.interactKeyGO.SetActive(false);
+                GameManager.Instance.interactText.text = "Must Equip Crowbar";
+            }
         }
     }
 

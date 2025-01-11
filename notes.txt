@@ -37,6 +37,7 @@
 --- Metal click, Metal Click.wav by Sheyvan -- https://freesound.org/s/475195/ -- License: Creative Commons 0
 
 - to do list
+-- implement leaderboard
 - make sure settings and player inventory are setactive and gamemanager isdebugging is false
 - if I have the input field, then exit by clicking Q, then quickly press E to go back, the AI UI somehow breaks.
 -- also give history of AI responses and player prompts if extra time
@@ -72,10 +73,16 @@
 
 - have AI mock player when they die
 
-- inventory bug
---- i had done the pressure gauge and then purged the air, so i had the crowbar equipped
-after i picked up the spray bottle and the towel, i went to the window, but it wasn't activating the task (i think because i was still holding the crowbar)
-and then pressing 'i' didn't do anything
+-- uhh pressing button on purge air alarm some reason still works...
+
+-- when going into wall, the interact UI and equipped item disappears :/
+- add in Will's death screen
+-- pressure gauge balancing is bad
+
+- need to fix item equippable / unequippable system for holding objects in hand
+(use the prefabs --> equipabbles class)
+
+- make multiple builds for game
 
 - probably want to make sure going back to checkpoint preserves item UI whether an item is equipped or not
 -- bug with preserving equippedItems, might not be the worst thing though to unequip all items upon death
