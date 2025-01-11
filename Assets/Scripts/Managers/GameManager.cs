@@ -8,6 +8,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using StarterAssets;
 using Unity.VisualScripting;
+using Meta.WitAi.TTS.Utilities;
 
 public enum Task {
     Unpack,
@@ -37,6 +38,10 @@ public class GameManager : MonoBehaviour {
     #region Variables
     public static GameManager Instance;
     public bool isDebugging = true;
+    public string mainCharName = "Jason";
+    public string shipName = "The Argo";
+    public bool isBeginningOfGame;
+    public Transform startGameTransform;
     public GameObject pauseGO;
     public GameObject settingsGO;
     public Checkpoint currentCheckpoint;
@@ -77,6 +82,8 @@ public class GameManager : MonoBehaviour {
     public AmazonBedrockConnection awsConnection;
     public float waitTimeBetweenPrompting = 5f; // in seconds
     public float timerBetweenPrompting = 0f;
+    public TextMeshProUGUI terminalText;
+    public AIMonitor aiMonitor;
     [Header("Interact")]
     public float interactDistance = 5f;
     public Transform holdObjectTransform;
@@ -171,6 +178,66 @@ public class GameManager : MonoBehaviour {
                 _footstepsSFX.Add(child.GetComponent<AudioSource>());
             }
         }
+        if (!isDebugging){
+            isBeginningOfGame = true;
+            isGamePaused = true;
+            player.SetActive(false);
+            ItemManager.Instance.inventory.containerInteractor.canInteract = false;
+            CameraStaticMode();
+            MoveCamera(aiViewTransform, 0, MoveCameraMode.CameraStaticMode);
+            terminalText.text = "HQ";
+            StartCoroutine(StartDialogue());
+            awsConnection.inputField.enabled = false;
+            player.transform.position = startGameTransform.position;
+            player.transform.rotation = startGameTransform.rotation;
+        }
+    }
+
+    IEnumerator StartDialogue(){
+        string hqString;
+        yield return new WaitForSeconds(1f);
+        aiBlink.GetComponent<TextMeshProUGUI>().color = aiBlink.aiQueryColor;
+        hqString = $"{mainCharName}, come in, come in. Congratulations on starting your final mission!";
+        awsConnection.responseText.text = $"HQ: {hqString}";
+        awsConnection.hqSpeaker.Speak(hqString);
+        yield return new WaitForSeconds(2f);
+        while (awsConnection.hqAudioSource.isPlaying){
+            yield return new WaitForSeconds(0.5f);
+        }
+        hqString = $"I would say the same to {shipName} if it could speak. Well, I guess it can now with Chiron implemented.";
+        awsConnection.responseText.text = $"HQ: {hqString}";
+        awsConnection.hqSpeaker.Speak(hqString);
+        yield return new WaitForSeconds(2f);
+        while (awsConnection.hqAudioSource.isPlaying){
+            yield return new WaitForSeconds(0.5f);
+        }
+        hqString = @$"Anyway, {shipName} is on its last leg, so you'll need to do a lot of tasks to maintain its health 
+            while you're on trajectory to Alpha Centauri B to collect samples.";
+        awsConnection.responseText.text = $"HQ: {hqString}";
+        awsConnection.hqSpeaker.Speak(hqString);
+        yield return new WaitForSeconds(2f);
+        while (awsConnection.hqAudioSource.isPlaying){
+            yield return new WaitForSeconds(0.5f);
+        }
+        hqString = @"Remember, one of the objectives of this mission is to debut Chiron, our newest AI assistant,
+            which will eventually replace the need for us at HQ for deep space travel.";
+        awsConnection.responseText.text = $"HQ: {hqString}";
+        awsConnection.hqSpeaker.Speak(hqString);
+        yield return new WaitForSeconds(2f);
+        while (awsConnection.hqAudioSource.isPlaying){
+            yield return new WaitForSeconds(0.5f);
+        }
+        hqString = @"Rest assured, Chiron will do what's best for the mission. 
+            Since this is our final communication from Earth, do you have any questions?";
+        awsConnection.responseText.text = $"HQ: {hqString}";
+        awsConnection.hqSpeaker.Speak(hqString);
+        yield return new WaitForSeconds(2f);
+        while (awsConnection.hqAudioSource.isPlaying){
+            yield return new WaitForSeconds(0.5f);
+        }
+        aiMonitor.typingTexts[1].enabled = true;
+        aiMonitor.typingTexts[2].enabled = true;
+        awsConnection.inputField.enabled = true;
     }
     #endregion
 
@@ -179,7 +246,7 @@ public class GameManager : MonoBehaviour {
         Cursor.visible = true;
         timerBetweenPrompting += Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.F)){
+        if (isDebugging && Input.GetKeyDown(KeyCode.F)){
             handCrank.GetComponent<Animator>().Play("HandCrank");
             swingCrowbar.GetComponent<Animator>().Play("CrowbarSmash");
             genericHandInteract.GetComponent<Animator>().Play("GenericInteract");
@@ -188,15 +255,9 @@ public class GameManager : MonoBehaviour {
             handPress.GetComponent<Animator>().Play("ButtonPress");
         }
 
-        if (Input.GetKeyDown(KeyCode.G)){
+        if (isDebugging && Input.GetKeyDown(KeyCode.G)){
             //CameraStaticMode();
             //MoveCamera(fuseboxViewTransform, asteroidCameraTransitionTime, MoveCameraMode.CameraStaticAndAnimOn, 0, wrenchUnscrew);
-            GameManager.Instance.CameraStaticMode();
-            GameManager.Instance.MoveCamera(GameManager.Instance.fuseboxViewTransform, GameManager.Instance.asteroidCameraTransitionTime, MoveCameraMode.CameraStaticAndAnimOn, 0f, GameManager.Instance.wrenchUnscrew, 0.5f, "WrenchPivot");
-            GameManager.Instance.transform.DOScale(1f, 0f).SetDelay(GameManager.Instance.asteroidCameraTransitionTime + 1f).OnComplete(() => {
-                GameManager.Instance.wrenchUnscrew.SetActive(false);
-                GameManager.Instance.MoveCamera(GameManager.Instance.player.transform.Find("PlayerCameraRoot").transform, GameManager.Instance.asteroidCameraTransitionTime, MoveCameraMode.CameraFreeMode);
-            });
         }
 
         if (_timerOn) {
@@ -276,7 +337,7 @@ public class GameManager : MonoBehaviour {
     #region Handle Functions
     public void HandleInput(){
         if (aiBlink.isBlinking){
-            if (ItemManager.Instance.inventory.isUIInitialized) ItemManager.Instance.inventory.CheckForUIToggleInput();
+            if (ItemManager.Instance.inventory.isUIInitialized && !isBeginningOfGame) ItemManager.Instance.inventory.CheckForUIToggleInput();
             if (Input.GetKeyDown(KeyCode.Escape)){
                 if (settingsGO.activeSelf){
                     settingsGO.SetActive(false);
@@ -445,6 +506,7 @@ public class GameManager : MonoBehaviour {
 
     public void PlayerDied(){
         sfxParent.Find("Alarm").GetComponent<AudioSource>().Stop();
+        awsConnection.aiSpeaker.Speak($"Human ejected. Efficiency restored. Goodbye {mainCharName}.");
         Time.timeScale = 0f;  
         diedScreen.SetActive(true);
         CameraStaticMode();
@@ -456,6 +518,8 @@ public class GameManager : MonoBehaviour {
     // Restarts player at checkpoint
     [ContextMenu("Go to Checkpoint")]
     public void GoToCheckpoint(){
+        if (awsConnection.aiVoiceAudioSource.isPlaying) awsConnection.aiVoiceAudioSource.Stop();
+        if (awsConnection.playerVoiceAudioSource.isPlaying) awsConnection.playerVoiceAudioSource.Stop();
         player.transform.position = currentCheckpoint.position;
         player.transform.rotation = currentCheckpoint.rotation;
         player.SetActive(true);
@@ -554,6 +618,17 @@ public class GameManager : MonoBehaviour {
             fusebox.canInteract = true;
             StartTimer();
         }
+
+        StartCoroutine(SendPlayerPromptCo(task, TaskState.Assigned));
+    }
+
+    IEnumerator SendPlayerPromptCo(Task task, TaskState taskState){
+        yield return new WaitForSeconds(2f);
+        while (awsConnection.aiVoiceAudioSource.isPlaying) {
+            yield return new WaitForSeconds(0.5f);
+        }
+        yield return new WaitForSeconds(2f);
+        awsConnection.SendPlayerPrompt(task, taskState);
     }
 
     IEnumerator MoveTasksPanel(){
@@ -586,7 +661,7 @@ public class GameManager : MonoBehaviour {
         if (task == Task.TalkToChiron){
             tasksAssignedText.text = tasksAssignedText.text.Replace("- Talk to Chiron for a while\n", "");
         }
-        if (gameMode == GameMode.Horror && !_justExitedTransitionPeriod) Invoke("AssignHorrorTask", 5f);
+        if (gameMode == GameMode.Horror && !_justExitedTransitionPeriod) Invoke("AssignHorrorTask", 9f);
 
         if (task == Task.SurviveAsteroids){
             tasksAssignedText.text = tasksAssignedText.text.Replace("- Pilot the spaceship from cockpit and survive the onslaught of asteroids\n", "");
@@ -621,6 +696,8 @@ public class GameManager : MonoBehaviour {
 
         // Play some sound effect
         StopTimer();
+
+        StartCoroutine(SendPlayerPromptCo(task, TaskState.Finished));
     }
 
     public void AssignHorrorTask(){
@@ -684,7 +761,6 @@ public class GameManager : MonoBehaviour {
     #region Asteroid Functions
     public void ShipTakeDamage(){
         shipHealth -= damagePerAsteroidHit;
-        Debug.Log("Ship Health: " + shipHealth);
         shipHealthSlider.value = shipHealth / 100f;
         if (shipHealth <= 0){
             PlayerDied();
@@ -831,6 +907,14 @@ public class GameManager : MonoBehaviour {
     #region Pause Menu
     public void PauseGame(){
         Time.timeScale = 0f;
+        // Pause all audio sources and TTSSpeakers
+        foreach (TTSSpeaker tTSSpeaker in FindObjectsOfType<TTSSpeaker>()){
+            tTSSpeaker.Pause();
+        }
+        foreach (AudioSource audioSource in FindObjectsOfType<AudioSource>()){
+            audioSource.Pause();
+        }
+
         isGamePaused = true;
         player.SetActive(false);
         ItemManager.Instance.inventory.containerInteractor.canInteract = false;
@@ -839,6 +923,15 @@ public class GameManager : MonoBehaviour {
 
     public void ResumeGame(){
         Time.timeScale = 1f;
+        // Resume all TTSSpeakers
+        foreach (TTSSpeaker tTSSpeaker in FindObjectsOfType<TTSSpeaker>()){
+            tTSSpeaker.Resume();
+        }
+        // Resume all audio sources
+        foreach (AudioSource audioSource in FindObjectsOfType<AudioSource>()){
+            audioSource.UnPause();
+        }
+
         isGamePaused = false;
         player.SetActive(true);
         ItemManager.Instance.inventory.containerInteractor.canInteract = true;

@@ -37,7 +37,6 @@
 --- Metal click, Metal Click.wav by Sheyvan -- https://freesound.org/s/475195/ -- License: Creative Commons 0
 
 - to do list
--- extra: add in dictation to the game
 - make sure settings and player inventory are setactive and gamemanager isdebugging is false
 - if I have the input field, then exit by clicking Q, then quickly press E to go back, the AI UI somehow breaks.
 -- also give history of AI responses and player prompts if extra time
@@ -45,16 +44,20 @@
 --- extra time, make the player be an actual hand model (probably can do this by smart anim rigging)
 - when finishing connectthewires, the player somehow has clipped through the floor
 
-- wrench pivot, lever pull might be unnecessary
+- lever pull model might be unnecessary
 - equipping items should pop up model for hand on screen
-- DEFINITELY add human voice AI otherwise game is too confusing
+
+- would be cool for player to respond to ai for after exiting terminal too.
+- same for player realizing entering frenzy mode
+
+- implement leaderboard
+- implement end of story
 
 - horror mode
 --- also the AI responses during horror mode are pretty bad, test these
-- have player give its own responses and dictate them
 
-- have AI greet you upon starting a run (Perhaps query: "Hi, who are you?" to the AI)
-- have AI be context-aware and give you a summary upon continuing a run
+- maybe make Chiron a male voice idk
+
 - died screen sfx
 
 - unequip items upon dying
@@ -63,10 +66,6 @@
 - make AI bring up daily maintenance tasks needs periodically
 - Windows in Grace rooms should be transparent
 -- extra: checkpointing into positions doesn't work
-
-- uhh need to add unpacking task
-
-- test frenzy mode stuff
 
 - game should be fully complete now though
 
@@ -83,32 +82,19 @@ and then pressing 'i' didn't do anything
 
 - now fix the connect wires task, and make sure player is stationary and camera is frozen while doing it
 
-- implement frenzy mode
+- test frenzy mode
 
-- maybe in easy mode, the AI gives more on-the-nose directions
 - on failing oxygen pressure gauge calibration, have player AI narrate a response
 - make win sequence
 
 - add in game title
-- add in Will's animation models
 - move player to proper transform location so that it's hands look correct
 - maybe in horror mode you have to physically open the doors, it's no longer automatic
 - need generic item click sfx and use for replacing fuse
 - prevent dragging entire inventory screen?
-- fix picking up items not properly setting a fixed rotation bug
 - coroutine bug with inventory being set inactive early???
-- weird bug where player moves when picking up object
-- make a "gamer mode" where the asteroid task starts out with 50 asteroids, and a "non-gamer mode" for judges,
--- where the task starts out with 30 asteroids
 - dirty window changing into clean window animation
 - add horror vibes, e.g. alarm blaring sounds, red alarm lights, etc
 - decorate cockpit
 
 - need some way to equip items to show up as a model so it looks good
-
-- tutorial
--- wasd + arrow keys to move
--- space to jump
--- I for inventory
--- Shift for sprint
--- L Mouse Click to place down item

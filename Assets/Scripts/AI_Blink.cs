@@ -15,7 +15,7 @@ public class AI_Blink : MonoBehaviour
     {
         ai_text = GetComponent<TextMeshProUGUI>();
         originalColor = ai_text.color;
-        ResumeBlinking();
+        if (GameManager.Instance.isDebugging) ResumeBlinking();
     }
 
     public void PauseBlinking(){

@@ -7,7 +7,9 @@ public class AudioManager : MonoBehaviour {
     public static AudioManager Instance;
     public AudioMixer soundtrackMixer;
     public AudioMixer sfxMixer;
+    public AudioSource hqAudioSource;
     public AudioSource aiAudioSource;
+    public AudioSource playerAudioSource;
 
     void Awake(){
         Instance = this;
@@ -32,8 +34,10 @@ public class AudioManager : MonoBehaviour {
     }
 
     public void SetAILevel (float level) {
-        if (aiAudioSource == null) return;
+        if (aiAudioSource == null || playerAudioSource == null || hqAudioSource) return;
+        hqAudioSource.volume = level;
         aiAudioSource.volume = level;
+        playerAudioSource.volume = level;
     }
 
     public float GetSoundtrackLevel (out float level) {
@@ -53,7 +57,7 @@ public class AudioManager : MonoBehaviour {
     }
 
     public float GetAILevel (out float level) {
-        if (aiAudioSource == null) {
+        if (aiAudioSource == null || playerAudioSource == null || hqAudioSource == null) {
             level = -1f; 
             return level;
         } else {

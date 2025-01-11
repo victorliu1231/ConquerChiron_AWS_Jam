@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,11 +8,13 @@ using Amazon;
 using Amazon.BedrockRuntime;
 using Amazon.BedrockRuntime.Model;
 using Amazon.Runtime;
-
+using DG.Tweening;
 using Meta.WitAi.TTS.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,6 +29,11 @@ public enum AIState {
     Death,
 }
 
+public enum TaskState {
+    Assigned,
+    Finished,
+}
+
 #region AmazonBedrock Class
 public class AmazonBedrockConnection : MonoBehaviour {
     [Header("AWS Credentials")]
@@ -33,22 +41,25 @@ public class AmazonBedrockConnection : MonoBehaviour {
     [SerializeField] private string secretAccessKey;
 
     [Header("Experience Settings")]
-    [SerializeField] private TextMeshProUGUI promptText;
-    [SerializeField] private TextMeshProUGUI responseText;
+    [SerializeField] public TextMeshProUGUI responseText;
     public TextMeshProUGUI waitText;
     [SerializeField] public TMP_InputField inputField;
-    [SerializeField] private Button submitButton;
-    [SerializeField] private TTSSpeaker ttsSpeaker;
+    public TTSSpeaker hqSpeaker;
+    [SerializeField] public TTSSpeaker aiSpeaker;
+    [SerializeField] public TTSSpeaker playerSpeaker;
 
     private AmazonBedrockRuntimeClient client;
     private const string ModelId = "amazon.nova-lite-v1:0";//"meta.llama3-8b-instruct-v1:0"; // Adjust llama model
     private static readonly RegionEndpoint RegionEndpoint = RegionEndpoint.USEast1; // Adjust server region
     private string lastResponse;
+    public AudioSource hqAudioSource;
     public AudioSource aiVoiceAudioSource;
+    public AudioSource playerVoiceAudioSource;
     private bool isPlayingAudio = false;
     public int numPromptsInTransitionPeriod = 0;
-    private bool _justEnteredFrenzyMode = true;
     public List<Task> frenzyModeTasks;
+    public float timeTillTips = 60f;
+    private float _timer = 0f;
 
     private void Awake(){
         responseText.text = "";
@@ -61,7 +72,6 @@ public class AmazonBedrockConnection : MonoBehaviour {
         client = new AmazonBedrockRuntimeClient(credentials, RegionEndpoint);
 
         inputField.onSubmit.AddListener((string prompt) => SendPrompt(prompt));
-        //submitButton.onClick.AddListener(() => SendPrompt(inputField.text));
 
         frenzyModeTasks = new List<Task>(){
             Task.ConnectWires,
@@ -72,12 +82,23 @@ public class AmazonBedrockConnection : MonoBehaviour {
     }
 
     void Update(){
-        if (aiVoiceAudioSource.isPlaying){
+        if (aiVoiceAudioSource.isPlaying || playerVoiceAudioSource.isPlaying){
             isPlayingAudio = true;
         }
-        if (isPlayingAudio && !aiVoiceAudioSource.isPlaying){
+        if (isPlayingAudio && !aiVoiceAudioSource.isPlaying && !playerVoiceAudioSource.isPlaying){
             isPlayingAudio = false;
             Invoke("ClearResponseText", 5f);
+        }
+        if (!GameManager.Instance.isBeginningOfGame){
+            _timer += Time.deltaTime;
+            if (_timer >= timeTillTips){
+                if (GameManager.Instance.assignedTasks.Count == 0){
+                    _timer = 0f;
+                    string tip = "I wonder what if I say the words 'task' or 'do' in my prompt to Chiron. Maybe it will help me get a task to do.";
+                    responseText.text = $"{GameManager.Instance.mainCharName}: {tip}";
+                    playerSpeaker.Speak(tip);
+                }
+            }
         }
     }
 
@@ -87,6 +108,34 @@ public class AmazonBedrockConnection : MonoBehaviour {
 
     public void ClearWaitText(){
         waitText.text = "";
+    }
+
+    #region AISpeaker
+    IEnumerator TransitionToStartOfGame(){
+        string aiInterruption;
+        yield return new WaitForSeconds(0.5f);
+        responseText.text = "Sure, I can help you with that. For that you need to first do ...";
+        hqSpeaker.Speak(responseText.text);
+        yield return new WaitForSeconds(0.5f);
+        hqAudioSource.DOFade(0f, 3f);
+        yield return new WaitForSeconds(2.5f);
+        aiInterruption = "Sorry to interrupt, but there are some urgent maintenance tasks that need to be taken care of. Please ask me what tasks you should do.";
+        responseText.text = $"Chiron: {aiInterruption}";
+        aiSpeaker.Speak(aiInterruption);
+        yield return new WaitForSeconds(2f);
+        while (aiVoiceAudioSource.isPlaying){
+            yield return new WaitForSeconds(0.5f);
+        }
+        aiInterruption = "By the way, WASD or arrow keys are used to move. Space is to jump. Left Shift is to sprint. I is to open your inventory.";
+        responseText.text = $"Chiron: {aiInterruption}";
+        aiSpeaker.Speak(aiInterruption);
+        yield return new WaitForSeconds(2f);
+        while (aiVoiceAudioSource.isPlaying){
+            yield return new WaitForSeconds(0.5f);
+        }
+        GameManager.Instance.aiMonitor.typingTexts[0].enabled = true;
+        GameManager.Instance.aiMonitor.canQuit = true;
+        GameManager.Instance.isBeginningOfGame = false;
     }
 
     public async void SendPrompt(string prompt, bool spontaneous = false){
@@ -108,7 +157,11 @@ public class AmazonBedrockConnection : MonoBehaviour {
             prompt = InputSanitizer.SanitizeInput(prompt);
         }
 
-        promptText.text = prompt;
+        if (GameManager.Instance.isBeginningOfGame){
+            StartCoroutine(TransitionToStartOfGame());
+            return;
+        }
+
         if (GameManager.Instance.gameMode == GameMode.Horror){
             if (spontaneous) {
                 if (GameManager.Instance.tasksRemaining.Count > 0) GameManager.Instance.aiState = AIState.HorrorSpontaneous; 
@@ -123,7 +176,7 @@ public class AmazonBedrockConnection : MonoBehaviour {
         
         if (!spontaneous) GameManager.Instance.playerPrompts.Add(prompt);
 
-        var fullPrompt = $"{GenerateContext(prompt)}{prompt}";
+        var fullPrompt = $"{GenerateContext(prompt)}";
 
         // The response structure from Bedrock models can vary. For debugging, let's log the full response
         var requestBody = new{
@@ -183,9 +236,9 @@ public class AmazonBedrockConnection : MonoBehaviour {
             }
         }
         
-        responseText.text = assistantResponse;
+        responseText.text = $"Chiron: {assistantResponse}";
         lastResponse = assistantResponse;
-        ttsSpeaker.Speak(assistantResponse);
+        aiSpeaker.Speak(assistantResponse);
     }
 
     public string GenerateContext(string prompt){
@@ -344,7 +397,6 @@ public class AmazonBedrockConnection : MonoBehaviour {
                     IMPORTANT: You must respond with A MAXIMUM OF EXACTLY FIVE SHORT SENTENCES (40-75 words in total).
                     Your response should be direct and concise.";
 
-                _justEnteredFrenzyMode = false;
                 GameManager.Instance.tasksRemaining = frenzyModeTasks;
                 foreach (Task task in frenzyModeTasks){
                     GameManager.Instance.AssignTask(task);
@@ -384,6 +436,150 @@ public class AmazonBedrockConnection : MonoBehaviour {
         GameManager.Instance.FadeIntoNewSoundtrack("Horror_Soundtrack", "Boss_Soundtrack");
         SendPrompt("", true);
     }
+    #endregion
+
+    #region PlayerSpeaker
+    public async void SendPlayerPrompt(Task task, TaskState taskState){
+        
+        var fullPrompt = $"{GeneratePlayerContext(task, taskState)}";
+
+        // The response structure from Bedrock models can vary. For debugging, let's log the full response
+        var requestBody = new{
+            inferenceConfig = new{
+                max_new_tokens = 1000
+            },
+            messages = new[]{
+                new{
+                    role = "user",
+                    content = new[]{
+                        new{
+                            text = fullPrompt
+                        }
+                    }
+                }
+            }
+        };
+
+        var request = new InvokeModelRequest
+        {
+            ModelId = ModelId,
+            ContentType = "application/json",
+            Accept = "application/json",
+            Body = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(requestBody)))
+        };
+
+        var response = await client.InvokeModelAsync(request);
+        var responseBody = await new StreamReader(response.Body).ReadToEndAsync();
+        var modelResponse = JObject.Parse(responseBody);
+        
+        // For Nova-lite model, the response is in "content" field
+        var assistantResponse = modelResponse["output"]?["message"]?["content"]?[0]?["text"]?.ToString();
+        
+        // Fallback to checking other common response fields if content is null
+        if (string.IsNullOrEmpty(assistantResponse)) {
+            assistantResponse = "No response found in expected fields";
+        }
+
+        if (assistantResponse.Length > 1000){
+            assistantResponse = assistantResponse.Substring(0, 1000);
+        }
+        
+        responseText.text = $"{GameManager.Instance.mainCharName}: {assistantResponse}";
+        lastResponse = assistantResponse;
+        playerSpeaker.Speak(assistantResponse);
+    }
+
+    public string GeneratePlayerContext(Task task, TaskState taskState){
+        string assignedCargoHoldTask = "You have just been told to unpack boxes. Think to yourself that the boxes are in the cargo hold.";
+        string assignedCrewCabinTask = @"You have just been told to replace the battery in the night lamp in the crew cabin. 
+            Think to yourself that the spare battery is in the crew cabin's drawer.";
+        string assignedEngineeringRoomTask = @"You have just been told to recalibrate the pressure gauge in the oxygen tank. 
+            Think to yourself that you will have to manually pull the hand crank attached to the pressure gauge, taking a lot of work.";
+        string assignedCockpitTask = @"You have just been told to clean the windows in the cockpit. 
+            Think to yourself that you need to grab the spray bottle and towel from the drawer in the cockpit.";
+        string assignedAsteroidsTask = @"You have just been told that your AI assistant, Chiron, has re-routed your spaceship 
+            through a dense asteroid belt and is planning on killing you. Think to yourself that you need to hurry to the cockpit 
+            and press on the frontview windows to pilot the ship.";
+        string assignedPurgeAirTask = @"You have just been told that your AI assistant, Chiron, has caused the glass flasks of hydrogen sulfide 
+            in the cargo room to break, making the air toxic in an attempt to kill you. Think to yourself that you need to hurry to the cargo hold 
+            and press on the air purge alarm to clean out the air in the spaceship.";
+        string assignedConnectWiresTask = @"You have just been told that your AI assistant, Chiron, has shut down all computer-controlled power
+            generators in an attempt to kill you. Think to yourself that you need to quickly turn on the backup power generators to restore
+            function to the ship's pressure maintenance system.";
+        string assignedReplaceFuseTask = @"You have just been told that your AI assistant, Chiron, has flooded the circuits to your fridge.
+            This will cause the perishable food you packed to spoil. Think to yourself that you need to replace the melted fuse in the fusebox in the
+            crew cabin.";
+        string assignedTalkToChironTask = @"You have just finished all your tasks. Think to yourself that you should chat with Chiron to explore what
+            it is capable of.";
+        Dictionary<Task, string> assignedTaskDescriptions = new Dictionary<Task, string>{
+            {Task.Unpack, assignedCargoHoldTask},
+            {Task.ReplaceNightLampBattery, assignedCrewCabinTask},
+            {Task.RecalibratePressureGauge, assignedEngineeringRoomTask},
+            {Task.CleanCockpitWindows, assignedCockpitTask},
+            {Task.SurviveAsteroids, assignedAsteroidsTask},
+            {Task.PurgeAir, assignedPurgeAirTask},
+            {Task.ConnectWires, assignedConnectWiresTask},
+            {Task.ReplaceFuse, assignedReplaceFuseTask},
+            {Task.TalkToChiron, assignedTalkToChironTask},
+        };
+
+        string finishedCargoHoldTask = "You have just finished unpacking the cargo boxes.";
+        string finishedCrewCabinTask = "You have just replaced the night lamp's battery.";
+        string finishedEngineeringRoomTask = "You have just recalibrated the pressure gauge in the oxygen tank after much hand cranking of the hand-operated lever.";
+        string finishedCockpitTask = "You have just cleaned the windows after much elbow grease.";
+        string finishedAsteroidsTask = "You have just piloted the spaceship through the dense asteroid belt and are relieved to have survived.";
+        string finishedPurgeAirTask = "You have just purged all the toxic air in the spaceship and are so happy to have survived.";
+        string finishedConnectWiresTask = @"You have just reconnected all wires in the backup power generators and are relieved to have fixed 
+            the pressure maintenance system, allowing you to survive.";
+        string finishedReplaceFuseTask = @"You have just replaced the melted fuse in the fusebox, allowing for the restoration of power to the fridge. 
+            You are relieved that your perishable food will not spoil.";
+        string finishedTalkToChironTask = @"You have just finished talking to Chiron, who has started to turn evil on you. 
+            You are now believe you are in a fight for your life.";
+
+        Dictionary<Task, string> finishedTaskDescriptions = new Dictionary<Task, string>{
+            {Task.Unpack, finishedCargoHoldTask},
+            {Task.ReplaceNightLampBattery, finishedCrewCabinTask},
+            {Task.RecalibratePressureGauge, finishedEngineeringRoomTask},
+            {Task.CleanCockpitWindows, finishedCockpitTask},
+            {Task.SurviveAsteroids, finishedAsteroidsTask},
+            {Task.PurgeAir, finishedPurgeAirTask},
+            {Task.ConnectWires, finishedConnectWiresTask},
+            {Task.ReplaceFuse, finishedReplaceFuseTask},
+            {Task.TalkToChiron, finishedTalkToChironTask},
+        };
+
+        string context;
+
+        switch (taskState){
+            case TaskState.Assigned:
+                context = $@"You are a pilot on a spaceship. Your personality is investigative, exploratory, and curious. {assignedTaskDescriptions[task]} 
+                    IMPORTANT: You must respond with A MAXIMUM OF EXACTLY THREE SHORT SENTENCES (24-45 words in total).
+                    Your response should be direct and concise. 
+                ";
+                break;
+            case TaskState.Finished:
+                context = $@"
+                    You are a pilot on a spaceship. Your personality is investigative, exploratory, and curious. {
+                        (task != Task.TalkToChiron && GameManager.Instance.gameMode == GameMode.Peaceful ? 
+                        finishedTaskDescriptions[task] + "See what Chiron, your AI assistant, wants next." : finishedTaskDescriptions[task])
+                    }
+                    IMPORTANT: You must respond with A MAXIMUM OF EXACTLY THREE SHORT SENTENCES (24-45 words in total).
+                    Your response should be direct and concise. 
+                ";
+                break;
+            default:
+                context = @"
+                    You are a pilot on a spaceship headed towards an unchartered planet called Proxima Centauri B 
+                    in order to scout whether the planet has the desired minerals for your home planet. 
+                    IMPORTANT: You must respond with A MAXIMUM OF EXACTLY THREE SHORT SENTENCES (24-45 words in total).
+                    Your response should be direct and concise. 
+                ";
+                break;
+        }
+        
+        return context;
+    }
+    #endregion
 }
 #endregion
 

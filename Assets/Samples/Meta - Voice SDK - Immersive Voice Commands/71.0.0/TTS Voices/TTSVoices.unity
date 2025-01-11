@@ -1599,19 +1599,167 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
       propertyPath: _presetVoiceSettings.Array.size
-      value: 31
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[0].style
+      value: default
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[0].voice
+      value: wit$Cam
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[1].style
+      value: soft
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[1].voice
+      value: wit$Cam
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[2].style
+      value: formal
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[2].voice
+      value: wit$Cam
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[3].style
+      value: fast
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[3].voice
+      value: wit$Cam
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[4].voice
+      value: wit$British Butler
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[5].voice
+      value: wit$Cael
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[6].voice
+      value: wit$Carl
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[7].voice
+      value: wit$Cartoon Baby
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[8].voice
+      value: wit$Cartoon Kid
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[9].voice
+      value: wit$Cartoon Villain
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[10].voice
+      value: wit$Charlie
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[11].voice
+      value: wit$Cockney Accent
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[12].voice
+      value: wit$Cody
       objectReference: {fileID: 0}
     - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
       propertyPath: _presetVoiceSettings.Array.data[13].style
+      value: default
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[13].voice
+      value: wit$Colin
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[14].style
+      value: default
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[14].voice
+      value: wit$Connor
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[15].style
+      value: default
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[15].voice
+      value: wit$Cooper
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[16].style
       value: formal
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[16].voice
+      value: wit$Disaffected
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[17].voice
+      value: wit$Hollywood
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[18].voice
+      value: wit$Kenyan Accent
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[19].voice
+      value: wit$Overconfident
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[20].voice
+      value: wit$Pirate
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[21].voice
+      value: wit$Prospector
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[22].voice
+      value: wit$Railey
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[23].voice
+      value: wit$Rebecca
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[24].voice
+      value: wit$Remi
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[25].voice
+      value: wit$Rosie
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[26].voice
+      value: wit$Rubie
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[27].voice
+      value: wit$Southern Accent
       objectReference: {fileID: 0}
     - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
       propertyPath: _presetVoiceSettings.Array.data[28].style
-      value: projected
+      value: default
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[28].voice
+      value: wit$Surfer
       objectReference: {fileID: 0}
     - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
       propertyPath: _presetVoiceSettings.Array.data[29].style
-      value: formal
+      value: default
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[29].voice
+      value: wit$Trendy
       objectReference: {fileID: 0}
     - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
       propertyPath: _presetVoiceSettings.Array.data[30].pitch
@@ -1623,11 +1771,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
       propertyPath: _presetVoiceSettings.Array.data[30].style
-      value: formal
+      value: default
       objectReference: {fileID: 0}
     - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
       propertyPath: _presetVoiceSettings.Array.data[30].voice
-      value: wit$Whimsical
+      value: wit$Vampire
       objectReference: {fileID: 0}
     - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
       propertyPath: _presetVoiceSettings.Array.data[31].pitch
@@ -1639,23 +1787,227 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
       propertyPath: _presetVoiceSettings.Array.data[31].style
-      value: default
+      value: projected
       objectReference: {fileID: 0}
     - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
       propertyPath: _presetVoiceSettings.Array.data[31].voice
-      value: Skully
+      value: wit$Whimsical
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[32].pitch
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[32].speed
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[32].style
+      value: formal
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[32].voice
+      value: wit$Wizard
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[33].pitch
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[33].speed
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[33].style
+      value: formal
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[33].voice
+      value: wit$Whimsical
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[0].SettingsId
+      value: WIT$CAMDEFAULT
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[1].SettingsId
+      value: WIT$CAMSOFT
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[2].SettingsId
+      value: WIT$CAMFORMAL
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[3].SettingsId
+      value: WIT$CAMFAST
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[4].SettingsId
+      value: WIT$BRITISH BUTLER
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[5].SettingsId
+      value: WIT$CAEL
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[6].SettingsId
+      value: WIT$CARL
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[7].SettingsId
+      value: WIT$CARTOON BABY
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[8].SettingsId
+      value: WIT$CARTOON KID
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[9].SettingsId
+      value: WIT$CARTOON VILLAIN
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[10].SettingsId
+      value: WIT$CHARLIE
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[11].SettingsId
+      value: WIT$COCKNEY ACCENT
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[12].SettingsId
+      value: WIT$CODY
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[13].SettingsId
+      value: WIT$COLIN
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[14].SettingsId
+      value: WIT$CONNOR
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[15].SettingsId
+      value: WIT$COOPER
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[16].SettingsId
+      value: WIT$DISAFFECTED
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[17].SettingsId
+      value: WIT$HOLLYWOOD
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[18].SettingsId
+      value: WIT$KENYAN ACCENT
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[19].SettingsId
+      value: WIT$OVERCONFIDENT
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[20].SettingsId
+      value: WIT$PIRATE
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[21].SettingsId
+      value: WIT$PROSPECTOR
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[22].SettingsId
+      value: WIT$RAILEY
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[23].SettingsId
+      value: WIT$REBECCA
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[24].SettingsId
+      value: WIT$REMI
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[25].SettingsId
+      value: WIT$ROSIE
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[26].SettingsId
+      value: WIT$RUBIE
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[27].SettingsId
+      value: WIT$SOUTHERN ACCENT
       objectReference: {fileID: 0}
     - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
       propertyPath: _presetVoiceSettings.Array.data[28].SettingsId
-      value: WIT$WHIMSICALPROJ
+      value: WIT$SURFER
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[29].SettingsId
+      value: WIT$TRENDY
       objectReference: {fileID: 0}
     - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
       propertyPath: _presetVoiceSettings.Array.data[30].SettingsId
-      value: WIT$WHIMSICALFORMAL
+      value: WIT$VAMPIRE
       objectReference: {fileID: 0}
     - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
       propertyPath: _presetVoiceSettings.Array.data[31].SettingsId
-      value: SKULLY
+      value: WIT$WHIMSICALPROJ
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[32].SettingsId
+      value: WIT$WIZARD
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[33].SettingsId
+      value: WIT$WHIMSICALFORMAL
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[16].AppendedText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[17].AppendedText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[18].AppendedText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[30].AppendedText
+      value: </sfx></speak>
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[31].AppendedText
+      value: </sfx></speak>
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[32].AppendedText
+      value: </sfx></speak>
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[16].PrependedText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[17].PrependedText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[18].PrependedText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[30].PrependedText
+      value: <speak><sfx character="chipmunk">
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[31].PrependedText
+      value: <speak><sfx character="chipmunk">
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852061571279439023, guid: 3e919abfe68b0314aa3fa156a83435f2, type: 3}
+      propertyPath: _presetVoiceSettings.Array.data[32].PrependedText
+      value: <speak><sfx character="chipmunk">
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -5,12 +5,22 @@ using UnityEngine;
 
 public class AIMonitor : Interactable {
     public List<TextMeshProUGUI> typingTexts;
+    public bool canQuit;
 
     public override void Start()
     {
         base.Start();
         foreach (TextMeshProUGUI text in typingTexts) {
             text.enabled = false;
+        }
+        if (!GameManager.Instance.isDebugging) {
+            // Default mode for beginning the game
+            canQuit = false;
+            canInteract = false;
+        }
+        else {
+            canQuit = true;
+            canInteract = true;
         }
     }
 
@@ -32,7 +42,7 @@ public class AIMonitor : Interactable {
     }
 
     public override void Update() {
-        if (!GameManager.Instance.aiBlink.isBlinking && Input.GetKeyDown(KeyCode.Q)) {
+        if (!GameManager.Instance.aiBlink.isBlinking && Input.GetKeyDown(KeyCode.Q) && canQuit) {
             canInteract = true;
             foreach (TextMeshProUGUI text in typingTexts) {
                 text.enabled = false;
