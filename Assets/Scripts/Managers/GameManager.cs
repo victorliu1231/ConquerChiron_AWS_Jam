@@ -54,9 +54,6 @@ public class GameManager : MonoBehaviour {
     private bool _justExitedTransitionPeriod = true;
     public GameMode gameMode = GameMode.Peaceful;
     public GameObject winScreen;
-    [Header("Login")]
-    public string username;
-    public int playerID;
     [Header("Frenzy Mode")]
     public float timeToCompleteTasksInFrenzyMode = 120f;
     [Header("Sounds")]
@@ -164,7 +161,7 @@ public class GameManager : MonoBehaviour {
     public Interactable purgeAirWindow;
     public Transform pressPurgeButtonTransform;
     [Header("Leaderboard")]
-    public DynamoDB dynamoDB;
+    public GameObject leaderboardGO;
     public Transform leaderboardContent;
     public GameObject leaderboardEntryPrefab;
     public LeaderboardEntryUI playerLeaderboardEntry;
@@ -262,21 +259,6 @@ public class GameManager : MonoBehaviour {
         Cursor.visible = true;
         timerBetweenPrompting += Time.deltaTime;
         if (!isBeginningOfGame && canBeCountingTotalTime) totalTimeSinceGameBeginning += Time.deltaTime;
-
-        if (isDebugging && Input.GetKeyDown(KeyCode.F)){
-            handCrank.GetComponent<Animator>().Play("HandCrank");
-            swingCrowbar.GetComponent<Animator>().Play("CrowbarSmash");
-            genericHandInteract.GetComponent<Animator>().Play("GenericInteract");
-            windowWipe.GetComponent<Animator>().Play("WindowWipe", 0, 0.75f);
-            wrenchUnscrew.GetComponent<Animator>().Play("WrenchPivot");
-            handPress.GetComponent<Animator>().Play("ButtonPress");
-        }
-
-        if (isDebugging && Input.GetKeyDown(KeyCode.G)){
-            UpdateLeaderboard();
-            //CameraStaticMode();
-            //MoveCamera(fuseboxViewTransform, asteroidCameraTransitionTime, MoveCameraMode.CameraStaticAndAnimOn, 0, wrenchUnscrew);
-        }
 
         if (_timerOn) {
             timer += Time.deltaTime;
@@ -919,10 +901,10 @@ public class GameManager : MonoBehaviour {
     #endregion
 
     #region Win
-    public void WinGame(){
+    public async void WinGame(){
         canBeCountingTotalTime = false;
         FadeIntoNewSoundtrack("Boss_Soundtrack", "StartScreen_Soundtrack");
-        //dynamoDB.CreateAndUpdateUser(new UserStats{id = playerID, username = username, totalTime = totalTimeSinceGameBeginning});
+        await DynamoDB.Instance.CreateAndUpdateUser(new UserStats{id = DynamoDB.Instance.playerID, username = DynamoDB.Instance.username, totalTime = totalTimeSinceGameBeginning});
         aiState = AIState.Death;
         awsConnection.SendPrompt("", true);
         player.SetActive(false);
@@ -954,29 +936,25 @@ public class GameManager : MonoBehaviour {
         sfxParent.Find("Whoosh").GetComponent<AudioSource>().Play();
         yield return new WaitForSeconds(1f);
         winScreen.SetActive(true);
-        //leaderboardContent.gameObject.SetActive(true);
-        //leaderboardContent.DOScale(1, 1f);
-        //List<UserStats> listUserStats = dynamoDB.GetAllUsers();
-        //listUserStats.Sort((x, y) => y.totalTime.CompareTo(x.totalTime));
-        //listUserStats = listUserStats.Take(5).ToList();
-        //foreach (var user in listUserStats){
-        //    GameObject leaderboardEntry = Instantiate(leaderboardEntryPrefab, leaderboardContent);
-        //    leaderboardEntry.GetComponent<LeaderboardEntryUI>().SetLeaderboardEntry(user.username, user.totalTime);
-        //}
-        //playerLeaderboardEntry.SetLeaderboardEntry(username, totalTimeSinceGameBeginning);
     }
 
     public async void UpdateLeaderboard(){
-        var userStats = await dynamoDB.GetById(1);
-        Debug.Log(userStats.username);
-        Debug.Log(userStats.totalTime);
-        var listUserStats = dynamoDB.GetAllUsers();
-        //listUserStats = (List<UserStats>)listUserStats;
-        //listUserStats.Sort((x, y) => y.totalTime.CompareTo(x.totalTime));
-        //listUserStats = listUserStats.Take(5).ToList();
-        //foreach (var user in listUserStats){
-        //    Debug.Log(user.username);
-        //}
+        var listUserStats = await DynamoDB.Instance.GetAllUsers();
+        listUserStats.Sort((x, y) => y.totalTime.CompareTo(x.totalTime));
+        listUserStats = listUserStats.GetRange(0, listUserStats.Count > 5 ? 5 : listUserStats.Count);
+        leaderboardContent.gameObject.SetActive(true);
+        foreach (Transform child in leaderboardContent){
+            Destroy(child.gameObject);
+        }
+        int playerRank;
+        for (int i = 0; i < listUserStats.Count; i++){
+            if (listUserStats[i].id == DynamoDB.Instance.playerID){
+                playerRank = i+1;
+                playerLeaderboardEntry.SetLeaderboardEntry(playerRank, listUserStats[i].username, listUserStats[i].totalTime);
+            }
+            GameObject leaderboardEntry = Instantiate(leaderboardEntryPrefab, leaderboardContent);
+            leaderboardEntry.GetComponent<LeaderboardEntryUI>().SetLeaderboardEntry(i+1, listUserStats[i].username, listUserStats[i].totalTime);
+        }
     }
     #endregion
 

@@ -8,13 +8,24 @@ using Amazon.DynamoDBv2.DataModel;
 using System.Threading.Tasks;
 
 public class DynamoDB : MonoBehaviour {
+    public static DynamoDB Instance;
+    public string username;
+    public int playerID;
     AmazonDynamoDBClient client;
-    public AmazonBedrockConnection awsBedrockConnection;
+    public string accessKeyId;
+    public string secretAccessKey;
     private static readonly RegionEndpoint RegionEndpoint = RegionEndpoint.USEast1; // Adjust server region
     DynamoDBContext Context;
 
     void Awake(){
-        var credentials = new BasicAWSCredentials(awsBedrockConnection.accessKeyId, awsBedrockConnection.secretAccessKey);
+        if (Instance == null) {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else {
+            Destroy(gameObject);
+        }
+        var credentials = new BasicAWSCredentials(accessKeyId, secretAccessKey);
         client = new AmazonDynamoDBClient(credentials, RegionEndpoint);
         Context = new DynamoDBContext(client);
     }

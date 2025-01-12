@@ -86,8 +86,11 @@ using UnityEngine.Events;
             slot.slotItem.isEquipped = false;
             equippedItems.Remove(slot.slotItem);
             GameManager.Instance.sfxParent.Find("ItemPickup").GetComponent<AudioSource>().Play();
-            // Find a way to find which child is the item and destroy it
-            if (GameManager.Instance.holdObjectTransform.childCount > 0) Destroy(GameManager.Instance.holdObjectTransform.GetChild(0).gameObject);
+            foreach (Transform child in GameManager.Instance.holdObjectTransform) {
+                if (child.name == slot.slotItem.prefab.name + "(Clone)") {
+                    Destroy(child.gameObject);
+                }
+            }
         }
 
         private void PlaceItem(ItemSlot slot) 
