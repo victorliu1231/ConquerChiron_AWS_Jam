@@ -59,9 +59,6 @@
 
 - died screen sfx
 
-- unequip items upon dying
-- make set equippable positions in Equippable for all equiped items
-
 - make AI bring up daily maintenance tasks needs periodically
 -- extra: checkpointing into positions doesn't work
 

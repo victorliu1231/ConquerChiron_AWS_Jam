@@ -23,6 +23,7 @@ public class MainMenuManager : MonoBehaviour
 
     public async void PlayGame(string username)
     {
+        if (username == "") return;
         var listUserStats = await DynamoDB.Instance.GetAllUsers();
         List<int> existingIDs = new List<int>();
         for (int i = 0; i < listUserStats.Count; i++){
@@ -36,6 +37,12 @@ public class MainMenuManager : MonoBehaviour
         }
         DynamoDB.Instance.username = username;
         DynamoDB.Instance.playerID = existingIDs.Count + 1;
+        SceneManager.LoadScene(gameSceneName);
+    }
+
+    public void PlayGame()
+    {
+        PlayGame(inputField.text);
     }
 
     public void QuitGame()
