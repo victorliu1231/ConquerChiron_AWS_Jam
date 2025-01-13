@@ -193,10 +193,9 @@ public class GameManager : MonoBehaviour {
         if (!isDebugging){
             isBeginningOfGame = true;
             isGamePaused = true;
-            player.SetActive(false);
-            ItemManager.Instance.inventory.containerInteractor.canInteract = false;
             CameraStaticMode();
             MoveCamera(aiViewTransform, 0, MoveCameraMode.CameraStaticMode);
+            player.SetActive(false);
             terminalText.text = "HQ";
             StartCoroutine(StartDialogue());
             awsConnection.inputField.enabled = false;
