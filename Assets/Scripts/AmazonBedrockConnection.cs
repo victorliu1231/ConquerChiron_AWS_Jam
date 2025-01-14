@@ -118,6 +118,8 @@ public class AmazonBedrockConnection : MonoBehaviour {
         yield return new WaitForSeconds(0.5f);
         hqAudioSource.DOFade(0f, 3f);
         yield return new WaitForSeconds(2.5f);
+        GameManager.Instance.terminalText.text = "Chiron";
+        inputField.enabled = false;
         aiInterruption = "Sorry to interrupt, but there are some urgent maintenance tasks that need to be taken care of. Please ask me what tasks you should do.";
         responseText.text = $"Chiron: {aiInterruption}";
         aiSpeaker.Speak(aiInterruption);
@@ -133,6 +135,7 @@ public class AmazonBedrockConnection : MonoBehaviour {
             yield return new WaitForSeconds(0.5f);
         }
         GameManager.Instance.aiMonitor.typingTexts[0].enabled = true;
+        inputField.enabled = true;
         GameManager.Instance.aiMonitor.canQuit = true;
         GameManager.Instance.isBeginningOfGame = false;
     }
@@ -140,7 +143,7 @@ public class AmazonBedrockConnection : MonoBehaviour {
     public async void SendPrompt(string prompt, bool spontaneous = false){
         if (!spontaneous){
             if (!GameManager.Instance.isDebugging && GameManager.Instance.timerBetweenPrompting < GameManager.Instance.waitTimeBetweenPrompting){
-                waitText.text = "Please wait a moment before sending another prompt.";
+                waitText.text = $"Please wait a {(int)(GameManager.Instance.waitTimeBetweenPrompting - GameManager.Instance.timerBetweenPrompting)}s before sending another prompt.";
                 Invoke("ClearWaitText", 5f);
                 return;
             }

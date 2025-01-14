@@ -267,7 +267,6 @@ using UnityEngine.UI;
         public void CheckForUIToggleInput()
         {
             if (Input.GetKeyDown(UIToggleKey)) {
-                Debug.Log("testing"); 
                 ToggleUI();
             }
         }
@@ -302,7 +301,6 @@ using UnityEngine.UI;
         //Updates the UI toggle state.
         protected void ToggleUI()
         {
-            Debug.Log(mainContainerUI.name);
             CloseSlotOptionsMenu();
 
             //Tweens in/out the UI.

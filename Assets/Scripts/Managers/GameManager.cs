@@ -460,13 +460,15 @@ public class GameManager : MonoBehaviour {
                 sfxParent.Find("ItemPickup").GetComponent<AudioSource>().Play();
                 PlaceableZone placeableZone = hit.collider.gameObject.GetComponent<PlaceableZone>();
                 Transform objectInHand = holdObjectTransform.GetChild(0);
-                objectInHand.position = placeableZone.position;
-                objectInHand.rotation = Quaternion.Euler(placeableZone.rotation);
-                objectInHand.localScale *= 2;
-                objectInHand.SetParent(placeableZone.transform);
-                objectInHand.GetComponent<Holdable>().canInteract = true;
-                placeableZone.GetComponent<Renderer>().enabled = false;
-                isHoldingObject = false;
+                if (placeableZone != null){
+                    objectInHand.position = placeableZone.position;
+                    objectInHand.rotation = Quaternion.Euler(placeableZone.rotation);
+                    objectInHand.localScale *= 2;
+                    objectInHand.SetParent(placeableZone.transform);
+                    objectInHand.GetComponent<Holdable>().canInteract = true;
+                    placeableZone.GetComponent<Renderer>().enabled = false;
+                    isHoldingObject = false;
+                }
             }
         }
     }
