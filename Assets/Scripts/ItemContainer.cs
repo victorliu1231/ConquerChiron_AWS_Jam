@@ -306,6 +306,7 @@ using UnityEngine.UI;
             //Tweens in/out the UI.
             if (mainContainerUI.gameObject.activeSelf && isContainerUIOpen)
             {
+                GameManager.Instance.player.SetActive(true);
                 isContainerUIOpen = false;
                 OnCloseUI.Invoke();
                 containerInteractor.canInteract = true;
@@ -313,6 +314,7 @@ using UnityEngine.UI;
             }
             else if(!mainContainerUI.gameObject.activeSelf && !isContainerUIOpen)
             {
+                GameManager.Instance.player.SetActive(false);
                 isContainerUIOpen = true;
                 OnOpenUI.Invoke();
                 containerInteractor.canInteract = false;

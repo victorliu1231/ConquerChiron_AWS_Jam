@@ -58,6 +58,7 @@
 - maybe make Chiron a male voice idk
 
 - died screen sfx
+- any time i add an item in Project tab, need to also add it to ItemManager's list of itemList in inspector
 
 - make AI bring up daily maintenance tasks needs periodically
 -- extra: checkpointing into positions doesn't work
@@ -66,9 +67,6 @@
 
 -- when going into wall, the interact UI and equipped item disappears :/
 - add in Will's death screen
--- pressure gauge balancing is bad
-
-- need to fix item equippable / unequippable system for holding objects in hand
 
 - make multiple builds for game
 

@@ -30,6 +30,7 @@ public class Window : Interactable {
     }
 
     public override void Interact(){
+        GameManager.Instance.debuggingText.text = "Debugging12";
         canInteract = false;
         if (GameManager.Instance.gameMode == GameMode.Horror && GameManager.Instance.assignedTasks.Contains(Task.SurviveAsteroids)){
             GameManager.Instance.notepad.SetActive(true);
@@ -37,11 +38,14 @@ public class Window : Interactable {
             GameManager.Instance.CameraStaticMode();
             Time.timeScale = 0f;
         } else {
+            GameManager.Instance.debuggingText.text = "Debugging13";
             if (ItemManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Spindex")) && ItemManager.Instance.equippedItems.Contains(ItemManager.Instance.GetItemByName("Towel")) && GameManager.Instance.assignedTasks.Contains(Task.CleanCockpitWindows)){
+                GameManager.Instance.debuggingText.text = "Debugging14";
                 GameManager.Instance.notepad.SetActive(true);
                 GameManager.Instance.windowCleaningTutorial.SetActive(true);
                 GameManager.Instance.CameraStaticMode();
             } else {
+                GameManager.Instance.debuggingText.text = "Debugging15";
                 GameManager.Instance.replaceableGO.transform.DOShakePosition(0.5f, new Vector3(20f, 0f, 0f), 10, 0, false, true);
             }
         }

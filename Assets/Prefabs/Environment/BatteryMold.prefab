@@ -239,7 +239,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.164, y: 0.116, z: 0.017}
-  m_LocalScale: {x: -0.13, y: 0.3, z: 0.75}
+  m_LocalScale: {x: 0.13, y: 0.3, z: 0.75}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4249461966285097683}
@@ -535,7 +535,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4249461966285097683}
   - component: {fileID: 5714534587872609008}
-  - component: {fileID: 6245833957745042420}
   m_Layer: 14
   m_Name: BatteryMold
   m_TagString: Untagged
@@ -587,22 +586,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.6, y: 0.4, z: 0.9}
   m_Center: {x: 0.0022718809, y: 0.11614461, z: 0.012701883}
---- !u!114 &6245833957745042420
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5363459579702119602}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 127a0109c589c574da421ea42aebcb6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canInteract: 1
-  lampPanelOpen: {fileID: 0}
-  lampPanelClosed: {fileID: 0}
-  batteryInPanel: {fileID: 3315882614999108635}
 --- !u!1 &8026960573135011406
 GameObject:
   m_ObjectHideFlags: 0

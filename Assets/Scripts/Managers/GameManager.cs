@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour {
     #region Variables
     public static GameManager Instance;
     public bool isDebugging = true;
+    public TextMeshProUGUI debuggingText;
     public string mainCharName = "Jason";
     public string shipName = "The Argo";
     public bool isBeginningOfGame;
@@ -170,6 +171,7 @@ public class GameManager : MonoBehaviour {
     #region Awake
     void Awake(){
         Instance = this;
+        debuggingText.enabled = false;
         aiState = AIState.Peaceful;
         tasksCompleted = new List<Task>();
         tasksRemaining = new List<Task>{Task.CleanCockpitWindows, Task.RecalibratePressureGauge, Task.ReplaceNightLampBattery,};// Task.Unpack};

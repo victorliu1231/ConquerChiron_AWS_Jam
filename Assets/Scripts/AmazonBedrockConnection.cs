@@ -127,7 +127,7 @@ public class AmazonBedrockConnection : MonoBehaviour {
         while (aiVoiceAudioSource.isPlaying){
             yield return new WaitForSeconds(0.5f);
         }
-        aiInterruption = "By the way, WASD or arrow keys are used to move. Space is to jump. Left Shift is to sprint. I is to open your inventory.";
+        aiInterruption = "By the way, WASD or arrow keys are used to move. Space is to jump. Left Shift is to sprint. I is to open your inventory. Esc is to pause game.";
         responseText.text = $"Chiron: {aiInterruption}";
         aiSpeaker.Speak(aiInterruption);
         yield return new WaitForSeconds(2f);
