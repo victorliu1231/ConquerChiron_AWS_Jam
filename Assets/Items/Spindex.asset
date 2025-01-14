@@ -18,4 +18,7 @@ MonoBehaviour:
   icon: {fileID: -1250334635, guid: ed02913313a8a6942ad6f8b1bab54ab6, type: 3}
   prefab: {fileID: 5348596771058523752, guid: 35001dd9a5bad594d8bd37c64214383e, type: 3}
   isEquipped: 1
-  itemInformation: Very popular glass cleaning fluid brand but for spaceships!
+  itemInformation: 'Spindex:
+
+    Very popular glass cleaning fluid brand but for
+    spaceships!'

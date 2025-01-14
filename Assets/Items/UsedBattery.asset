@@ -18,4 +18,7 @@ MonoBehaviour:
   icon: {fileID: 1686941660, guid: 92575c22774f27c49944ba5f03d3b426, type: 3}
   prefab: {fileID: 0}
   isEquipped: 0
-  itemInformation: Too bad I can't drop this off at a recycling center in outer space.
+  itemInformation: 'Used Battery:
+
+    Too bad I can''t drop this off at a recycling
+    center in outer space.'

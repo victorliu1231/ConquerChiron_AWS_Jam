@@ -17,4 +17,8 @@ MonoBehaviour:
   itemPerSlot: 1
   icon: {fileID: 184325205, guid: 578210782c8c4534c8279be1a08f2fc1, type: 3}
   prefab: {fileID: 0}
-  itemInformation: Maybe in a million years this will be put up in a history museum.
+  isEquipped: 0
+  itemInformation: 'Melted Fuse:
+
+    Maybe in a million years this will be put up
+    in a history museum.'

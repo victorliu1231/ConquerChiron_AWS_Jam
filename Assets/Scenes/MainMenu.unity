@@ -1429,8 +1429,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   username: 
   playerID: 0
-  accessKeyId: AKIAVY2PGNB54ZWMOCPV
-  secretAccessKey: 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
+  accessKeyId: AKIAVY2PGNB56KGFFHJ2
+  secretAccessKey: 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
 --- !u!4 &1153701536
 Transform:
   m_ObjectHideFlags: 0

@@ -18,4 +18,7 @@ MonoBehaviour:
   icon: {fileID: 1455181733, guid: f7eb3e8f907d96045b572b7f87846753, type: 3}
   prefab: {fileID: 5789605794434489170, guid: 44d1043760d1468488d236612c6302a5, type: 3}
   isEquipped: 0
-  itemInformation: I'm not going to lie, I had to look up how these worked.
+  itemInformation: 'New Fuse:
+
+    I''m not going to lie, I had to look up how these
+    worked.'

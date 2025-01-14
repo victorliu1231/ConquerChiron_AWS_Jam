@@ -17,4 +17,7 @@ MonoBehaviour:
   itemPerSlot: 1
   icon: {fileID: 1849853108, guid: 351d908665e10a64bb26099743cbaaa7, type: 3}
   prefab: {fileID: 6945241575815046550, guid: 234fea9f8f3e83c40996a721b4186e34, type: 3}
-  itemInformation: Excellent weapon of choice!
+  isEquipped: 0
+  itemInformation: 'Crowbar:
+
+    Excellent weapon of choice!'

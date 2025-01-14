@@ -18,5 +18,7 @@ MonoBehaviour:
   icon: {fileID: -1201495974, guid: 4874fcaa3ae05524286bcece094b7497, type: 3}
   prefab: {fileID: 7317678784268303349, guid: 4e431bed47f43eb47ba8b7c87bce8dc6, type: 3}
   isEquipped: 0
-  itemInformation: They tell you not to eat this, but I melted it and ate it one
-    time and I turned out fine.
+  itemInformation: 'New Battery:
+
+    They tell you not to eat this, but I melted
+    it and ate it one time and I turned out fine.'

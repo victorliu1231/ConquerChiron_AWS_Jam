@@ -111,6 +111,7 @@ public class AmazonBedrockConnection : MonoBehaviour {
 
     #region AISpeaker
     IEnumerator TransitionToStartOfGame(){
+        inputField.enabled = false;
         string aiInterruption;
         yield return new WaitForSeconds(0.5f);
         responseText.text = "Sure, I can help you with that. For that you need to first do ...";
@@ -119,7 +120,6 @@ public class AmazonBedrockConnection : MonoBehaviour {
         hqAudioSource.DOFade(0f, 3f);
         yield return new WaitForSeconds(2.5f);
         GameManager.Instance.terminalText.text = "Chiron";
-        inputField.enabled = false;
         aiInterruption = "Sorry to interrupt, but there are some urgent maintenance tasks that need to be taken care of. Please ask me what tasks you should do.";
         responseText.text = $"Chiron: {aiInterruption}";
         aiSpeaker.Speak(aiInterruption);
