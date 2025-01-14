@@ -256,6 +256,11 @@ public class GameManager : MonoBehaviour {
 
     #region Update
     void Update(){
+        if (isDebugging && Input.GetKeyDown(KeyCode.G)){
+            //leaderboardGO.SetActive(true);
+            //UpdateLeaderboard();
+        }
+
         ItemManager.Instance.inventory.gameObject.SetActive(true);
         Cursor.visible = true;
         timerBetweenPrompting += Time.deltaTime;
@@ -943,7 +948,7 @@ public class GameManager : MonoBehaviour {
 
     public async void UpdateLeaderboard(){
         var listUserStats = await DynamoDB.Instance.GetAllUsers();
-        listUserStats.Sort((x, y) => y.totalTime.CompareTo(x.totalTime));
+        listUserStats.Sort((x, y) => x.totalTime.CompareTo(y.totalTime));
         listUserStats = listUserStats.GetRange(0, listUserStats.Count > 5 ? 5 : listUserStats.Count);
         leaderboardContent.gameObject.SetActive(true);
         foreach (Transform child in leaderboardContent){
